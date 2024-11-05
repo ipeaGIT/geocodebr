@@ -78,7 +78,39 @@ in the sample component of the questionnaire.</p>
     <h2>Arguments</h2>
 
 
-<dl><dt id="arg-showprogress">showProgress<a class="anchor" aria-label="anchor" href="#arg-showprogress"></a></dt>
+<dl><dt id="arg-input-table">input_table<a class="anchor" aria-label="anchor" href="#arg-input-table"></a></dt>
+<dd><p>A data frame.</p></dd>
+
+
+<dt id="arg-logradouro">logradouro<a class="anchor" aria-label="anchor" href="#arg-logradouro"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-numero">numero<a class="anchor" aria-label="anchor" href="#arg-numero"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-complemento">complemento<a class="anchor" aria-label="anchor" href="#arg-complemento"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-cep">cep<a class="anchor" aria-label="anchor" href="#arg-cep"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-bairro">bairro<a class="anchor" aria-label="anchor" href="#arg-bairro"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-municipio">municipio<a class="anchor" aria-label="anchor" href="#arg-municipio"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-estado">estado<a class="anchor" aria-label="anchor" href="#arg-estado"></a></dt>
+<dd><p>A string.</p></dd>
+
+
+<dt id="arg-showprogress">showProgress<a class="anchor" aria-label="anchor" href="#arg-showprogress"></a></dt>
 <dd><p>Logical. Defaults to <code>TRUE</code> display download progress
 bar. The progress bar only reflects only the downloading
 time, not the time to load the data to memory.</p></dd>
@@ -100,21 +132,6 @@ user runs the function, <code>censobr</code> will download the file and store it
 locally so that the file only needs to be download once. If <code>FALSE</code>,
 the function will download the data again and overwrite the local file.</p></dd>
 
-
-<dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Numeric. Year of reference in the format <code>yyyy</code>. Defaults to <code>2010</code>.</p></dd>
-
-
-<dt id="arg-columns">columns<a class="anchor" aria-label="anchor" href="#arg-columns"></a></dt>
-<dd><p>String. A vector of column names to keep. The rest of the
-columns are not read. Defaults to <code>NULL</code> and read all columns.</p></dd>
-
-
-<dt id="arg-add-labels">add_labels<a class="anchor" aria-label="anchor" href="#arg-add-labels"></a></dt>
-<dd><p>Character. Whether the function should add labels to the
-responses of categorical variables. When <code>add_labels = "pt"</code>, the
-function adds labels in Portuguese. Defaults to <code>NULL</code>.</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -123,13 +140,12 @@ function adds labels in Portuguese. Defaults to <code>NULL</code>.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># open input data</span></span></span>
 <span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/sample_1.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">geocode_duck</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">geocode</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  input_table <span class="op">=</span> <span class="va">input_df</span>,</span></span>
 <span class="r-in"><span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span></span>
 <span class="r-in"><span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span></span>
@@ -139,7 +155,7 @@ function adds labels in Portuguese. Defaults to <code>NULL</code>.</p></dd>
 <span class="r-in"><span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span></span>
 <span class="r-in"><span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> 'geocode_duck' is not an exported object from 'namespace:geocodebr'</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================                                |  54%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%</span>
 </code></pre></div>
     </div>
   </div>
