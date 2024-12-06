@@ -67,7 +67,7 @@ in the sample component of the questionnaire.</p>
 <span>  bairro <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  estado <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  showProgress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output_simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ncores <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -110,10 +110,9 @@ in the sample component of the questionnaire.</p>
 <dd><p>A string.</p></dd>
 
 
-<dt id="arg-showprogress">showProgress<a class="anchor" aria-label="anchor" href="#arg-showprogress"></a></dt>
-<dd><p>Logical. Defaults to <code>TRUE</code> display download progress
-bar. The progress bar only reflects only the downloading
-time, not the time to load the data to memory.</p></dd>
+<dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
+<dd><p>A logical. Whether to display a download progress bar.
+Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-output-simple">output_simple<a class="anchor" aria-label="anchor" href="#arg-output-simple"></a></dt>
@@ -145,17 +144,16 @@ the function will download the data again and overwrite the local file.</p></dd>
 <span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/sample_1.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">geocode</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  input_table <span class="op">=</span> <span class="va">input_df</span>,</span></span>
-<span class="r-in"><span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span></span>
-<span class="r-in"><span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span></span>
-<span class="r-in"><span>  complemento <span class="op">=</span> <span class="st">"Complemento"</span>,</span></span>
-<span class="r-in"><span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span></span>
-<span class="r-in"><span>  bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span></span>
-<span class="r-in"><span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span></span>
-<span class="r-in"><span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |======================================                                |  54%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%</span>
+<span class="r-in"><span><span class="co"># df &lt;- geocodebr::geocode(</span></span></span>
+<span class="r-in"><span><span class="co">#   input_table = input_df,</span></span></span>
+<span class="r-in"><span><span class="co">#   logradouro = "nm_logradouro",</span></span></span>
+<span class="r-in"><span><span class="co">#   numero = "Numero",</span></span></span>
+<span class="r-in"><span><span class="co">#   complemento = "Complemento",</span></span></span>
+<span class="r-in"><span><span class="co">#   cep = "Cep",</span></span></span>
+<span class="r-in"><span><span class="co">#   bairro = "Bairro",</span></span></span>
+<span class="r-in"><span><span class="co">#   municipio = "nm_municipio",</span></span></span>
+<span class="r-in"><span><span class="co">#   estado = "nm_uf"</span></span></span>
+<span class="r-in"><span><span class="co">#   )</span></span></span>
 </code></pre></div>
     </div>
   </div>
