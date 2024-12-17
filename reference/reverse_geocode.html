@@ -101,25 +101,10 @@ the function will download the data again and overwrite the local files.</p></dd
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># reverse geocode</span></span></span>
-<span class="r-in"><span><span class="va">df_addresses</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">reverse_geocode</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  input_table <span class="op">=</span> <span class="va">df_coords</span>,</span></span>
-<span class="r-in"><span>  progress <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■                              </span>   4% | ETA: 29s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■                        </span>  24% | ETA: 12s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  56% | ETA:  7s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■             </span>  60% | ETA:  7s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■       </span>  80% | ETA:  4s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  92% | ETA:  2s</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Downloading CNEFE data <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% | ETA:  0s</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dbSendQuery(conn, statement, ...):</span> rapi_prepare: Failed to prepare query CREATE TEMPORARY TABLE filtered_cnefe_coords AS</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> SELECT * FROM cnefe</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> WHERE lon BETWEEN -67.83659 AND -43.4701</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   AND lat BETWEEN -30.06081 AND -9.961392</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Error: Catalog Error: Table with name cnefe does not exist!</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Did you mean "pg_indexes"?</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> LINE 2: SELECT * FROM cnefe</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>                       ^</span>
+<span class="r-in"><span><span class="co"># df_addresses &lt;- geocodebr::reverse_geocode(</span></span></span>
+<span class="r-in"><span><span class="co">#   input_table = df_coords,</span></span></span>
+<span class="r-in"><span><span class="co">#   progress = TRUE</span></span></span>
+<span class="r-in"><span><span class="co">#   )</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
