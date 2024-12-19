@@ -73,11 +73,9 @@ Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
-<dd><p>Logical. Whether the function should read the data cached
-locally, which is much faster. Defaults to <code>TRUE</code>. The first time the
-user runs the function, <code>geocodebr</code> will download CNEFE data and store
-it locally so that the data only needs to be download once. If <code>FALSE</code>,
-the function will download the data again and overwrite the local files.</p></dd>
+<dd><p>A logical. Whether CNEFE data should be save to/read from cache,
+reducing processing time in future calls. Defaults to <code>TRUE</code>. When <code>FALSE</code>,
+CNEFE data is downloaded to a temporary directory.</p></dd>
 
 </dl></div>
     <div class="section level2">
