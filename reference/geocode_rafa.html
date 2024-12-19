@@ -59,7 +59,7 @@ coordinates found based on CNEFE data.</p>
 <span>  estado <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  output_simple <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  ncores <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n_cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -105,15 +105,15 @@ CNEFE data and when geocoding the addresses. Defaults to <code>TRUE</code>.</p><
 <dd><p>Logic. Defaults to <code>TRUE</code></p></dd>
 
 
+<dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
+<dd><p>A number. The number of cores to be used in parallel
+execution. Defaults to 1.</p></dd>
+
+
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
 <dd><p>A logical. Whether CNEFE data should be save to/read from cache,
 reducing processing time in future calls. Defaults to <code>TRUE</code>. When <code>FALSE</code>,
 CNEFE data is downloaded to a temporary directory.</p></dd>
-
-
-<dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
-<dd><p>A number. The number of cores to be used in parallel
-execution. Defaults to 1.</p></dd>
 
 </dl></div>
     <div class="section level2">
