@@ -13,7 +13,6 @@
 <url><loc>https://ipeagit.github.io/geocodebr/reference/create_geocodebr_db.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/create_index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/download_cnefe.html</loc></url>
-<url><loc>https://ipeagit.github.io/geocodebr/reference/exact_match_case.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocode.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocode_rafa.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocodebr.html</loc></url>
@@ -21,8 +20,6 @@
 <url><loc>https://ipeagit.github.io/geocodebr/reference/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/list_cached_data.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/match_aggregated_cases.html</loc></url>
-<url><loc>https://ipeagit.github.io/geocodebr/reference/match_case.html</loc></url>
-<url><loc>https://ipeagit.github.io/geocodebr/reference/match_case_single_string.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/reverse_geocode.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/set_cache_dir.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/setup_address_fields.html</loc></url>
