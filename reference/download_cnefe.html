@@ -80,7 +80,7 @@ cache, reducing processing time in future calls. Defaults to <code>TRUE</code>. 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns the path to the file where the data was saved.</p>
+    <p>Invisibly returns the path to the directory where the data was saved.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -91,8 +91,12 @@ cache, reducing processing time in future calls. Defaults to <code>TRUE</code>. 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">download_cnefe</span><span class="op">(</span>state <span class="op">=</span> <span class="st">"AC"</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download_cnefe(state = "AC", progress = FALSE):</span> Could not download CNEFE data for one or more states.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please try again later.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">download_cnefe</span><span class="op">(</span>state <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AC"</span>, <span class="st">"AL"</span><span class="op">)</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download_cnefe(state = c("AC", "AL"), progress = FALSE):</span> Could not download CNEFE data for one or more states.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please try again later.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
