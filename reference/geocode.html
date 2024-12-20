@@ -152,10 +152,23 @@ described below:</p><ul><li><p>Case 01: estado, município, logradouro, número,
 <span class="r-in"><span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocode</span><span class="op">(</span><span class="va">input_df</span>, address_fields <span class="op">=</span> <span class="va">fields</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Standardizing input addresses</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download_cnefe(present_states, progress = progress, cache = cache):</span> Could not download CNEFE data for one or more states.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please try again later.</span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocode</span><span class="op">(</span><span class="va">input_df</span>, address_fields <span class="op">=</span> <span class="va">fields</span>, progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 28 × 12</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ID Complemento code_muni nm_logradouro    Numero Cep   Bairro nm_municipio</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 CASA          3<span style="text-decoration: underline;">303</span>500 RUA MARIA LUCIA…     17 2604… SANTA… NOVA IGUACU </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 FUNDOS        3<span style="text-decoration: underline;">301</span>702 RUA LEOPOLDINA …     46 2503… CENTE… DUQUE DE CA…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 CASA          3<span style="text-decoration: underline;">300</span>100 RUA DONA JUDITE       0 2391… CAPUT… ANGRA DOS R…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 QUADRA        3<span style="text-decoration: underline;">304</span>557 RUA ALEXANDRE A…      0 2309… SANTI… RIO DE JANE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 CASA          3<span style="text-decoration: underline;">302</span>601 AVENIDA E           300 2386… PRAIA… MANGARATIBA </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 APARTAMENTO   1<span style="text-decoration: underline;">200</span>401 RUA PRINCESA IS…    263 6992… ESTAC… RIO BRANCO  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 <span style="color: #BB0000;">NA</span>            1<span style="text-decoration: underline;">200</span>203 CAMINHO SEM DEN…   <span style="text-decoration: underline;">2</span>530 6998… MIRIT… CRUZEIRO DO…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 <span style="color: #BB0000;">NA</span>            1<span style="text-decoration: underline;">200</span>401 RUA DO LIMAO        268 6992… MOCIN… RIO BRANCO  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 FUNDOS        1<span style="text-decoration: underline;">200</span>401 RUA GERALDO MES…      0 6991… NOVA … RIO BRANCO  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 <span style="color: #BB0000;">NA</span>            1<span style="text-decoration: underline;">200</span>450 AVENIDA CASTELO…   <span style="text-decoration: underline;">3</span>875 6992… DEMOC… SENADOR GUI…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 18 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: nm_uf &lt;chr&gt;, match_type &lt;chr&gt;, lon &lt;dbl&gt;, lat &lt;dbl&gt;</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
