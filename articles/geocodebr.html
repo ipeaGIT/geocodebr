@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Geocoding with geocodebr (ENG) • geocodebr</title>
+<title>Introduction to geocodebr • geocodebr</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Geocoding with geocodebr (ENG)">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to geocodebr">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -29,9 +29,9 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/geocodebr.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../articles/geocodebr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/geocoding_en.html">Geocoding with geocodebr (ENG)</a></li>
@@ -67,60 +67,75 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Geocoding with geocodebr (ENG)</h1>
+      <h1>Introduction to geocodebr</h1>
             
             <h4 data-toc-skip class="date">2025-01-10</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocoding_en.Rmd" class="external-link"><code>vignettes/geocoding_en.Rmd</code></a></small>
-      <div class="d-none name"><code>geocoding_en.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
+      <div class="d-none name"><code>geocodebr.Rmd</code></div>
     </div>
 
     
     
-<div class="section level2">
-<h2 id="geocoding-from-addresses-to-spatial-coordinates">Geocoding: from addresses to spatial coordinates<a class="anchor" aria-label="anchor" href="#geocoding-from-addresses-to-spatial-coordinates"></a>
-</h2>
-<p>Once you have a table (<code>data.frame</code>) with addresses,
-geolocating the data with <strong>{geocodebr}</strong> can be done in
-two simple steps:</p>
-<ol style="list-style-type: decimal">
-<li>The first step is to use the <code><a href="../reference/setup_address_fields.html">setup_address_fields()</a></code>
-function to declare the names of the columns in your input
-<code>data.frame</code> that correspond to each field of the
-addresses.</li>
-</ol>
+<p>Geocoding refers to the act of finding a point in space, usually
+represented by a pair of coordinates, given a street address. The
+<strong>geocodebr</strong> packages allows one to efficiently geocode
+Brazilian addresses using the National Registry of Addresses for
+Statistical Purposes (english for <em>Cadastro Nacional de Endereços
+para Fins Estatísticos</em>, CNEFE)[^1], a data set collected and <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">published</a>
+by the Brazilian official statistics and geography office, IBGE,
+containing the addresses of more than 100 million households and
+establishments in Brazil.</p>
+<div class="section level3">
+<h3 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+</h3>
+<p>Before using <em>geocodebr</em>, please make sure you have it
+installed in your computer. You can download either the most stable
+version from CRAN…</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># read input sample data</span></span>
-<span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 1st step: indicate the columns describing the address fields</span></span>
-<span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span></span>
-<span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
-<span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
-<span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
-<span>  bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
-<span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
-<span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>The second step is to use the <code><a href="../reference/geocode.html">geocode()</a></code> function to
-find the geographic coordinates of input addresses.</li>
-</ol>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geocodebr"</span><span class="op">)</span></span></code></pre></div>
+<p>… or the development version from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># 2nd step: geocode</span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
-<span>  addresses_table <span class="op">=</span> <span class="va">input_df</span>,</span>
-<span>  address_fields <span class="op">=</span> <span class="va">fields</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ipeaGIT/geocodebr"</span><span class="op">)</span></span></code></pre></div>
+<p>Then attach it to the current R session:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span></code></pre></div>
+<p>The main entry point to the package’s functionalities is
+<code><a href="../reference/geocode.html">geocode()</a></code>, which takes a data frame of addresses as input
+and outputs the same data frame with the latitude and longitude of each
+matched address, as well as two columns indicating the precision level
+of the matches. To demonstrate its usage, the package includes a few
+sample data sets in the installation. In the example below, we use a
+small data set that contains addresses with commonly seen issues, such
+as missing information and mistyped fields.</p>
+<p><strong>Note:</strong> Running the function for the first time may
+take a while, since <em>geocodebr</em> needs to download the CNEFE data,
+which sums up to about 5.5 GB. Alternatively, you can use
+<code><a href="../reference/download_cnefe.html">download_cnefe()</a></code> to download the data before geocoding
+(<code><a href="../reference/geocode.html">geocode()</a></code> does that behind the scenes).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">input_addresses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
+<span>  <span class="va">input_addresses</span>,</span>
+<span>  address_fields <span class="op">=</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span></span>
+<span>    logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
+<span>    numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
+<span>    cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
+<span>    bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
+<span>    municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
+<span>    estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The input of the field 'number' has observations with non numeric characters.</span></span>
 <span><span class="co">#&gt; These observations were transformed to NA.</span></span>
 <span><span class="co">#&gt; Warning in eval(jsub, SDenv, parent.frame()): NAs introduced by coercion</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
 <span><span class="co">#&gt; 1  1 RUA MARIA LUCIA PACIFICO     17 26042-730           SANTA RITA</span></span>
 <span><span class="co">#&gt; 2  2      RUA LEOPOLDINA TOME     46 25030-050           CENTENARIO</span></span>
