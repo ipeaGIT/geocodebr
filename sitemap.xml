@@ -4,6 +4,7 @@
 <url><loc>https://ipeagit.github.io/geocodebr/articles/geocoding_en.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/articles/geocoding_pt.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/articles/index.html</loc></url>
+<url><loc>https://ipeagit.github.io/geocodebr/articles/reverse_geocoding.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/authors.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/news/index.html</loc></url>
@@ -15,8 +16,8 @@
 <url><loc>https://ipeagit.github.io/geocodebr/reference/create_index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/download_cnefe.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocode.html</loc></url>
+<url><loc>https://ipeagit.github.io/geocodebr/reference/geocode_dani.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocode_rafa.html</loc></url>
-<url><loc>https://ipeagit.github.io/geocodebr/reference/geocode_rafa_arrow.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/geocodebr.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/get_cache_dir.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/index.html</loc></url>

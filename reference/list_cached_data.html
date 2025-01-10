@@ -20,6 +20,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/geocoding_en.html">Geocoding with geocodebr (ENG)</a></li>
     <li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
+    <li><a class="dropdown-item" href="../articles/reverse_geocoding.html">Reverse-geocoding (ENG)</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -70,21 +71,45 @@ directory in a tree-like format. Defaults to <code>FALSE</code>.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">list_cached_data</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=AC/part-0.parquet"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=AL/part-0.parquet"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=RJ/part-0.parquet"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio.parquet"                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep.parquet"                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep_localidade.parquet"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_localidade.parquet"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro.parquet"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep.parquet"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep_localidade.parquet"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_localidade.parquet"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero.parquet"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep.parquet"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep_localidade.parquet"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_localidade.parquet"    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">list_cached_data</span><span class="op">(</span>print_tree <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">/home/runner/.cache/R/geocodebr/data_release_v0.1.0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├── <span style="color: #0000BB; font-weight: bold;">estado=AC</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │   └── part-0.parquet</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├── <span style="color: #0000BB; font-weight: bold;">estado=AL</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │   └── part-0.parquet</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> └── <span style="color: #0000BB; font-weight: bold;">estado=RJ</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     └── part-0.parquet</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=AC/part-0.parquet"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=AL/part-0.parquet"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/estado=RJ/part-0.parquet"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_cep.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_cep_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_cep.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_cep_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_numero.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_numero_cep.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├── municipio_logradouro_numero_cep_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └── municipio_logradouro_numero_localidade.parquet</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio.parquet"                                 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep.parquet"                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep_localidade.parquet"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_localidade.parquet"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro.parquet"                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep.parquet"                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep_localidade.parquet"       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_localidade.parquet"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero.parquet"               </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep.parquet"           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep_localidade.parquet"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_localidade.parquet"    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

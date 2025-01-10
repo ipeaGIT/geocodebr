@@ -35,6 +35,7 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/geocoding_en.html">Geocoding with geocodebr (ENG)</a></li>
     <li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
+    <li><a class="dropdown-item" href="../articles/reverse_geocoding.html">Reverse-geocoding (ENG)</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -67,7 +68,7 @@
 
       <h1>Geocoding with geocodebr (ENG)</h1>
             
-            <h4 data-toc-skip class="date">2025-01-09</h4>
+            <h4 data-toc-skip class="date">2025-01-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocoding_en.Rmd" class="external-link"><code>vignettes/geocoding_en.Rmd</code></a></small>
       <div class="d-none name"><code>geocoding_en.Rmd</code></div>
@@ -82,12 +83,10 @@
 geolocating the data with <strong>{geocodebr}</strong> can be done in
 two simple steps:</p>
 <ol style="list-style-type: decimal">
-<li><p>The first step is to use the <code><a href="../reference/setup_address_fields.html">setup_address_fields()</a></code>
+<li>The first step is to use the <code><a href="../reference/setup_address_fields.html">setup_address_fields()</a></code>
 function to declare the names of the columns in your input
 <code>data.frame</code> that correspond to each field of the
-addresses.</p></li>
-<li><p>The second step is to use the <code><a href="../reference/geocode.html">geocode()</a></code> function to
-find the geographic coordinates of input addresses.</p></li>
+addresses.</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
@@ -103,22 +102,56 @@ find the geographic coordinates of input addresses.</p></li>
 <span>  bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
 <span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 2nd step: geocode</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>The second step is to use the <code><a href="../reference/geocode.html">geocode()</a></code> function to
+find the geographic coordinates of input addresses.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 2nd step: geocode</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
 <span>  addresses_table <span class="op">=</span> <span class="va">input_df</span>,</span>
 <span>  address_fields <span class="op">=</span> <span class="va">fields</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The input of the field 'number' has observations with non numeric characters.</span></span>
+<span><span class="co">#&gt; These observations were transformed to NA.</span></span>
+<span><span class="co">#&gt; Warning in eval(jsub, SDenv, parent.frame()): NAs introduced by coercion</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
-<p>The results of {geocodebr} are classified into six broad
-<code>precision</code> categories depending on how exactly each input
-address was matched with CNEFE data. The accuracy of the results are
-indicated in two columns of the output: <code>precision</code> and
-<code>match_type</code>. More information below.</p>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
+<span><span class="co">#&gt; 1  1 RUA MARIA LUCIA PACIFICO     17 26042-730           SANTA RITA</span></span>
+<span><span class="co">#&gt; 2  2      RUA LEOPOLDINA TOME     46 25030-050           CENTENARIO</span></span>
+<span><span class="co">#&gt; 3  3          RUA DONA JUDITE      0 23915-700          CAPUTERA II</span></span>
+<span><span class="co">#&gt; 4  4     RUA ALEXANDRE AMARAL      0 23098-120           SANTISSIMO</span></span>
+<span><span class="co">#&gt; 5  5                AVENIDA E    300 23860-000         PRAIA GRANDE</span></span>
+<span><span class="co">#&gt; 6  6      RUA PRINCESA ISABEL    263 69921-026 ESTACAO EXPERIMENTAL</span></span>
+<span><span class="co">#&gt;      nm_municipio code_muni          nm_uf       lon        lat match_type</span></span>
+<span><span class="co">#&gt; 1     NOVA IGUACU   3303500 RIO DE JANEIRO -43.47118 -22.695496       en01</span></span>
+<span><span class="co">#&gt; 2 DUQUE DE CAXIAS   3301702 RIO DE JANEIRO -43.31134 -22.779173       en01</span></span>
+<span><span class="co">#&gt; 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20841 -22.978631       ei01</span></span>
+<span><span class="co">#&gt; 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51047 -22.870022       ei01</span></span>
+<span><span class="co">#&gt; 5     MANGARATIBA   3302601 RIO DE JANEIRO -43.97214 -22.929864       en01</span></span>
+<span><span class="co">#&gt; 6      RIO BRANCO   1200401           ACRE -67.83559  -9.963436       en01</span></span>
+<span><span class="co">#&gt;            precision</span></span>
+<span><span class="co">#&gt; 1             numero</span></span>
+<span><span class="co">#&gt; 2             numero</span></span>
+<span><span class="co">#&gt; 3 numero_interpolado</span></span>
+<span><span class="co">#&gt; 4 numero_interpolado</span></span>
+<span><span class="co">#&gt; 5             numero</span></span>
+<span><span class="co">#&gt; 6             numero</span></span></code></pre></div>
+<p>obs. Note that the first time the user runs this function,
+{geocodebr} will download a few files and store them locally. This way,
+the data only needs to be downloaded once. More info about data caching
+below.</p>
+<p>The output coordinates use the official geodetic reference system
+used in Brazil: SIRGAS2000, CRS(4674). The results of {geocodebr} are
+classified into six broad <code>precision</code> categories depending on
+how exactly each input address was matched with CNEFE data. The accuracy
+of the results are indicated in two columns of the output:
+<code>precision</code> and <code>match_type</code>. More information
+below.</p>
 </div>
 <div class="section level2">
 <h2 id="precision-categories">Precision categories:<a class="anchor" aria-label="anchor" href="#precision-categories"></a>
@@ -245,6 +278,31 @@ with ‘e’ use deterministic matching only. <strong>Match types with
 probabilistic matching are not implemented in {geocodebr}
 yet</strong>.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="data-cache">Data cache<a class="anchor" aria-label="anchor" href="#data-cache"></a>
+</h2>
+<p>The first time the user runs the <code><a href="../reference/geocode.html">geocode()</a></code> function,
+{geocodebr} will download a few reference files and store them locally.
+This way, the data only needs to be downloaded once. Mind you that these
+files require approximately 4GB of space in your local drive.</p>
+<p>The package includes the following functions to help users manage
+cached files:</p>
+<ul>
+<li>
+<code><a href="../reference/get_cache_dir.html">get_cache_dir()</a></code>: returns the path to where the cached
+data is stored. By default, files are cached in the package
+directory.</li>
+<li>
+<code><a href="../reference/set_cache_dir.html">set_cache_dir()</a></code>: set a custom directory to be used.
+This configuration is persistent across different R sessions.</li>
+<li>
+<code><a href="../reference/list_cached_data.html">list_cached_data()</a></code>: list all files currently
+cached</li>
+<li>
+<code><a href="../reference/clean_cache_dir.html">clean_cache_dir()</a></code>: delete all files of the cache
+directory used by {geocodebr}</li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
