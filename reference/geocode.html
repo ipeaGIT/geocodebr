@@ -17,7 +17,7 @@ section. The output coordinates use the geodetic reference system
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -215,9 +215,6 @@ geocodebr yet.</p>
 <span class="r-in"><span>  address_fields <span class="op">=</span> <span class="va">fields</span>,</span></span>
 <span class="r-in"><span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The input of the field 'number' has observations with non numeric characters.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> These observations were transformed to NA.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   id            nm_logradouro Numero       Cep               Bairro</span>
@@ -230,17 +227,24 @@ geocodebr yet.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      nm_municipio code_muni          nm_uf       lon        lat match_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     NOVA IGUACU   3303500 RIO DE JANEIRO -43.47118 -22.695496       en01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 DUQUE DE CAXIAS   3301702 RIO DE JANEIRO -43.31134 -22.779173       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20841 -22.978631       ei01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51047 -22.870022       ei01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20848 -22.978837       er01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51150 -22.868992       er01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5     MANGARATIBA   3302601 RIO DE JANEIRO -43.97214 -22.929864       en01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6      RIO BRANCO   1200401           ACRE -67.83559  -9.963436       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            precision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1             numero</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2             numero</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 numero_interpolado</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 numero_interpolado</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5             numero</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6             numero</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   precision</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    street</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    street</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                               matched_address</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3               RUA DONA JUDITE - CAPUTERA II, ANGRA DOS REIS - RJ, 23915-700</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

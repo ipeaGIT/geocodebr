@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 
       <h1>Introduction to geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-01-10</h4>
+            <h4 data-toc-skip class="date">2025-01-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -78,18 +78,18 @@
     
     
 <p>Geocoding refers to the act of finding a point in space, usually
-represented by a pair of coordinates, given a street address. The
-<strong>geocodebr</strong> packages allows one to efficiently geocode
+represented by a pair of coordinates, given a location address. The
+<strong>{geocodebr}</strong> package allows one to efficiently geocode
 Brazilian addresses using the National Registry of Addresses for
 Statistical Purposes (english for <em>Cadastro Nacional de Endereços
-para Fins Estatísticos</em>, CNEFE)[^1], a data set collected and <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">published</a>
+para Fins Estatísticos</em>, CNEFE), a data set collected and <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">published</a>
 by the Brazilian official statistics and geography office, IBGE,
 containing the addresses of more than 100 million households and
 establishments in Brazil.</p>
 <div class="section level3">
 <h3 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h3>
-<p>Before using <em>geocodebr</em>, please make sure you have it
+<p>Before using <em>{geocodebr}</em>, please make sure you have it
 installed in your computer. You can download either the most stable
 version from CRAN…</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -101,26 +101,25 @@ version from CRAN…</p>
 <p>Then attach it to the current R session:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span></code></pre></div>
-<p>The main entry point to the package’s functionalities is
-<code><a href="../reference/geocode.html">geocode()</a></code>, which takes a data frame of addresses as input
-and outputs the same data frame with the latitude and longitude of each
-matched address, as well as two columns indicating the precision level
-of the matches. To demonstrate its usage, the package includes a few
-sample data sets in the installation. In the example below, we use a
-small data set that contains addresses with commonly seen issues, such
-as missing information and mistyped fields.</p>
+<p>The main function of package is <code><a href="../reference/geocode.html">geocode()</a></code>, which takes a
+data frame of addresses as input and outputs the same data frame with
+the latitude and longitude of each matched address, as well as two
+columns indicating the precision level of the matches. To demonstrate
+its usage, the package includes a few sample data sets in the
+installation. In the example below, we use a small data set that
+contains addresses with commonly seen issues, such as missing
+information and mistyped fields.</p>
 <p><strong>Note:</strong> Running the function for the first time may
-take a while, since <em>geocodebr</em> needs to download the CNEFE data,
-which sums up to about 5.5 GB. Alternatively, you can use
-<code><a href="../reference/download_cnefe.html">download_cnefe()</a></code> to download the data before geocoding
-(<code><a href="../reference/geocode.html">geocode()</a></code> does that behind the scenes).</p>
+take a while, since <em>{geocodebr}</em> needs to download the CNEFE
+data, which sums up to about 5.5 GB. This data is stored locally, so it
+is downloaded only once. More info about data caching below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">input_addresses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
-<span>  <span class="va">input_addresses</span>,</span>
+<span>  addresses_table <span class="op">=</span> <span class="va">df</span>,</span>
 <span>  address_fields <span class="op">=</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span></span>
 <span>    logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
 <span>    numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
@@ -131,9 +130,6 @@ which sums up to about 5.5 GB. Alternatively, you can use
 <span>  <span class="op">)</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The input of the field 'number' has observations with non numeric characters.</span></span>
-<span><span class="co">#&gt; These observations were transformed to NA.</span></span>
-<span><span class="co">#&gt; Warning in eval(jsub, SDenv, parent.frame()): NAs introduced by coercion</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
@@ -146,21 +142,24 @@ which sums up to about 5.5 GB. Alternatively, you can use
 <span><span class="co">#&gt;      nm_municipio code_muni          nm_uf       lon        lat match_type</span></span>
 <span><span class="co">#&gt; 1     NOVA IGUACU   3303500 RIO DE JANEIRO -43.47118 -22.695496       en01</span></span>
 <span><span class="co">#&gt; 2 DUQUE DE CAXIAS   3301702 RIO DE JANEIRO -43.31134 -22.779173       en01</span></span>
-<span><span class="co">#&gt; 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20841 -22.978631       ei01</span></span>
-<span><span class="co">#&gt; 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51047 -22.870022       ei01</span></span>
+<span><span class="co">#&gt; 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20848 -22.978837       er01</span></span>
+<span><span class="co">#&gt; 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51150 -22.868992       er01</span></span>
 <span><span class="co">#&gt; 5     MANGARATIBA   3302601 RIO DE JANEIRO -43.97214 -22.929864       en01</span></span>
 <span><span class="co">#&gt; 6      RIO BRANCO   1200401           ACRE -67.83559  -9.963436       en01</span></span>
-<span><span class="co">#&gt;            precision</span></span>
-<span><span class="co">#&gt; 1             numero</span></span>
-<span><span class="co">#&gt; 2             numero</span></span>
-<span><span class="co">#&gt; 3 numero_interpolado</span></span>
-<span><span class="co">#&gt; 4 numero_interpolado</span></span>
-<span><span class="co">#&gt; 5             numero</span></span>
-<span><span class="co">#&gt; 6             numero</span></span></code></pre></div>
-<p>obs. Note that the first time the user runs this function,
-{geocodebr} will download a few files and store them locally. This way,
-the data only needs to be downloaded once. More info about data caching
-below.</p>
+<span><span class="co">#&gt;   precision</span></span>
+<span><span class="co">#&gt; 1    number</span></span>
+<span><span class="co">#&gt; 2    number</span></span>
+<span><span class="co">#&gt; 3    street</span></span>
+<span><span class="co">#&gt; 4    street</span></span>
+<span><span class="co">#&gt; 5    number</span></span>
+<span><span class="co">#&gt; 6    number</span></span>
+<span><span class="co">#&gt;                                                               matched_address</span></span>
+<span><span class="co">#&gt; 1      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span></span>
+<span><span class="co">#&gt; 2       RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span></span>
+<span><span class="co">#&gt; 3               RUA DONA JUDITE - CAPUTERA II, ANGRA DOS REIS - RJ, 23915-700</span></span>
+<span><span class="co">#&gt; 4           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span></span>
+<span><span class="co">#&gt; 5                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span></span>
+<span><span class="co">#&gt; 6 RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span></span></code></pre></div>
 <p>The output coordinates use the official geodetic reference system
 used in Brazil: SIRGAS2000, CRS(4674). The results of {geocodebr} are
 classified into six broad <code>precision</code> categories depending on

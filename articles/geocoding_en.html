@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 
       <h1>Geocoding with geocodebr (ENG)</h1>
             
-            <h4 data-toc-skip class="date">2025-01-10</h4>
+            <h4 data-toc-skip class="date">2025-01-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocoding_en.Rmd" class="external-link"><code>vignettes/geocoding_en.Rmd</code></a></small>
       <div class="d-none name"><code>geocoding_en.Rmd</code></div>
@@ -116,9 +116,6 @@ find the geographic coordinates of input addresses.</li>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: The input of the field 'number' has observations with non numeric characters.</span></span>
-<span><span class="co">#&gt; These observations were transformed to NA.</span></span>
-<span><span class="co">#&gt; Warning in eval(jsub, SDenv, parent.frame()): NAs introduced by coercion</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
@@ -131,17 +128,24 @@ find the geographic coordinates of input addresses.</li>
 <span><span class="co">#&gt;      nm_municipio code_muni          nm_uf       lon        lat match_type</span></span>
 <span><span class="co">#&gt; 1     NOVA IGUACU   3303500 RIO DE JANEIRO -43.47118 -22.695496       en01</span></span>
 <span><span class="co">#&gt; 2 DUQUE DE CAXIAS   3301702 RIO DE JANEIRO -43.31134 -22.779173       en01</span></span>
-<span><span class="co">#&gt; 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20841 -22.978631       ei01</span></span>
-<span><span class="co">#&gt; 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51047 -22.870022       ei01</span></span>
+<span><span class="co">#&gt; 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20848 -22.978837       er01</span></span>
+<span><span class="co">#&gt; 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51150 -22.868992       er01</span></span>
 <span><span class="co">#&gt; 5     MANGARATIBA   3302601 RIO DE JANEIRO -43.97214 -22.929864       en01</span></span>
 <span><span class="co">#&gt; 6      RIO BRANCO   1200401           ACRE -67.83559  -9.963436       en01</span></span>
-<span><span class="co">#&gt;            precision</span></span>
-<span><span class="co">#&gt; 1             numero</span></span>
-<span><span class="co">#&gt; 2             numero</span></span>
-<span><span class="co">#&gt; 3 numero_interpolado</span></span>
-<span><span class="co">#&gt; 4 numero_interpolado</span></span>
-<span><span class="co">#&gt; 5             numero</span></span>
-<span><span class="co">#&gt; 6             numero</span></span></code></pre></div>
+<span><span class="co">#&gt;   precision</span></span>
+<span><span class="co">#&gt; 1    number</span></span>
+<span><span class="co">#&gt; 2    number</span></span>
+<span><span class="co">#&gt; 3    street</span></span>
+<span><span class="co">#&gt; 4    street</span></span>
+<span><span class="co">#&gt; 5    number</span></span>
+<span><span class="co">#&gt; 6    number</span></span>
+<span><span class="co">#&gt;                                                               matched_address</span></span>
+<span><span class="co">#&gt; 1      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span></span>
+<span><span class="co">#&gt; 2       RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span></span>
+<span><span class="co">#&gt; 3               RUA DONA JUDITE - CAPUTERA II, ANGRA DOS REIS - RJ, 23915-700</span></span>
+<span><span class="co">#&gt; 4           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span></span>
+<span><span class="co">#&gt; 5                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span></span>
+<span><span class="co">#&gt; 6 RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span></span></code></pre></div>
 <p>obs. Note that the first time the user runs this function,
 {geocodebr} will download a few files and store them locally. This way,
 the data only needs to be downloaded once. More info about data caching
