@@ -72,6 +72,7 @@ section. The output coordinates use the geodetic reference system
 <span>  address_fields <span class="op">=</span> <span class="fu"><a href="setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  keep_matched_address <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -104,6 +105,11 @@ execution. Defaults to 1.</p></dd>
 <dt id="arg-progress">progress<a class="anchor" aria-label="anchor" href="#arg-progress"></a></dt>
 <dd><p>A logical. Whether to display progress bars when downloading
 CNEFE data and when geocoding the addresses. Defaults to <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-keep-matched-address">keep_matched_address<a class="anchor" aria-label="anchor" href="#arg-keep-matched-address"></a></dt>
+<dd><p>Logical. Whethe the output should include a
+column indicating the matched address of reference. Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
@@ -238,13 +244,6 @@ geocodebr yet.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4    street</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    number</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6    number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                               matched_address</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               RUA DONA JUDITE - CAPUTERA II, ANGRA DOS REIS - RJ, 23915-700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
