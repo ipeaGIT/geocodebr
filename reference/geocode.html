@@ -31,7 +31,6 @@ section. The output coordinates use the geodetic reference system
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/geocoding_en.html">Geocoding with geocodebr (ENG)</a></li>
     <li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
-    <li><a class="dropdown-item" href="../articles/reverse_geocoding.html">Reverse-geocoding (ENG)</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -71,7 +70,7 @@ section. The output coordinates use the geodetic reference system
 <span>  address_fields <span class="op">=</span> <span class="fu"><a href="setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  keep_matched_address <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  full_results <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -106,9 +105,9 @@ execution. Defaults to 1.</p></dd>
 CNEFE data and when geocoding the addresses. Defaults to <code>TRUE</code>.</p></dd>
 
 
-<dt id="arg-keep-matched-address">keep_matched_address<a class="anchor" aria-label="anchor" href="#arg-keep-matched-address"></a></dt>
-<dd><p>Logical. Whethe the output should include a
-column indicating the matched address of reference. Defaults to <code>FALSE</code>.</p></dd>
+<dt id="arg-full-results">full_results<a class="anchor" aria-label="anchor" href="#arg-full-results"></a></dt>
+<dd><p>Logical. Whether the output should include additional
+columns, like the matched address of reference. Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-cache">cache<a class="anchor" aria-label="anchor" href="#arg-cache"></a></dt>
@@ -222,26 +221,19 @@ only. Match types with probabilistic matching ARE NOT implemented yet.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   id            nm_logradouro Numero       Cep               Bairro</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 RUA MARIA LUCIA PACIFICO     17 26042-730           SANTA RITA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2      RUA LEOPOLDINA TOME     46 25030-050           CENTENARIO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3          RUA DONA JUDITE      0 23915-700          CAPUTERA II</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4     RUA ALEXANDRE AMARAL      0 23098-120           SANTISSIMO</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  5                AVENIDA E    300 23860-000         PRAIA GRANDE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  6      RUA PRINCESA ISABEL    263 69921-026 ESTACAO EXPERIMENTAL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      nm_municipio code_muni          nm_uf       lon        lat match_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     NOVA IGUACU   3303500 RIO DE JANEIRO -43.47118 -22.695496       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 DUQUE DE CAXIAS   3301702 RIO DE JANEIRO -43.31134 -22.779173       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  ANGRA DOS REIS   3300100 RIO DE JANEIRO -44.20848 -22.978837       er01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  RIO DE JANEIRO   3304557 RIO DE JANEIRO -43.51150 -22.868992       er01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5     MANGARATIBA   3302601 RIO DE JANEIRO -43.97214 -22.929864       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      RIO BRANCO   1200401           ACRE -67.83559  -9.963436       en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   precision</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    street</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    street</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    number</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 Rua Maria Lucia Pacifico     17 26042-730           Santa Rita</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2      Rua Leopoldina Tome     46 25030-050           Centenario</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3          Rua Dona Judite      0 23915-700          Caputera II</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4     Rua Alexandre Amaral      0 23098-120           Santissimo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  5                Avenida E    300 23860-000         Praia Grande</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  6      Rua Princesa Isabel    263           Estacao Experimental</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      nm_municipio code_muni nm_uf        lat       lon match_type precision</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     Nova Iguacu   3303500    RJ -22.695496 -43.47118       en01    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 Duque de Caxias   3301702    RJ -22.779173 -43.31134       en01    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  Angra dos Reis   3300100    RJ -22.978837 -44.20848       er01    street</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  Rio de Janeiro   3304557    RJ -22.868992 -43.51150       er01    street</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     Mangaratiba   3302601    RJ -22.929864 -43.97214       en01    number</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      Rio Branco   1200401    AC  -9.963436 -67.83559       en03    number</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
