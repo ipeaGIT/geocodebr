@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Geocode Brazilian Addresses with CNEFE • geocodebr</title>
+<title>Geolocalização de Endereços Brasileiros • geocodebr</title>
 <script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Geocode Brazilian Addresses with CNEFE">
-<meta name="description" content="Simple and efficient way to geocode data in Brazil. The package provides functions to geocode from addresses to spatial coordinates and to (soon) reverse-geocode from spatial coordinates to addresses. The package is built on top of open spatial data sets of Brazilian addresses, mainly using the National Registry of Addresses for Statistical Purposes (English for *Cadastro Nacional de Endereços para Fins Estatísticos*, CNEFE). CNEFE is published by the Brazilian official statistics and geography office, IBGE (&lt;https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html&gt;).">
-<meta property="og:description" content="Simple and efficient way to geocode data in Brazil. The package provides functions to geocode from addresses to spatial coordinates and to (soon) reverse-geocode from spatial coordinates to addresses. The package is built on top of open spatial data sets of Brazilian addresses, mainly using the National Registry of Addresses for Statistical Purposes (English for *Cadastro Nacional de Endereços para Fins Estatísticos*, CNEFE). CNEFE is published by the Brazilian official statistics and geography office, IBGE (&lt;https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html&gt;).">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Geolocalização de Endereços Brasileiros">
+<meta name="description" content="Método simples e eficiente de geolocalizar dados no Brasil. O pacote traz funções para geolocalizar endereços para encontrar suas em coordenadas espaciais e, em breve, para realizar geolocalização reversa de coordenadas espaciais para endereços. O pacote é baseado em conjuntos de dados espaciais abertos de endereços brasileiros, utilizando principalmente o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE). O CNEFE é publicado pelo Instituto Brasileiro de Geografia e Estatística (IBGE), órgão oficial de estatísticas e geografia do Brasil.">
+<meta property="og:description" content="Método simples e eficiente de geolocalizar dados no Brasil. O pacote traz funções para geolocalizar endereços para encontrar suas em coordenadas espaciais e, em breve, para realizar geolocalização reversa de coordenadas espaciais para endereços. O pacote é baseado em conjuntos de dados espaciais abertos de endereços brasileiros, utilizando principalmente o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE). O CNEFE é publicado pelo Instituto Brasileiro de Geografia e Estatística (IBGE), órgão oficial de estatísticas e geografia do Brasil.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -36,7 +36,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
+<li><a class="dropdown-item" href="articles/geocoding_pt.html">Geolocalização com geocodebr</a></li>
   </ul>
 </li>
       </ul>
@@ -64,25 +64,25 @@
 <div class="page-header"><h1 id="geocodebr">geocodebr<a class="anchor" aria-label="anchor" href="#geocodebr"></a>
 </h1></div>
 <p><a href="https://CRAN.R-project.org/package=geocodebr" class="external-link"><img src="https://www.r-pkg.org/badges/version/geocodebr" alt="CRAN status"></a> <a href="https://github.com/ipeaGIT/geocodebr/actions" class="external-link"><img src="https://github.com/ipeaGIT/geocodebr/workflows/check/badge.svg" alt="check"></a> <a href="https://app.codecov.io/gh/ipeaGIT/geocodebr?branch=main" class="external-link"><img src="https://codecov.io/gh/ipeaGIT/geocodebr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg" alt="Lifecycle: experimental"></a></p>
-<p><strong>{geocodebr}</strong> is a package to geocode data in Brazil. It provides a simple and efficient way to geocode from addresses to spatial coordinates and to reverse-geocode from spatial coordinates to addresses. The package builds on open spatial data sets of Brazilian addresses, mainly using the National Registry of Addresses for Statistical Purposes (English for <em>Cadastro Nacional de Endereços para Fins Estatísticos</em>, CNEFE). CNEFE is <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">published</a> by the Brazilian official statistics and Geography Office (IBGE) The package is currently available in R.</p>
+<p>O <strong>{geocodebr}</strong> é um pacote computacional para geolicalizar dados Brasileiros. O pacote oferece uma maneira simples e eficiente de geolicalizar endereços para encontrar suas coordenadas geográficas. O pacote é baseado em conjuntos de dados espaciais abertos de endereços brasileiros, utilizando principalmente o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE). O CNEFE é <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a> pelo Instituto Brasileiro de Geografia e Estatística (IBGE). Atualmente, o pacote está disponível em R.</p>
 <div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+<h2 id="instalação">Instalação<a class="anchor" aria-label="anchor" href="#instala%C3%A7%C3%A3o"></a>
 </h2>
-<p>The package is not yet on CRAN. You can install the development version with:</p>
+<p>O pacote ainda não está disponível no CRAN. Você pode instalar a versão em desenvolvimento com o código abaixo:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ipeaGIT/geocodebr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+<h2 id="utilização">Utilização<a class="anchor" aria-label="anchor" href="#utiliza%C3%A7%C3%A3o"></a>
 </h2>
 <div class="section level3">
-<h3 id="geocoding-from-addresses-to-spatial-coordinates">Geocoding: from addresses to spatial coordinates<a class="anchor" aria-label="anchor" href="#geocoding-from-addresses-to-spatial-coordinates"></a>
+<h3 id="geolocalização-de-endereços-para-coordenadas-espaciais">Geolocalização: de endereços para coordenadas espaciais<a class="anchor" aria-label="anchor" href="#geolocaliza%C3%A7%C3%A3o-de-endere%C3%A7os-para-coordenadas-espaciais"></a>
 </h3>
-<p>Once you have a table (<code>data.frame</code>) with addresses, geolocating the data with <strong>{geocodebr}</strong> can be done in two simple steps:</p>
+<p>Uma que você possui uma tabela de dados (<code>data.frame</code>) com endereços no Brasil, a geolocalização desses dados com <strong>{geocodebr}</strong> pode ser feita em apenas dois passos:</p>
 <ol style="list-style-type: decimal">
-<li><p>The first step is to use the <code><a href="reference/listar_campos.html">listar_campos()</a></code> function to declare the names of the columns in your input <code>data.frame</code> that correspond to each field of the addresses.</p></li>
-<li><p>The second step is to use the <code><a href="reference/geocode.html">geocode()</a></code> function to find the geographic coordinates of input addresses.</p></li>
+<li><p>O primeiro passo é usar a função <code><a href="reference/listar_campos.html">listar_campos()</a></code> para indicar os nomes das colunas no seu <code>data.frame</code> que correspondem a cada campo dos endereços.</p></li>
+<li><p>O segundo passo é usar a função <code><a href="reference/geocode.html">geocode()</a></code> para encontrar as coordenadas geográficas dos endereços de input.</p></li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
@@ -109,36 +109,36 @@
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>The results of {geocodebr} are classified into six broad <code>precision</code> categories depending on how exactly each input address was matched with CNEFE data. See more information in the function documentation or in the <strong>geocoding vignette</strong>.</p>
+<p>Os resultados do <strong>{geocodebr}</strong> são classificados em seis categorias gerais de <code>precisao</code>, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. Para mais informações, consulte a documentação da função ou a <strong>vignette de geocode</strong>.</p>
 </div>
 <div class="section level3">
-<h3 id="reverse-geocoding-from-spatial-coordinates-to-addresses">Reverse-geocoding: from spatial coordinates to addresses<a class="anchor" aria-label="anchor" href="#reverse-geocoding-from-spatial-coordinates-to-addresses"></a>
+<h3 id="geocode-reverso-de-coordenadas-espaciais-para-endereços">Geocode reverso: de coordenadas espaciais para endereços<a class="anchor" aria-label="anchor" href="#geocode-reverso-de-coordenadas-espaciais-para-endere%C3%A7os"></a>
 </h3>
-<p><em>soon</em></p>
+<p><em>em breve</em></p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="related-projects">Related projects<a class="anchor" aria-label="anchor" href="#related-projects"></a>
+<h2 id="projetos-relacionados">Projetos relacionados<a class="anchor" aria-label="anchor" href="#projetos-relacionados"></a>
 </h2>
-<p>There are numerous geolocation packages available, many of which can be used in R (list below). Most of these alternatives rely on commercial software and data sets, often imposing strict limits on the number of free queries. In contrast, the main advantages of {geocodebr} are that (a) it is completely free, allowing unlimited queries without any cost; (b) it operates with high speed and efficient scalability, allowing one to geocode millions of addresses in just a few minutes without requiring advanced or high-end computational infrastructure.</p>
+<p>Existem diversos pacotes de geolocalização disponíveis, muitos dos quais podem ser utilizados em R (listados abaixo). A maioria dessas alternativas depende de softwares e conjuntos de dados comerciais, geralmente impondo limites de número de consultas gratuitas. Em contraste, as principais vantagens do <strong>{geocodebr}</strong> são que o pacote: (a) é completamente gratuito, permitindo consultas ilimitadas sem nenhum custo; (b) opera com alta velocidade e escalabilidade eficiente, permitindo geocodificar milhões de endereços em apenas alguns minutos, sem a necessidade de infraestrutura computacional avançada ou de alto desempenho.</p>
 <ul>
 <li>
-<a href="https://cran.r-project.org/web/packages/arcgisgeocode/index.html" class="external-link">{arcgisgeocode}</a> and <a href="https://cran.r-project.org/web/packages/arcgeocoder/index.html" class="external-link">{arcgeocoder}</a>: interface to ArcGIS Geocoding Services</li>
+<a href="https://cran.r-project.org/web/packages/arcgisgeocode/index.html" class="external-link">{arcgisgeocode}</a> and <a href="https://cran.r-project.org/web/packages/arcgeocoder/index.html" class="external-link">{arcgeocoder}</a>: utiliza serviço de geocode do ArcGIS</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/nominatimlite/index.html" class="external-link">{nominatimlite}</a>: geocode based on OSM data</li>
+<a href="https://cran.r-project.org/web/packages/nominatimlite/index.html" class="external-link">{nominatimlite}</a>: baseado dados do OSM</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/photon/index.html" class="external-link">{photon}</a>: based on OSM data</li>
+<a href="https://cran.r-project.org/web/packages/photon/index.html" class="external-link">{photon}</a>: baseado dados do OSM</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/tidygeocoder/index.html" class="external-link">{tidygeocoder}</a>: interface several geocoding services</li>
+<a href="https://cran.r-project.org/web/packages/tidygeocoder/index.html" class="external-link">{tidygeocoder}</a>: API para diversos servicos de geolocalização</li>
 <li>
-<a href="https://cran.r-project.org/web/packages/googleway/index.html" class="external-link">{googleway}</a> and <a href="https://cran.r-project.org/web/packages/mapsapi/index.html" class="external-link">{mapsapi}</a>: interface to Google Maps APIs</li>
+<a href="https://cran.r-project.org/web/packages/googleway/index.html" class="external-link">{googleway}</a> and <a href="https://cran.r-project.org/web/packages/mapsapi/index.html" class="external-link">{mapsapi}</a>: interface para API do Google Maps</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="acknowledgement-">Acknowledgement <a href="https://www.ipea.gov.br" class="external-link"><img src="reference/figures/ipea_logo.png" alt="IPEA" align="right" width="300"></a>
-<a class="anchor" aria-label="anchor" href="#acknowledgement-"></a>
+<h2 id="nota-">Nota <a href="https://www.ipea.gov.br" class="external-link"><img src="reference/figures/ipea_logo.png" alt="IPEA" align="right" width="300"></a>
+<a class="anchor" aria-label="anchor" href="#nota-"></a>
 </h2>
-<p>Original CNEFE data is collected by the Brazilian Institute of Geography and Statistics (IBGE). <strong>{geocodebr}</strong> is developed by a team at the Institute for Applied Economic Research (Ipea), Brazil.</p>
+<p>Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografia e Estatística (IBGE). O <strong>{geocodebr}</strong> foi desenvolvido por uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Introduction to geocodebr • geocodebr</title>
+<title>Introdução ao geocodebr • geocodebr</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to geocodebr">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introdução ao geocodebr">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,7 +34,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
+<li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr</a></li>
   </ul>
 </li>
       </ul>
@@ -64,7 +64,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Introduction to geocodebr</h1>
+      <h1>Introdução ao geocodebr</h1>
             
             <h4 data-toc-skip class="date">2025-01-21</h4>
       
@@ -74,30 +74,33 @@
 
     
     
-<p>Geocoding refers to the act of finding a point in space, usually
-represented by a pair of coordinates, given a location address. The
-<strong>{geocodebr}</strong> package allows one to efficiently geocode
-Brazilian addresses using the National Registry of Addresses for
-Statistical Purposes (english for <em>Cadastro Nacional de Endereços
-para Fins Estatísticos</em>, CNEFE), a data set collected and <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">published</a>
-by the Brazilian official statistics and geography office, IBGE,
-containing the addresses of more than 100 million households and
-establishments in Brazil.</p>
+<p>A geolocalização refere-se ao ato de encontrar um ponto no espaço,
+geralmente representado por um par de coordenadas, a partir de uma
+informação de endereço. O pacote <strong>{geocodebr}</strong> permite
+geolocalizar endereços brasileiros de forma simples e eficiente,
+utilizando como referências dados públicos de endereços do Brasil. A
+principal base de referência é o Cadastro Nacional de Endereços para
+Fins Estatísticos (CNEFE), um conjunto de dados coletado e <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a>
+pelo Instituto Brasileiro de Geografia e Estatística (IBGE), que contém
+os endereços de mais de 110 milhões de domicílios e estabelecimentos no
+país.</p>
 <div class="section level3">
-<h3 id="basic-usage">Basic usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
+<h3 id="instalação">Instalação<a class="anchor" aria-label="anchor" href="#instala%C3%A7%C3%A3o"></a>
 </h3>
-<p>Before using <em>{geocodebr}</em>, please make sure you have it
-installed in your computer. You can download either the most stable
-version from CRAN…</p>
+<p>Antes de usar o <strong>{geocodebr}</strong>, certifique-se de que
+ele está instalado no seu computador. Você pode baixar a versão mais
+estável do CRAN…</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geocodebr"</span><span class="op">)</span></span></code></pre></div>
-<p>… or the development version from GitHub.</p>
+<p>… ou a versão em desenvolvimento no GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ipeaGIT/geocodebr"</span><span class="op">)</span></span></code></pre></div>
 <p>Then attach it to the current R session:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="utilização">Utilização<a class="anchor" aria-label="anchor" href="#utiliza%C3%A7%C3%A3o"></a>
+</h3>
 <p>The main function of package is <code><a href="../reference/geocode.html">geocode()</a></code>, which takes a
 data frame of addresses as input and outputs the same data frame with
 the latitude and longitude of each matched address, as well as two
@@ -106,12 +109,25 @@ its usage, the package includes a few sample data sets in the
 installation. In the example below, we use a small data set that
 contains addresses with commonly seen issues, such as missing
 information and mistyped fields.</p>
-<p><strong>Note:</strong> Running the function for the first time may
-take a while, since <em>{geocodebr}</em> needs to download the CNEFE
-data, which sums up to about 5.5 GB. This data is stored locally, so it
-is downloaded only once. More info about data caching below.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
+<p>A principal função do pacote é a <code><a href="../reference/geocode.html">geocode()</a></code>, que recebe
+uma tabela (<code>data.frame</code>) de endereços como entrada e retorna
+a mesma tabela acrescida com as colunas de latitude e longitude de cada
+endereço correspondido, além de colunas indicando o nível de precisão
+dos resultados. Para demonstrar seu uso, o pacote inclui alguns
+conjuntos de dados de exemplo na instalação. No exemplo abaixo,
+utilizamos um pequeno conjunto de dados que contém endereços com
+problemas comuns, como informações ausentes e campos digitados
+incorretamente.</p>
+<p><strong>Nota:</strong> A execução da função
+<code><a href="../reference/geocode.html">geocode()</a></code>pela primeira vez pode demorar, pois o
+<strong>{geocodebr}</strong> precisa baixar os dados de endereços, que
+somam cerca de 5,5 GB. Esses dados são armazenados localmente, portanto,
+o download é feito apenas uma vez. Mais informações sobre o
+armazenamento em cache dos dados estão disponíveis abaixo.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -134,41 +150,41 @@ is downloaded only once. More info about data caching below.</p>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Standardizing input addresses</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Looking for matches in CNEFE</span></span>
-<span><span class="co">#&gt; Matched addresses: 0/27 <span style="color: #00BB00;">■                               </span>   0% - Looking for mat…</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Padronizando endereços de entrada</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Geolocalizando endereços</span></span>
+<span><span class="co">#&gt; Endereços processados: 0/27 <span style="color: #00BB00;">■                               </span>   0% - Procurando …</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 5/27 <span style="color: #00BB00;">■■■■■■■                         </span>  19% - Looking for mat…</span></span>
+<span><span class="co">#&gt; Endereços processados: 5/27 <span style="color: #00BB00;">■■■■■■■                         </span>  19% - Procurando …</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 7/27 <span style="color: #00BB00;">■■■■■■■■■                       </span>  26% - Looking for mat…</span></span>
+<span><span class="co">#&gt; Endereços processados: 7/27 <span style="color: #00BB00;">■■■■■■■■■                       </span>  26% - Procurando …</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 8/27 <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% - Looking for mat…</span></span>
+<span><span class="co">#&gt; Endereços processados: 8/27 <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% - Procurando …</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 9/27 <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  33% - Looking for mat…</span></span>
+<span><span class="co">#&gt; Endereços processados: 9/27 <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  33% - Procurando …</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 10/27 <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  37% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 10/27 <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  37% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 11/27 <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 11/27 <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 12/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 12/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 13/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 13/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 17/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 17/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 18/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  67% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 18/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  67% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 19/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 19/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 20/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  74% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 20/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  74% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 23/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  85% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 23/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  85% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 24/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  89% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 24/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  89% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 25/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% - Looking for ma…</span></span>
+<span><span class="co">#&gt; Endereços processados: 25/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% - Procurando…</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Matched addresses: 27/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% - Done!</span></span>
+<span><span class="co">#&gt; Endereços processados: 27/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% - Fim!</span></span>
 <span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_geo</span><span class="op">)</span></span>
@@ -193,19 +209,21 @@ is downloaded only once. More info about data caching below.</p>
 <span><span class="co">#&gt; 4 logradouro</span></span>
 <span><span class="co">#&gt; 5     numero</span></span>
 <span><span class="co">#&gt; 6     numero</span></span></code></pre></div>
-<p>The output coordinates use the official geodetic reference system
-used in Brazil: SIRGAS2000, CRS(4674). The results of {geocodebr} are
-classified into six broad <code>precisao</code> categories depending on
-how exactly each input address was matched with CNEFE data. The accuracy
-of the results are indicated in two columns of the output:
-<code>precisao</code> and <code>tipo_resultado</code>. More information
-below.</p>
+<p>As coordendas espaciais do output usam sistema de referência ofical
+do Brasil: SIRGAS2000, CRS(4674). Os resultados do {geocodebr} são
+classificados em seis amplas categorias de precisão, dependendo de quão
+exatamente cada endereço de entrada foi correspondido com os dados do
+CNEFE. O grau de precisão é indicado em duas colunas da tabela de
+output: <code>precisao</code> e <code>tipo_resultado</code>. Mais
+informações abaixo.</p>
 </div>
 <div class="section level2">
-<h2 id="precision-categories">Precision categories:<a class="anchor" aria-label="anchor" href="#precision-categories"></a>
+<h2 id="precissão-dos-resultados">Precissão dos resultados:<a class="anchor" aria-label="anchor" href="#preciss%C3%A3o-dos-resultados"></a>
 </h2>
-<p>The results of {geocodebr} are classified into six broad
-<code>precisao</code> categories:</p>
+<p>Os resultados do <strong>{geocodebr}</strong> são classificados em
+seis categorias gerais de <code>precisao</code>, dependendo do nível de
+exatidão com que cada endereço de input foi encontrado nos dados do
+CNEFE:</p>
 <ul>
 <li>“numero”</li>
 <li>“numero_aproximado”</li>
@@ -216,31 +234,36 @@ below.</p>
 <li>
 <code>NA</code> (not found)</li>
 </ul>
-<p>Each precision level can be disaggregated into more refined match
-types.</p>
+<p>Cada nível de precisão pode ser desagregado em tipos de
+correspondência mais refinados.</p>
 <div class="section level3">
-<h3 id="match-type">Match Type<a class="anchor" aria-label="anchor" href="#match-type"></a>
+<h3 id="tipos-de-resultados">Tipos de resultados<a class="anchor" aria-label="anchor" href="#tipos-de-resultados"></a>
 </h3>
-<p>The column <code>tipo_resultado</code> provides more refined
-information on how exactly each input address was matched with CNEFE. In
-every category, {geocodebr} takes the average latitude and longitude of
-the addresses included in CNEFE that match the input address based on
-combinations of different fields. In the strictest case, for example,
-the function finds a deterministic match for all of the fields of a
-given address (<code>"estado"</code>, <code>"municipio"</code>,
+<p>A coluna <code>tipo_resultado</code> fornece informações mais
+detalhadas sobre como exatamente cada endereço de entrada foi encontrado
+no CNEFE. Em cada categoria, o <strong>{geocodebr}</strong> calcula a
+média da latitude e longitude dos endereços incluídos no CNEFE que
+correspondem ao endereço de entrada, com base em combinações de
+diferentes campos. No caso mais rigoroso, por exemplo, a função encontra
+uma correspondência determinística para todos os campos de um dado
+endereço (<code>"estado"</code>, <code>"municipio"</code>,
 <code>"logradouro"</code>, <code>"numero"</code>, <code>"cep"</code>,
-<code>"localidade"</code>). Think for example of a building with several
-apartments that match the same street address and number. In such case,
-the coordinates of the apartments will differ very slightly, and
-{geocodebr} takes the average of those coordinates. In a less rigorous
-example, in which only the fields (<code>"estado"</code>,
+<code>"localidade"</code>). Pense, por exemplo, em um prédio com vários
+apartamentos que correspondem ao mesmo endereço de rua e número. Nesse
+caso, as coordenadas dos apartamentos podem diferir ligeiramente, e o
+<strong>{geocodebr}</strong> calcula a média dessas coordenadas. Em um
+caso menos rigoroso, no qual apenas os campos (<code>"estado"</code>,
 <code>"municipio"</code>, <code>"logradouro"</code>,
-<code>"localidade"</code>) are matched, {geocodebr} calculates the
-average coordinates of all the addresses in CNEFE along that street and
-which fall within the same neighborhood.</p>
-<p>The complete list of precision levels, their corresponding match type
-categories and the fields considered in each category are described
-below:</p>
+<code>"localidade"</code>) são encontrados, o
+<strong>{geocodebr}</strong> calcula as coordenadas médias de todos os
+endereços no CNEFE ao longo daquela rua e que se encontram na mesma
+localidade/bairro. Assim, as coordenadas de resultado tendem a ser o
+ponto médio do trecho daquela rua que passa dentro daquela
+localidade/bairro.</p>
+<p>A lista completa dos níveis de precisão (<code>precisao</code>), suas
+categorias de tipo de correspondência (<code>tipo_resultado</code>) e os
+campos de endereço considerados em cada categoria estão descritos
+abaixo:</p>
 <ul>
 <li>precisao: <strong>“numero”</strong>
 <ul>
@@ -274,8 +297,8 @@ below:</p>
 </li>
 </ul>
 </li>
-<li>precisao: <strong>“rua”</strong> (when input number is missing
-‘S/N’)
+<li>precisao: <strong>“logradouro”</strong> (when input number is
+missing ‘S/N’)
 <ul>
 <li>tipo_resultado:
 <ul>
@@ -320,36 +343,40 @@ below:</p>
 </ul>
 </li>
 </ul>
-<p><strong><em>Note:</em></strong> Match types starting with ‘p’ use
-probabilistic matching of the logradouro field, while types starting
-with ‘e’ use deterministic matching only. <strong>Match types with
-probabilistic matching are not implemented in {geocodebr}
-yet</strong>.</p>
+<p><strong><em>Nota:</em></strong> As categorias de
+<code>match_type</code> que começam com ‘p’ utilizam correspondência
+probabilística do campo logradouro, enquanto os tipos que começam com
+‘e’ utilizam apenas correspondência determinística. <strong>As
+categorias de <code>match_type</code> que usam correspondência
+probabilística ainda não estão implementados no
+{geocodebr}</strong>.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="data-cache">Data cache<a class="anchor" aria-label="anchor" href="#data-cache"></a>
+<h2 id="cache-de-dados">Cache de dados<a class="anchor" aria-label="anchor" href="#cache-de-dados"></a>
 </h2>
-<p>The first time the user runs the <code><a href="../reference/geocode.html">geocode()</a></code> function,
-{geocodebr} will download a few reference files and store them locally.
-This way, the data only needs to be downloaded once. Mind you that these
-files require approximately 4GB of space in your local drive.</p>
-<p>The package includes the following functions to help users manage
-cached files:</p>
+<p>A primeira vez que o usuário executa a função <code><a href="../reference/geocode.html">geocode()</a></code>,
+o <strong>{geocodebr}</strong> fará o download de alguns arquivos de
+referência e os armazenará localmente. Dessa forma, os dados precisam
+ser baixados apenas uma vez. É importante notar que esses arquivos
+exigem aproximadamente 5,5 GB de espaço no seu disco local.</p>
+<p>O pacote inclui as seguintes funções para ajudar os usuários a
+gerenciar os arquivos em cache:</p>
 <ul>
 <li>
-<code><a href="../reference/get_cache_dir.html">get_cache_dir()</a></code>: returns the path to where the cached
-data is stored. By default, files are cached in the package
-directory.</li>
+<code><a href="../reference/listar_pasta_cache.html">listar_pasta_cache()</a></code>: retorna o caminho onde os dados
+em cache estão armazenados. Por padrão, os arquivos são armazenados no
+diretório do pacote.</li>
 <li>
-<code><a href="../reference/set_cache_dir.html">set_cache_dir()</a></code>: set a custom directory to be used.
-This configuration is persistent across different R sessions.</li>
+<code><a href="../reference/definir_pasta_cache.html">definir_pasta_cache()</a></code>: define um diretório
+personalizado para ser utilizado. Essa configuração é persistente entre
+diferentes sessões do R.</li>
 <li>
-<code><a href="../reference/list_cached_data.html">list_cached_data()</a></code>: list all files currently
-cached</li>
+<code><a href="../reference/listar_dados_cache.html">listar_dados_cache()</a></code>: lista todos os arquivos
+atualmente armazenados em cache.</li>
 <li>
-<code><a href="../reference/clean_cache_dir.html">clean_cache_dir()</a></code>: delete all files of the cache
-directory used by {geocodebr}</li>
+<code><a href="../reference/deletar_pasta_cache.html">deletar_pasta_cache()</a></code>: exclui todos os arquivos do
+diretório de cache utilizado pelo <strong>{geocodebr}</strong>.</li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
