@@ -34,8 +34,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/geocoding_en.html">Geocoding with geocodebr (ENG)</a></li>
-    <li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
+<li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr (PORT)</a></li>
   </ul>
 </li>
       </ul>
@@ -67,7 +66,7 @@
 
       <h1>Introduction to geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-01-20</h4>
+            <h4 data-toc-skip class="date">2025-01-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -116,20 +115,63 @@ is downloaded only once. More info about data caching below.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
-<span>  addresses_table <span class="op">=</span> <span class="va">df</span>,</span>
-<span>  address_fields <span class="op">=</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/setup_address_fields.html">setup_address_fields</a></span><span class="op">(</span></span>
-<span>    logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
-<span>    numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
-<span>    cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
-<span>    bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
-<span>    municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
-<span>    estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
+<span><span class="co"># Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos</span></span>
+<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
+<span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
+<span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
+<span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
+<span>  localidade <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
+<span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
+<span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="co"># Segundo passo: geolocalizar</span></span>
+<span><span class="va">df_geo</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
+<span>  enderecos <span class="op">=</span> <span class="va">df</span>,</span>
+<span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>,</span>
+<span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Standardizing input addresses</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Looking for matches in CNEFE</span></span>
+<span><span class="co">#&gt; Matched addresses: 0/27 <span style="color: #00BB00;">■                               </span>   0% - Looking for mat…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 5/27 <span style="color: #00BB00;">■■■■■■■                         </span>  19% - Looking for mat…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 7/27 <span style="color: #00BB00;">■■■■■■■■■                       </span>  26% - Looking for mat…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 8/27 <span style="color: #00BB00;">■■■■■■■■■■                      </span>  30% - Looking for mat…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 9/27 <span style="color: #00BB00;">■■■■■■■■■■■                     </span>  33% - Looking for mat…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 10/27 <span style="color: #00BB00;">■■■■■■■■■■■■                    </span>  37% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 11/27 <span style="color: #00BB00;">■■■■■■■■■■■■■                   </span>  41% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 12/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 13/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■                 </span>  48% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 17/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■            </span>  63% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 18/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■           </span>  67% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 19/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  70% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 20/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  74% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 23/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  85% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 24/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■    </span>  89% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 25/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   </span>  93% - Looking for ma…</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Matched addresses: 27/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% - Done!</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_geo</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
 <span><span class="co">#&gt; 1  1 Rua Maria Lucia Pacifico     17 26042-730           Santa Rita</span></span>
 <span><span class="co">#&gt; 2  2      Rua Leopoldina Tome     46 25030-050           Centenario</span></span>
@@ -137,32 +179,39 @@ is downloaded only once. More info about data caching below.</p>
 <span><span class="co">#&gt; 4  4     Rua Alexandre Amaral      0 23098-120           Santissimo</span></span>
 <span><span class="co">#&gt; 5  5                Avenida E    300 23860-000         Praia Grande</span></span>
 <span><span class="co">#&gt; 6  6      Rua Princesa Isabel    263           Estacao Experimental</span></span>
-<span><span class="co">#&gt;      nm_municipio code_muni nm_uf        lat       lon match_type precision</span></span>
-<span><span class="co">#&gt; 1     Nova Iguacu   3303500    RJ -22.695496 -43.47118       en01    number</span></span>
-<span><span class="co">#&gt; 2 Duque de Caxias   3301702    RJ -22.779173 -43.31134       en01    number</span></span>
-<span><span class="co">#&gt; 3  Angra dos Reis   3300100    RJ -22.978837 -44.20848       er01    street</span></span>
-<span><span class="co">#&gt; 4  Rio de Janeiro   3304557    RJ -22.868992 -43.51150       er01    street</span></span>
-<span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.929864 -43.97214       en01    number</span></span>
-<span><span class="co">#&gt; 6      Rio Branco   1200401    AC  -9.963436 -67.83559       en03    number</span></span></code></pre></div>
+<span><span class="co">#&gt;      nm_municipio code_muni nm_uf        lat       lon tipo_resultado</span></span>
+<span><span class="co">#&gt; 1     Nova Iguacu   3303500    RJ -22.695496 -43.47118           en01</span></span>
+<span><span class="co">#&gt; 2 Duque de Caxias   3301702    RJ -22.779173 -43.31134           en01</span></span>
+<span><span class="co">#&gt; 3  Angra dos Reis   3300100    RJ -22.978837 -44.20848           er01</span></span>
+<span><span class="co">#&gt; 4  Rio de Janeiro   3304557    RJ -22.868992 -43.51150           er01</span></span>
+<span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.929864 -43.97214           en01</span></span>
+<span><span class="co">#&gt; 6      Rio Branco   1200401    AC  -9.963436 -67.83559           en03</span></span>
+<span><span class="co">#&gt;     precisao</span></span>
+<span><span class="co">#&gt; 1     numero</span></span>
+<span><span class="co">#&gt; 2     numero</span></span>
+<span><span class="co">#&gt; 3 logradouro</span></span>
+<span><span class="co">#&gt; 4 logradouro</span></span>
+<span><span class="co">#&gt; 5     numero</span></span>
+<span><span class="co">#&gt; 6     numero</span></span></code></pre></div>
 <p>The output coordinates use the official geodetic reference system
 used in Brazil: SIRGAS2000, CRS(4674). The results of {geocodebr} are
-classified into six broad <code>precision</code> categories depending on
+classified into six broad <code>precisao</code> categories depending on
 how exactly each input address was matched with CNEFE data. The accuracy
 of the results are indicated in two columns of the output:
-<code>precision</code> and <code>match_type</code>. More information
+<code>precisao</code> and <code>tipo_resultado</code>. More information
 below.</p>
 </div>
 <div class="section level2">
 <h2 id="precision-categories">Precision categories:<a class="anchor" aria-label="anchor" href="#precision-categories"></a>
 </h2>
 <p>The results of {geocodebr} are classified into six broad
-<code>precision</code> categories:</p>
+<code>precisao</code> categories:</p>
 <ul>
 <li>“numero”</li>
-<li>“numero_interpolado”</li>
-<li>“rua”</li>
+<li>“numero_aproximado”</li>
+<li>“logradouro”</li>
 <li>“cep”</li>
-<li>“bairro”</li>
+<li>“localidade”</li>
 <li>“municipio”</li>
 <li>
 <code>NA</code> (not found)</li>
@@ -172,10 +221,10 @@ types.</p>
 <div class="section level3">
 <h3 id="match-type">Match Type<a class="anchor" aria-label="anchor" href="#match-type"></a>
 </h3>
-<p>The column <code>match_type</code> provides more refined information
-on how exactly each input address was matched with CNEFE. In every
-category, {geocodebr} takes the average latitude and longitude of the
-addresses included in CNEFE that match the input address based on
+<p>The column <code>tipo_resultado</code> provides more refined
+information on how exactly each input address was matched with CNEFE. In
+every category, {geocodebr} takes the average latitude and longitude of
+the addresses included in CNEFE that match the input address based on
 combinations of different fields. In the strictest case, for example,
 the function finds a deterministic match for all of the fields of a
 given address (<code>"estado"</code>, <code>"municipio"</code>,
@@ -193,58 +242,58 @@ which fall within the same neighborhood.</p>
 categories and the fields considered in each category are described
 below:</p>
 <ul>
-<li>precision: <strong>“numero”</strong>
+<li>precisao: <strong>“numero”</strong>
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
-<li>en01: logradouro, numero, cep e bairro</li>
+<li>en01: logradouro, numero, cep e localidade</li>
 <li>en02: logradouro, numero e cep</li>
-<li>en03: logradouro, numero e bairro</li>
+<li>en03: logradouro, numero e localidade</li>
 <li>en04: logradouro e numero</li>
-<li>pn01: logradouro, numero, cep e bairro</li>
+<li>pn01: logradouro, numero, cep e localidade</li>
 <li>pn02: logradouro, numero e cep</li>
-<li>pn03: logradouro, numero e bairro</li>
+<li>pn03: logradouro, numero e localidade</li>
 <li>pn04: logradouro e numero</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>precision: <strong>“numero_interpolado”</strong>
+<li>precisao: <strong>“numero_interpolado”</strong>
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
-<li>ei01: logradouro, numero, cep e bairro</li>
+<li>ei01: logradouro, numero, cep e localidade</li>
 <li>ei02: logradouro, numero e cep</li>
-<li>ei03: logradouro, numero e bairro</li>
+<li>ei03: logradouro, numero e localidade</li>
 <li>ei04: logradouro e numero</li>
-<li>pi01: logradouro, numero, cep e bairro</li>
+<li>pi01: logradouro, numero, cep e localidade</li>
 <li>pi02: logradouro, numero e cep</li>
-<li>pi03: logradouro, numero e bairro</li>
+<li>pi03: logradouro, numero e localidade</li>
 <li>pi04: logradouro e numero</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>precision: <strong>“rua”</strong> (when input number is missing
+<li>precisao: <strong>“rua”</strong> (when input number is missing
 ‘S/N’)
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
-<li>er01: logradouro, cep e bairro</li>
+<li>er01: logradouro, cep e localidade</li>
 <li>er02: logradouro e cep</li>
-<li>er03: logradouro e bairro</li>
+<li>er03: logradouro e localidade</li>
 <li>er04: logradouro</li>
-<li>pr01: logradouro, cep e bairro</li>
+<li>pr01: logradouro, cep e localidade</li>
 <li>pr02: logradouro e cep</li>
-<li>pr03: logradouro e bairro</li>
+<li>pr03: logradouro e localidade</li>
 <li>pr04: logradouro</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>precision: <strong>“cep”</strong>
+<li>precisao: <strong>“cep”</strong>
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
 <li>ec01: municipio, cep, localidade</li>
 <li>ec02: municipio, cep</li>
@@ -252,18 +301,18 @@ below:</p>
 </li>
 </ul>
 </li>
-<li>precision: <strong>“bairro”</strong>
+<li>precisao: <strong>“localidade”</strong>
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
 <li>eb01: municipio, localidade</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>precision: <strong>“municipio”</strong>
+<li>precisao: <strong>“municipio”</strong>
 <ul>
-<li>match_type:
+<li>tipo_resultado:
 <ul>
 <li>em01: municipio</li>
 </ul>
