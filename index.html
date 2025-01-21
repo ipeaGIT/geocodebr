@@ -81,31 +81,33 @@
 </h3>
 <p>Once you have a table (<code>data.frame</code>) with addresses, geolocating the data with <strong>{geocodebr}</strong> can be done in two simple steps:</p>
 <ol style="list-style-type: decimal">
-<li><p>The first step is to use the <code>setup_address_fields()</code> function to declare the names of the columns in your input <code>data.frame</code> that correspond to each field of the addresses.</p></li>
+<li><p>The first step is to use the <code><a href="reference/listar_campos.html">listar_campos()</a></code> function to declare the names of the columns in your input <code>data.frame</code> that correspond to each field of the addresses.</p></li>
 <li><p>The second step is to use the <code><a href="reference/geocode.html">geocode()</a></code> function to find the geographic coordinates of input addresses.</p></li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># read input sample data</span></span>
+<span><span class="co"># carregando uma amostra de dados</span></span>
 <span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 1st step: indicate the columns describing the address fields</span></span>
-<span><span class="va">fields</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">setup_address_fields</span><span class="op">(</span></span>
+<span><span class="co"># Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos</span></span>
+<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
 <span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
 <span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
 <span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
-<span>  bairro <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
+<span>  localidade <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
 <span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="co"># 2nd step: geocode</span></span>
+<span><span class="co"># Segundo passo: geolocalizar</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/geocode.html">geocode</a></span><span class="op">(</span></span>
-<span>  addresses_table <span class="op">=</span> <span class="va">input_df</span>,</span>
-<span>  address_fields <span class="op">=</span> <span class="va">fields</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  progress <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  enderecos <span class="op">=</span> <span class="va">input_df</span>,</span>
+<span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>,</span>
+<span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>The results of {geocodebr} are classified into six broad <code>precision</code> categories depending on how exactly each input address was matched with CNEFE data. See more information in the function documentation or in the <strong>geocoding vignette</strong>.</p>
 </div>
