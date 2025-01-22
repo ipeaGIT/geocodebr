@@ -82,7 +82,9 @@ endereço. Campo obrigatório.</p></dd>
 <dt id="arg-logradouro">logradouro<a class="anchor" aria-label="anchor" href="#arg-logradouro"></a></dt>
 <dd><p>Uma string. O nome da coluna que representa o <em>logradouro</em>
 (endereço da rua) do endereço. Pode ser <code>NULL</code> se o campo não estiver
-especificado na tabela de endereços.</p></dd>
+especificado na tabela de endereços. O campo de <code>logradouro</code> <em>não</em> deve
+incluir o <code>numero</code> do endereço, pois o número deve ser indicado numa coluna
+separada.</p></dd>
 
 
 <dt id="arg-numero">numero<a class="anchor" aria-label="anchor" href="#arg-numero"></a></dt>
