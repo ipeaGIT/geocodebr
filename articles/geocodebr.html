@@ -74,85 +74,64 @@
 
     
     
-<p>A geolocalização refere-se ao ato de encontrar um ponto no espaço,
-geralmente representado por um par de coordenadas, a partir de uma
-informação de endereço. O pacote <strong>{geocodebr}</strong> permite
-geolocalizar endereços brasileiros de forma simples e eficiente,
-utilizando como referências dados públicos de endereços do Brasil. A
-principal base de referência é o Cadastro Nacional de Endereços para
-Fins Estatísticos (CNEFE), um conjunto de dados coletado e <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a>
-pelo Instituto Brasileiro de Geografia e Estatística (IBGE), que contém
-os endereços de mais de 110 milhões de domicílios e estabelecimentos no
+<p>Geolocalização refere-se ao ato de encontrar um ponto no espaço,
+geralmente representado por um par de coordenadas, a partir de um
+determinado endereço. O <strong>geocodebr</strong> permite geolocalizar
+endereços brasileiros de forma simples e eficiente, a partir de dados
+públicos de endereços do Brasil. A principal base de referência é o
+Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE), um
+conjunto de dados coletado e <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a>
+pelo Instituto Brasileiro de Geografia e Estatística (IBGE) que contém
+os endereços de mais de 110 milhões de domicílios e estabelecimentos do
 país.</p>
-<div class="section level3">
-<h3 id="instalação">Instalação<a class="anchor" aria-label="anchor" href="#instala%C3%A7%C3%A3o"></a>
-</h3>
-<p>Antes de usar o <strong>{geocodebr}</strong>, certifique-se de que
-ele está instalado no seu computador. Você pode baixar a versão mais
-estável do CRAN…</p>
+<div class="section level2">
+<h2 id="instalação">Instalação<a class="anchor" aria-label="anchor" href="#instala%C3%A7%C3%A3o"></a>
+</h2>
+<p>A versão estável do pacote pode ser baixada do CRAN com o comando a
+seguir:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geocodebr"</span><span class="op">)</span></span></code></pre></div>
-<p>… ou a versão em desenvolvimento no GitHub.</p>
+<p>Caso prefira, a versão em desenvolvimento também pode ser usada. Para
+isso, use o seguinte comando:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ipeaGIT/geocodebr"</span><span class="op">)</span></span></code></pre></div>
-<p>Then attach it to the current R session:</p>
 </div>
-<div class="section level3">
-<h3 id="utilização">Utilização<a class="anchor" aria-label="anchor" href="#utiliza%C3%A7%C3%A3o"></a>
-</h3>
-<p>The main function of package is <code><a href="../reference/geocode.html">geocode()</a></code>, which takes a
-data frame of addresses as input and outputs the same data frame with
-the latitude and longitude of each matched address, as well as two
-columns indicating the precision level of the matches. To demonstrate
-its usage, the package includes a few sample data sets in the
-installation. In the example below, we use a small data set that
-contains addresses with commonly seen issues, such as missing
-information and mistyped fields.</p>
+<div class="section level2">
+<h2 id="utilização">Utilização<a class="anchor" aria-label="anchor" href="#utiliza%C3%A7%C3%A3o"></a>
+</h2>
 <p>A principal função do pacote é a <code><a href="../reference/geocode.html">geocode()</a></code>, que recebe
 uma tabela (<code>data.frame</code>) de endereços como entrada e retorna
-a mesma tabela acrescida com as colunas de latitude e longitude de cada
-endereço correspondido, além de colunas indicando o nível de precisão
-dos resultados. Para demonstrar seu uso, o pacote inclui alguns
-conjuntos de dados de exemplo na instalação. No exemplo abaixo,
+a mesma tabela geolocalizada como saída. Por padrão, a tabela de
+<em>output</em> é acrescida de colunas com a latitude e longitude
+encontradas para cada endereço correspondido, bem como de colunas
+indicando o nível de precisão dos resultados. No exemplo abaixo,
 utilizamos um pequeno conjunto de dados que contém endereços com
 problemas comuns, como informações ausentes e campos digitados
-incorretamente.</p>
-<p><strong>Nota:</strong> A execução da função
-<code><a href="../reference/geocode.html">geocode()</a></code>pela primeira vez pode demorar, pois o
-<strong>{geocodebr}</strong> precisa baixar os dados de endereços, que
-somam cerca de 5,5 GB. Esses dados são armazenados localmente, portanto,
-o download é feito apenas uma vez. Mais informações sobre o
-armazenamento em cache dos dados estão disponíveis abaixo.</p>
+incorretamente, para demonstrar o uso da função:</p>
+<p><strong>Nota:</strong> A <code><a href="../reference/geocode.html">geocode()</a></code> requer que os dados
+do CNEFE estejam armazenados localmente. No total, esses dados somam
+cerca de 5,5 GB, o que pode fazer com que a primeira execução da função
+demore, já que é necessário baixar os dados para a sua máquina. Esses
+dados, no entanto, são salvos de forma persistente, logo não é preciso
+baixá-los mais do que uma vez.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">ends</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos</span></span>
-<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
+<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
+<span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span>,</span>
+<span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
 <span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
 <span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
 <span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>
-<span>  localidade <span class="op">=</span> <span class="st">"Bairro"</span>,</span>
-<span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
-<span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span></span>
-<span>  <span class="op">)</span></span>
+<span>  localidade <span class="op">=</span> <span class="st">"Bairro"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Segundo passo: geolocalizar</span></span>
-<span><span class="va">df_geo</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
-<span>  enderecos <span class="op">=</span> <span class="va">df</span>,</span>
-<span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>,</span>
-<span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="va">ends_geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span><span class="va">ends</span>, campos_endereco <span class="op">=</span> <span class="va">campos</span>, verboso <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_geo</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ends_geo</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
 <span><span class="co">#&gt; 1  1 Rua Maria Lucia Pacifico     17 26042-730           Santa Rita</span></span>
 <span><span class="co">#&gt; 2  2      Rua Leopoldina Tome     46 25030-050           Centenario</span></span>
@@ -167,175 +146,227 @@ armazenamento em cache dos dados estão disponíveis abaixo.</p>
 <span><span class="co">#&gt; 4  Rio de Janeiro   3304557    RJ -22.869 -43.511           er01 logradouro</span></span>
 <span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.930 -43.972           en01     numero</span></span>
 <span><span class="co">#&gt; 6      Rio Branco   1200401    AC  -9.963 -67.836           en03     numero</span></span></code></pre></div>
-<p>As coordendas espaciais do output usam sistema de referência ofical
-do Brasil: SIRGAS2000, CRS(4674). Os resultados do {geocodebr} são
-classificados em seis amplas categorias de precisão, dependendo de quão
-exatamente cada endereço de entrada foi correspondido com os dados do
-CNEFE. O grau de precisão é indicado em duas colunas da tabela de
-output: <code>precisao</code> e <code>tipo_resultado</code>. Mais
-informações abaixo.</p>
-</div>
-<div class="section level2">
-<h2 id="precissão-dos-resultados">Precissão dos resultados:<a class="anchor" aria-label="anchor" href="#preciss%C3%A3o-dos-resultados"></a>
-</h2>
-<p>Os resultados do <strong>{geocodebr}</strong> são classificados em
-seis categorias gerais de <code>precisao</code>, dependendo do nível de
-exatidão com que cada endereço de input foi encontrado nos dados do
-CNEFE:</p>
-<ul>
-<li>“numero”</li>
-<li>“numero_aproximado”</li>
-<li>“logradouro”</li>
-<li>“cep”</li>
-<li>“localidade”</li>
-<li>“municipio”</li>
-<li>
-<code>NA</code> (not found)</li>
-</ul>
-<p>Cada nível de precisão pode ser desagregado em tipos de
-correspondência mais refinados.</p>
+<p>Note que no exemplo acima nós também utilizamos a função
+<code><a href="../reference/listar_campos.html">listar_campos()</a></code>, que facilita o processo de especificação
+da correspondência entre as colunas da tabela e os campos esperados de
+cada endereço. Com ela, nós definimos que a coluna que contém a
+informação de logradouro se chama <code>"nm_logradouro"</code>, que a
+coluna de número se chama <code>"Numero"</code>, etc. Essa função é
+opcional, e poderíamos simplesmente passar um vetor de caracteres no
+formato
+<code>c(logradouro = "nm_logradouro", numero = "Numero", ...)</code>. A
+<code><a href="../reference/listar_campos.html">listar_campos()</a></code>, no entanto, realiza alguns testes nas
+colunas e na tabela, garantindo que o <em>input</em> passado esteja
+corretamente formatado.</p>
+<p>As coordendas espaciais do resultado usam o sistema de referência
+SIRGAS2000, padrão adotado pelo IBGE em todo o Brasil. Cada par de
+coordenadas encontrado pode ser classificado conforme o seu grau de
+precisão (coluna <code>precisao</code>) e os campos do endereço
+utilizados para encontrá-lo (<code>tipo_resultado</code>). A seção a
+seguir apresenta mais informações sobre essas colunas.</p>
 <div class="section level3">
-<h3 id="tipos-de-resultados">Tipos de resultados<a class="anchor" aria-label="anchor" href="#tipos-de-resultados"></a>
+<h3 id="grau-de-precisão-dos-resultados">Grau de precisão dos resultados<a class="anchor" aria-label="anchor" href="#grau-de-precis%C3%A3o-dos-resultados"></a>
 </h3>
+<p>As coordenadas incluídas no resultado da <code><a href="../reference/geocode.html">geocode()</a></code> são
+calculadas a partir da média das coordenadas dos endereços do CNEFE que
+correspondem a cada um dos endereços de <em>input</em>. A
+correspondência entre os endereços de entrada e os do CNEFE pode ser
+feita com base em diferentes combinações de campos, impactando, assim,
+na precisão do resultado retornado.</p>
+<p>No caso mais rigoroso, a função encontra uma correspondência
+determinística para cada um dos campos do endereço (estado, município,
+logradouro, número, CEP e localidade). Pense, por exemplo, em um prédio
+com vários apartamentos, cuja única variação no endereço se dá a nível
+de apartamento: o resultado, nesse caso, é a média das coordenadas dos
+apartamentos, que podem diferir ligeiramente.</p>
+<p>Em um caso menos rigoroso, no qual são encontradas correspondências
+apenas para os campos de estado, município, logradouro e localidade, a
+função calcula as coordenadas médias de todos os endereços do CNEFE que
+se encontram na mesma rua e na mesma localidade. O resultado, portanto,
+é agregado a nível de rua, tendendo para a extremidade do logradouro com
+maior concentração de endereços.</p>
+<p>A coluna <code>precisao</code> se refere ao nível de agregação das
+coordenadas do CNEFE utilizadas pela <code><a href="../reference/geocode.html">geocode()</a></code>. A função
+sempre retorna o resultado de maior precisão possível - ou seja, ela só
+vai procurar endereços com precisão <code>"numero_aproximado"</code>
+(ver a seguir) caso não tenha encontrado correspondência de precisão
+<code>"numero"</code>. As coordenadas calculadas podem ser classificadas
+em seis diferentes categorias de precisão:</p>
+<ul>
+<li>
+<code>"numero"</code> - calculadas a partir de endereços que
+compartilham o mesmo logradouro e número;</li>
+<li>
+<code>"numero_aproximado"</code> - calculadas a partir de endereços
+que compartilham o mesmo logradouro, mas número de <em>input</em> não
+encontra correspondência exata no CNEFE e sua localização é calculada a
+partir de uma interpolação espacial;</li>
+<li>
+<code>"logradouro"</code> - calculadas a partir de endereços que
+compartilham o mesmo logradouro (número de <em>input</em> está ausente
+ou é S/N);</li>
+<li>
+<code>"cep"</code> - calculadas a partir de endereços que
+compartilham o mesmo CEP;</li>
+<li>
+<code>"localidade"</code> - calculadas a partir de endereços que
+compartilham a mesma localidade;</li>
+<li>
+<code>"municipio"</code> - calculadas a partir de endereços que
+compartilham o mesmo município.</li>
+</ul>
 <p>A coluna <code>tipo_resultado</code> fornece informações mais
-detalhadas sobre como exatamente cada endereço de entrada foi encontrado
-no CNEFE. Em cada categoria, o <strong>{geocodebr}</strong> calcula a
-média da latitude e longitude dos endereços incluídos no CNEFE que
-correspondem ao endereço de entrada, com base em combinações de
-diferentes campos. No caso mais rigoroso, por exemplo, a função encontra
-uma correspondência determinística para todos os campos de um dado
-endereço (<code>"estado"</code>, <code>"municipio"</code>,
-<code>"logradouro"</code>, <code>"numero"</code>, <code>"cep"</code>,
-<code>"localidade"</code>). Pense, por exemplo, em um prédio com vários
-apartamentos que correspondem ao mesmo endereço de rua e número. Nesse
-caso, as coordenadas dos apartamentos podem diferir ligeiramente, e o
-<strong>{geocodebr}</strong> calcula a média dessas coordenadas. Em um
-caso menos rigoroso, no qual apenas os campos (<code>"estado"</code>,
-<code>"municipio"</code>, <code>"logradouro"</code>,
-<code>"localidade"</code>) são encontrados, o
-<strong>{geocodebr}</strong> calcula as coordenadas médias de todos os
-endereços no CNEFE ao longo daquela rua e que se encontram na mesma
-localidade/bairro. Assim, as coordenadas de resultado tendem a ser o
-ponto médio do trecho daquela rua que passa dentro daquela
-localidade/bairro.</p>
-<p>A lista completa dos níveis de precisão (<code>precisao</code>), suas
-categorias de tipo de correspondência (<code>tipo_resultado</code>) e os
-campos de endereço considerados em cada categoria estão descritos
-abaixo:</p>
+detalhadas sobre os campos de endereço utilizados no cálculo das
+coordenadas de cada endereço de entrada. Cada categoria é nomeada a
+partir de um código de quatro caracteres:</p>
 <ul>
-<li>precisao: <strong>“numero”</strong>
+<li>o primeiro, sempre <code>e</code> ou <code>p</code>, determina se a
+correspondência foi feita de forma determinística (<code>e</code>) ou
+probabilística (<code>p</code>) - a segunda opção ainda não foi
+implementada no pacote, mas é planejada em versões futuras;</li>
+<li>o segundo faz menção à categoria de <code>precisao</code> na qual o
+resultado foi classificado (<code>n</code> para <code>"numero"</code>,
+<code>i</code> para <code>"numero_aproximado"</code>, <code>r</code>
+para <code>"logradouro"</code>, <code>c</code> para <code>"cep"</code>,
+<code>b</code> para <code>"localidade"</code> e <code>m</code> para
+<code>"municipio"</code>);</li>
+<li>o terceiro e o quarto designam a classificação de cada categoria
+dentro de seu grupo - via de regra, quanto menor o número formado por
+esses caracteres, mais precisa são as coordenadas calculadas.</li>
+</ul>
+<p>As categorias de <code>tipo_resultado</code> são listadas abaixo,
+junto às categorias de <code>precisao</code> a qual elas estão
+associadas:</p>
 <ul>
-<li>tipo_resultado:
+<li>precisao <code>"numero"</code>
 <ul>
-<li>en01: logradouro, numero, cep e localidade</li>
-<li>en02: logradouro, numero e cep</li>
-<li>en03: logradouro, numero e localidade</li>
-<li>en04: logradouro e numero</li>
-<li>pn01: logradouro, numero, cep e localidade</li>
-<li>pn02: logradouro, numero e cep</li>
-<li>pn03: logradouro, numero e localidade</li>
-<li>pn04: logradouro e numero</li>
+<li>
+<code>en01</code> - logradouro, numero, cep e localidade</li>
+<li>
+<code>en02</code> - logradouro, numero e cep</li>
+<li>
+<code>en03</code> - logradouro, numero e localidade</li>
+<li>
+<code>en04</code> - logradouro e numero</li>
+<li>
+<code>pn01</code> - logradouro, numero, cep e localidade</li>
+<li>
+<code>pn02</code> - logradouro, numero e cep</li>
+<li>
+<code>pn03</code> - logradouro, numero e localidade</li>
+<li>
+<code>pn04</code> - logradouro e numero</li>
+</ul>
+</li>
+<li>precisao <code>"numero_aproximado"</code>
+<ul>
+<li>
+<code>ei01</code> - logradouro, numero, cep e localidade</li>
+<li>
+<code>ei02</code> - logradouro, numero e cep</li>
+<li>
+<code>ei03</code> - logradouro, numero e localidade</li>
+<li>
+<code>ei04</code> - logradouro e numero</li>
+<li>
+<code>pi01</code> - logradouro, numero, cep e localidade</li>
+<li>
+<code>pi02</code> - logradouro, numero e cep</li>
+<li>
+<code>pi03</code> - logradouro, numero e localidade</li>
+<li>
+<code>pi04</code> - logradouro e numero</li>
+</ul>
+</li>
+<li>precisao <code>"logradouro"</code> (quando o número de entrada está
+faltando ‘S/N’)
+<ul>
+<li>
+<code>er01</code> - logradouro, cep e localidade</li>
+<li>
+<code>er02</code> - logradouro e cep</li>
+<li>
+<code>er03</code> - logradouro e localidade</li>
+<li>
+<code>er04</code> - logradouro</li>
+<li>
+<code>pr01</code> - logradouro, cep e localidade</li>
+<li>
+<code>pr02</code> - logradouro e cep</li>
+<li>
+<code>pr03</code> - logradouro e localidade</li>
+<li>
+<code>pr04</code> - logradouro</li>
+</ul>
+</li>
+<li>precisao <code>"cep"</code>
+<ul>
+<li>
+<code>ec01</code> - municipio, cep, localidade</li>
+<li>
+<code>ec02</code> - municipio, cep</li>
+</ul>
+</li>
+<li>precisao <code>"localidade"</code>
+<ul>
+<li>
+<code>eb01</code> - municipio, localidade</li>
+</ul>
+</li>
+<li>precisao <code>"municipio"</code>
+<ul>
+<li>
+<code>em01</code> - municipio</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>precisao: <strong>“numero_aproximado”</strong>
-<ul>
-<li>tipo_resultado:
-<ul>
-<li>ei01: logradouro, numero, cep e localidade</li>
-<li>ei02: logradouro, numero e cep</li>
-<li>ei03: logradouro, numero e localidade</li>
-<li>ei04: logradouro e numero</li>
-<li>pi01: logradouro, numero, cep e localidade</li>
-<li>pi02: logradouro, numero e cep</li>
-<li>pi03: logradouro, numero e localidade</li>
-<li>pi04: logradouro e numero</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>precisao: <strong>“logradouro”</strong> (quando o número de entrada
-está faltando ‘S/N’)
-<ul>
-<li>tipo_resultado:
-<ul>
-<li>er01: logradouro, cep e localidade</li>
-<li>er02: logradouro e cep</li>
-<li>er03: logradouro e localidade</li>
-<li>er04: logradouro</li>
-<li>pr01: logradouro, cep e localidade</li>
-<li>pr02: logradouro e cep</li>
-<li>pr03: logradouro e localidade</li>
-<li>pr04: logradouro</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>precisao: <strong>“cep”</strong>
-<ul>
-<li>tipo_resultado:
-<ul>
-<li>ec01: municipio, cep, localidade</li>
-<li>ec02: municipio, cep</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>precisao: <strong>“localidade”</strong>
-<ul>
-<li>tipo_resultado:
-<ul>
-<li>eb01: municipio, localidade</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>precisao: <strong>“municipio”</strong>
-<ul>
-<li>tipo_resultado:
-<ul>
-<li>em01: municipio</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><strong><em>Nota:</em></strong> As categorias de
-<code>match_type</code> que começam com ‘p’ utilizam correspondência
-probabilística do campo logradouro, enquanto os tipos que começam com
-‘e’ utilizam apenas correspondência determinística. <strong>As
-categorias de <code>match_type</code> que usam correspondência
-probabilística ainda não estão implementados no
-{geocodebr}</strong>.</p>
+<p>Endereços não encontrados são retornados com latitude, longitude,
+precisão e tipo de resultado <code>NA</code>.</p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="cache-de-dados">Cache de dados<a class="anchor" aria-label="anchor" href="#cache-de-dados"></a>
-</h2>
-<p>A primeira vez que o usuário executa a função <code><a href="../reference/geocode.html">geocode()</a></code>,
-o <strong>{geocodebr}</strong> fará o download de alguns arquivos de
-referência e os armazenará localmente. Dessa forma, os dados precisam
-ser baixados apenas uma vez. É importante notar que esses arquivos
-exigem aproximadamente 5,5 GB de espaço no seu disco local.</p>
-<p>O pacote inclui as seguintes funções para ajudar os usuários a
-gerenciar os arquivos em cache:</p>
+<div class="section level3">
+<h3 id="cache-de-dados">Cache de dados<a class="anchor" aria-label="anchor" href="#cache-de-dados"></a>
+</h3>
+<p>Como comentado anteriormente, os dados do CNEFE são baixados na
+primeira vez que a <code><a href="../reference/geocode.html">geocode()</a></code> é executada. Esses dados ficam
+salvos no <em>cache</em> do pacote e não precisam ser baixados
+novamente. O pacote inclui algumas funções que ajudam a gerenciar o
+<em>cache</em>:</p>
 <ul>
 <li>
-<code><a href="../reference/listar_pasta_cache.html">listar_pasta_cache()</a></code>: retorna o caminho onde os dados
-em cache estão armazenados. Por padrão, os arquivos são armazenados no
-diretório do pacote.</li>
+<code><a href="../reference/listar_pasta_cache.html">listar_pasta_cache()</a></code> - retorna o endereço do
+<em>cache</em> na sua máquina, onde os dados do CNEFE estão salvos;</li>
 <li>
-<code><a href="../reference/definir_pasta_cache.html">definir_pasta_cache()</a></code>: define um diretório
-personalizado para ser utilizado. Essa configuração é persistente entre
-diferentes sessões do R.</li>
+<code><a href="../reference/definir_pasta_cache.html">definir_pasta_cache()</a></code> - define uma pasta personalizada
+para ser usada como <em>cache</em>. Essa configuração é persistente
+entre diferentes sessões do R;</li>
 <li>
-<code><a href="../reference/listar_dados_cache.html">listar_dados_cache()</a></code>: lista todos os arquivos
-atualmente armazenados em cache.</li>
+<code><a href="../reference/listar_dados_cache.html">listar_dados_cache()</a></code> - lista todos os arquivos
+armazenados no <em>cache</em>;</li>
 <li>
-<code><a href="../reference/deletar_pasta_cache.html">deletar_pasta_cache()</a></code>: exclui todos os arquivos do
-diretório de cache utilizado pelo <strong>{geocodebr}</strong>.</li>
+<code><a href="../reference/deletar_pasta_cache.html">deletar_pasta_cache()</a></code> - exclui a pasta de
+<em>cache</em>, bem como todos os arquivos que estavam armazenados
+dentro dela.</li>
 </ul>
+<p>Após rodar o código desta <em>vignette</em>, é provável que o seu
+<em>cache</em> esteja configurado como a seguir:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/listar_pasta_cache.html">listar_pasta_cache</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0"</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/listar_dados_cache.html">listar_dados_cache</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep_localidade.parquet"                  </span></span>
+<span><span class="co">#&gt;  [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep.parquet"                             </span></span>
+<span><span class="co">#&gt;  [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_localidade.parquet"                      </span></span>
+<span><span class="co">#&gt;  [4] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep_localidade.parquet"       </span></span>
+<span><span class="co">#&gt;  [5] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep.parquet"                  </span></span>
+<span><span class="co">#&gt;  [6] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_localidade.parquet"           </span></span>
+<span><span class="co">#&gt;  [7] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep_localidade.parquet"</span></span>
+<span><span class="co">#&gt;  [8] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep.parquet"           </span></span>
+<span><span class="co">#&gt;  [9] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_localidade.parquet"    </span></span>
+<span><span class="co">#&gt; [10] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero.parquet"               </span></span>
+<span><span class="co">#&gt; [11] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro.parquet"                      </span></span>
+<span><span class="co">#&gt; [12] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio.parquet"</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
