@@ -71,25 +71,32 @@ são obrigatórios.</p>
 
 <dl><dt id="arg-estado">estado<a class="anchor" aria-label="anchor" href="#arg-estado"></a></dt>
 <dd><p>Uma string. O nome da coluna que representa o estado do
-endereço. Campo obrigatório.</p></dd>
+endereço. Campo obrigatório. Na tabela de endereços, essa coluna pode
+conter os nomes dos estados por extenso, ou a abrevição oficial dos estados
+com duas letras, e.g. "AM", "SP", "DF", "RJ".</p></dd>
 
 
 <dt id="arg-municipio">municipio<a class="anchor" aria-label="anchor" href="#arg-municipio"></a></dt>
 <dd><p>Uma string. O nome da coluna que representa o município do
-endereço. Campo obrigatório.</p></dd>
+endereço. Campo obrigatório. Na tabela de endereços, essa coluna pode
+conter o nome dos municípios, ou o seu código IBGE de 7 dígitos.</p></dd>
 
 
 <dt id="arg-logradouro">logradouro<a class="anchor" aria-label="anchor" href="#arg-logradouro"></a></dt>
 <dd><p>Uma string. O nome da coluna que representa o <em>logradouro</em>
 (endereço da rua) do endereço. Pode ser <code>NULL</code> se o campo não estiver
-especificado na tabela de endereços. O campo de <code>logradouro</code> <em>não</em> deve
-incluir o <code>numero</code> do endereço, pois o número deve ser indicado numa coluna
-separada.</p></dd>
+especificado na tabela de endereços. Na tabela de endereços, essa coluna
+deve incluir o <em>tipo</em> do lograoduro, indicando se trata-se de uma "Rua" ou
+"Avenida" etc, por exemplo "Avenida Presidente Getúlio Vargas". Além disso,
+essa coluna <em>não</em> deve incluir o <code>numero</code> do endereço, pois o número deve
+ser indicado numa coluna separada.</p></dd>
 
 
 <dt id="arg-numero">numero<a class="anchor" aria-label="anchor" href="#arg-numero"></a></dt>
 <dd><p>Uma string. O nome da coluna que representa o número do endereço.
-Pode ser <code>NULL</code> se o campo não estiver especificado na tabela de endereços.</p></dd>
+Pode ser <code>NULL</code> se o campo não estiver especificado na tabela de endereços.
+Na tabela de endereços, valores como <code>0</code> ou caracteres não numerciso como
+<code>"S/N"</code> ou <code>"10a"</code> são considerados como <code>NA</code>.</p></dd>
 
 
 <dt id="arg-cep">cep<a class="anchor" aria-label="anchor" href="#arg-cep"></a></dt>
