@@ -68,6 +68,7 @@ utilizam o sistema de referência geodésico "SIRGAS2000", CRS(4674).</p>
 <span>  <span class="va">enderecos</span>,</span>
 <span>  campos_endereco <span class="op">=</span> <span class="fu"><a href="listar_campos.html">listar_campos</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
@@ -98,6 +99,13 @@ obrigatórios. Note que o campo  <code>"localidade"</code> é equivalente a 'bai
 adicionais, como o endereço encontrado de referência. Por padrão, é <code>FALSE</code>.</p></dd>
 
 
+<dt id="arg-resultado-sf">resultado_sf<a class="anchor" aria-label="anchor" href="#arg-resultado-sf"></a></dt>
+<dd><p>Lógico. Indica se o resultado deve ser um objeto espacial
+da classe <code>sf</code>. Por padrão, é <code>FALSE</code>, e o resultado é um <code>data.frame</code> com
+as colunas <code>lat</code> e <code>lon</code>.
+adicionais, como o endereço encontrado de referência. Por padrão, é <code>FALSE</code>.</p></dd>
+
+
 <dt id="arg-verboso">verboso<a class="anchor" aria-label="anchor" href="#arg-verboso"></a></dt>
 <dd><p>Um valor lógico. Indica se barras de progresso e mensagens
 devem ser exibidas durante o download dos dados do CNEFE e a geocodificação
@@ -120,7 +128,8 @@ processamento dos dados. O padrão é 1.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Retorna o <code>data.frame</code> de input <code>enderecos</code> adicionado das colunas de
 latitude (<code>lat</code>) e longitude (<code>lon</code>), bem como as colunas (<code>precisao</code> e
-<code>tipo_resultado</code>) que indicam o nível de precisão e o tipo de resultado.</p>
+<code>tipo_resultado</code>) que indicam o nível de precisão e o tipo de resultado.
+Alternativamente, o resultado pode ser um objeto <code>sf</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
