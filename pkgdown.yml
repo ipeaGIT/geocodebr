@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   geocodebr: geocodebr.html
   geocoding_pt: geocoding_pt.html
-last_built: 2025-01-23T13:50Z
+last_built: 2025-01-23T14:21Z
 urls:
   reference: https://ipeagit.github.io/geocodebr/reference
   article: https://ipeagit.github.io/geocodebr/articles
