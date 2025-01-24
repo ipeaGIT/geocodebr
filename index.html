@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@
 </h3>
 <p>Uma que você possui uma tabela de dados (<code>data.frame</code>) com endereços no Brasil, a geolocalização desses dados com <strong>{geocodebr}</strong> pode ser feita em apenas dois passos:</p>
 <ol style="list-style-type: decimal">
-<li><p>O primeiro passo é usar a função <code><a href="reference/listar_campos.html">listar_campos()</a></code> para indicar os nomes das colunas no seu <code>data.frame</code> que correspondem a cada campo dos endereços.</p></li>
+<li><p>O primeiro passo é usar a função <code>listar_campos()</code> para indicar os nomes das colunas no seu <code>data.frame</code> que correspondem a cada campo dos endereços.</p></li>
 <li><p>O segundo passo é usar a função <code><a href="reference/geocode.html">geocode()</a></code> para encontrar as coordenadas geográficas dos endereços de input.</p></li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -91,7 +91,7 @@
 <span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos</span></span>
-<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
+<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">listar_campos</span><span class="op">(</span></span>
 <span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
 <span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
 <span>  cep <span class="op">=</span> <span class="st">"Cep"</span>,</span>

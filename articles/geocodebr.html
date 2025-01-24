@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9001</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,7 +120,7 @@ baixá-los mais do que uma vez.</p>
 <span></span>
 <span><span class="va">ends</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/listar_campos.html">listar_campos</a></span><span class="op">(</span></span>
+<span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/definir_campos.html">definir_campos</a></span><span class="op">(</span></span>
 <span>  estado <span class="op">=</span> <span class="st">"nm_uf"</span>,</span>
 <span>  municipio <span class="op">=</span> <span class="st">"nm_municipio"</span>,</span>
 <span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
@@ -154,7 +154,7 @@ baixá-los mais do que uma vez.</p>
 <span><span class="co">#&gt; 5     numero</span></span>
 <span><span class="co">#&gt; 6     numero</span></span></code></pre></div>
 <p>Note que no exemplo acima nós também utilizamos a função
-<code><a href="../reference/listar_campos.html">listar_campos()</a></code>, que facilita o processo de especificação
+<code><a href="../reference/definir_campos.html">definir_campos()</a></code>, que facilita o processo de especificação
 da correspondência entre as colunas da tabela e os campos esperados de
 cada endereço. Com ela, nós definimos que a coluna que contém a
 informação de logradouro se chama <code>"nm_logradouro"</code>, que a
@@ -162,7 +162,7 @@ coluna de número se chama <code>"Numero"</code>, etc. Essa função é
 opcional, e poderíamos simplesmente passar um vetor de caracteres no
 formato
 <code>c(logradouro = "nm_logradouro", numero = "Numero", ...)</code>. A
-<code><a href="../reference/listar_campos.html">listar_campos()</a></code>, no entanto, realiza alguns testes nas
+<code><a href="../reference/definir_campos.html">definir_campos()</a></code>, no entanto, realiza alguns testes nas
 colunas e na tabela, garantindo que o <em>input</em> passado esteja
 corretamente formatado.</p>
 <p>As coordendas espaciais do resultado usam o sistema de referência
