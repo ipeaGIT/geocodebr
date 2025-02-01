@@ -66,7 +66,7 @@
 
       <h1>Geolocalização com geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-01-29</h4>
+            <h4 data-toc-skip class="date">2025-02-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocoding_pt.Rmd" class="external-link"><code>vignettes/geocoding_pt.Rmd</code></a></small>
       <div class="d-none name"><code>geocoding_pt.Rmd</code></div>
@@ -151,27 +151,30 @@ encontrar as coordenadas geográficas dos endereços de entrada.</li>
 <span><span class="co">#&gt; Endereços processados: 27/27 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% - Fim!</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   id            nm_logradouro Numero       Cep               Bairro</span></span>
-<span><span class="co">#&gt; 1  1 Rua Maria Lucia Pacifico     17 26042-730           Santa Rita</span></span>
-<span><span class="co">#&gt; 2  2      Rua Leopoldina Tome     46 25030-050           Centenario</span></span>
-<span><span class="co">#&gt; 3  3          Rua Dona Judite      0 23915-700          Caputera II</span></span>
-<span><span class="co">#&gt; 4  4     Rua Alexandre Amaral      0 23098-120           Santissimo</span></span>
-<span><span class="co">#&gt; 5  5                Avenida E    300 23860-000         Praia Grande</span></span>
-<span><span class="co">#&gt; 6  6      Rua Princesa Isabel    263           Estacao Experimental</span></span>
-<span><span class="co">#&gt;      nm_municipio code_muni nm_uf        lat       lon tipo_resultado</span></span>
-<span><span class="co">#&gt; 1     Nova Iguacu   3303500    RJ -22.695496 -43.47118           en01</span></span>
-<span><span class="co">#&gt; 2 Duque de Caxias   3301702    RJ -22.779174 -43.31134           en01</span></span>
-<span><span class="co">#&gt; 3  Angra dos Reis   3300100    RJ -22.978837 -44.20848           er01</span></span>
-<span><span class="co">#&gt; 4  Rio de Janeiro   3304557    RJ -22.868992 -43.51150           er01</span></span>
-<span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.929864 -43.97214           en01</span></span>
-<span><span class="co">#&gt; 6      Rio Branco   1200401    AC  -9.963436 -67.83559           en03</span></span>
-<span><span class="co">#&gt;     precisao</span></span>
-<span><span class="co">#&gt; 1     numero</span></span>
-<span><span class="co">#&gt; 2     numero</span></span>
-<span><span class="co">#&gt; 3 logradouro</span></span>
-<span><span class="co">#&gt; 4 logradouro</span></span>
-<span><span class="co">#&gt; 5     numero</span></span>
-<span><span class="co">#&gt; 6     numero</span></span></code></pre></div>
+<span><span class="co">#&gt;       id            nm_logradouro Numero       Cep               Bairro</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;                   &lt;char&gt;  &lt;int&gt;    &lt;char&gt;               &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     1 Rua Maria Lucia Pacifico     17 26042-730           Santa Rita</span></span>
+<span><span class="co">#&gt; 2:     2      Rua Leopoldina Tome     46 25030-050           Centenario</span></span>
+<span><span class="co">#&gt; 3:     3          Rua Dona Judite      0 23915-700          Caputera II</span></span>
+<span><span class="co">#&gt; 4:     4     Rua Alexandre Amaral      0 23098-120           Santissimo</span></span>
+<span><span class="co">#&gt; 5:     5                Avenida E    300 23860-000         Praia Grande</span></span>
+<span><span class="co">#&gt; 6:     6      Rua Princesa Isabel    263           Estacao Experimental</span></span>
+<span><span class="co">#&gt;       nm_municipio code_muni  nm_uf        lat       lon tipo_resultado</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;     &lt;int&gt; &lt;char&gt;      &lt;num&gt;     &lt;num&gt;         &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     Nova Iguacu   3303500     RJ -22.695496 -43.47118           en01</span></span>
+<span><span class="co">#&gt; 2: Duque de Caxias   3301702     RJ -22.779174 -43.31134           en01</span></span>
+<span><span class="co">#&gt; 3:  Angra dos Reis   3300100     RJ -22.978837 -44.20848           er01</span></span>
+<span><span class="co">#&gt; 4:  Rio de Janeiro   3304557     RJ -22.868992 -43.51150           er01</span></span>
+<span><span class="co">#&gt; 5:     Mangaratiba   3302601     RJ -22.929864 -43.97214           en01</span></span>
+<span><span class="co">#&gt; 6:      Rio Branco   1200401     AC  -9.963436 -67.83559           en03</span></span>
+<span><span class="co">#&gt;      precisao</span></span>
+<span><span class="co">#&gt;        &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     numero</span></span>
+<span><span class="co">#&gt; 2:     numero</span></span>
+<span><span class="co">#&gt; 3: logradouro</span></span>
+<span><span class="co">#&gt; 4: logradouro</span></span>
+<span><span class="co">#&gt; 5:     numero</span></span>
+<span><span class="co">#&gt; 6:     numero</span></span></code></pre></div>
 <p>obs. Note que na primeira vez que o usuário usa essa fnução,
 {geocodebr} irá baixar alguns arquivos de referência e armaneza-los
 localmente. Assim, esses dados só precisam ser baixados uma única vez.
