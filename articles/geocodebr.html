@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,12 +31,6 @@
       <ul class="navbar-nav me-auto">
 <li class="active nav-item"><a class="nav-link" href="../articles/geocodebr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/geocoding_pt.html">Geolocalização com geocodebr</a></li>
-  </ul>
-</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -66,7 +60,7 @@
 
       <h1>Introdução ao geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-02-01</h4>
+            <h4 data-toc-skip class="date">2025-02-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -109,12 +103,12 @@ indicando o nível de precisão dos resultados. No exemplo abaixo,
 utilizamos um pequeno conjunto de dados que contém endereços com
 problemas comuns, como informações ausentes e campos digitados
 incorretamente, para demonstrar o uso da função:</p>
-<p><strong>Nota:</strong> A <code><a href="../reference/geocode.html">geocode()</a></code> requer que os dados
-do CNEFE estejam armazenados localmente. No total, esses dados somam
-cerca de 5,5 GB, o que pode fazer com que a primeira execução da função
-demore, já que é necessário baixar os dados para a sua máquina. Esses
-dados, no entanto, são salvos de forma persistente, logo não é preciso
-baixá-los mais do que uma vez.</p>
+<p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
+dados do CNEFE estejam armazenados localmente. No total, esses dados
+somam cerca de 5,5 GB, o que pode fazer com que a primeira execução da
+função demore, já que é necessário baixar os dados para a sua máquina.
+Esses dados, no entanto, são salvos de forma persistente, logo não é
+preciso baixá-los mais do que uma vez.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
 <span></span>
@@ -129,7 +123,16 @@ baixá-los mais do que uma vez.</p>
 <span>  localidade <span class="op">=</span> <span class="st">"Bairro"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ends_geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span><span class="va">ends</span>, campos_endereco <span class="op">=</span> <span class="va">campos</span>, verboso <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ends_geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>
+<span>  enderecos <span class="op">=</span> <span class="va">ends</span>, </span>
+<span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>, </span>
+<span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Foram encontrados e resolvidos 1 casos de empate.</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ends_geo</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       id            nm_logradouro Numero       Cep               Bairro</span></span>
@@ -155,7 +158,15 @@ baixá-los mais do que uma vez.</p>
 <span><span class="co">#&gt; 3: logradouro</span></span>
 <span><span class="co">#&gt; 4: logradouro</span></span>
 <span><span class="co">#&gt; 5:     numero</span></span>
-<span><span class="co">#&gt; 6:     numero</span></span></code></pre></div>
+<span><span class="co">#&gt; 6:     numero</span></span>
+<span><span class="co">#&gt;                                                            endereco_encontrado</span></span>
+<span><span class="co">#&gt;                                                                         &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span></span>
+<span><span class="co">#&gt; 2:       RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span></span>
+<span><span class="co">#&gt; 3:               RUA DONA JUDITE - CAPUTERA II, ANGRA DOS REIS - RJ, 23915-700</span></span>
+<span><span class="co">#&gt; 4:           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span></span>
+<span><span class="co">#&gt; 5:                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span></span>
+<span><span class="co">#&gt; 6: RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span></span></code></pre></div>
 <p>Note que no exemplo acima nós também utilizamos a função
 <code><a href="../reference/definir_campos.html">definir_campos()</a></code>, que facilita o processo de especificação
 da correspondência entre as colunas da tabela e os campos esperados de
@@ -168,6 +179,17 @@ formato
 <code><a href="../reference/definir_campos.html">definir_campos()</a></code>, no entanto, realiza alguns testes nas
 colunas e na tabela, garantindo que o <em>input</em> passado esteja
 corretamente formatado.</p>
+<p>Cabe também destacar aqui o papel de três argumentos da função
+<code><a href="../reference/geocode.html">geocode()</a></code>: - <code>resultado_completo</code>: serve para
+indicar se o usuário quer que o output contenha colunas extras, como o
+endereço encontrado, bairro encontrado etc. -
+<code>resolver_empates</code>: serve para indicar se o usuário quer que
+a função resolva automaticamente casos de empate, i.e. casos que o
+endereço de input do usuário pode ser referir a diferentes localidades
+na cidade (e.g. logradouros diferentes com mesmo nome mas em bairros
+distintos) - <code>resultado_sf</code>: quando <code>TRUE</code>, o
+output retornado como um objeto espacial de classe <code>sf</code>
+simple feature.</p>
 <p>As coordendas espaciais do resultado usam o sistema de referência
 SIRGAS2000, padrão adotado pelo IBGE em todo o Brasil. Cada par de
 coordenadas encontrado pode ser classificado conforme o seu grau de
@@ -368,21 +390,17 @@ dentro dela.</li>
 <em>cache</em> esteja configurado como a seguir:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/listar_pasta_cache.html">listar_pasta_cache</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0"</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0"</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/listar_dados_cache.html">listar_dados_cache</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  [1] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep_localidade.parquet"                  </span></span>
-<span><span class="co">#&gt;  [2] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_cep.parquet"                             </span></span>
-<span><span class="co">#&gt;  [3] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_localidade.parquet"                      </span></span>
-<span><span class="co">#&gt;  [4] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep_localidade.parquet"       </span></span>
-<span><span class="co">#&gt;  [5] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_cep.parquet"                  </span></span>
-<span><span class="co">#&gt;  [6] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_localidade.parquet"           </span></span>
-<span><span class="co">#&gt;  [7] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep_localidade.parquet"</span></span>
-<span><span class="co">#&gt;  [8] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_cep.parquet"           </span></span>
-<span><span class="co">#&gt;  [9] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero_localidade.parquet"    </span></span>
-<span><span class="co">#&gt; [10] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro_numero.parquet"               </span></span>
-<span><span class="co">#&gt; [11] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio_logradouro.parquet"                      </span></span>
-<span><span class="co">#&gt; [12] "/home/runner/.cache/R/geocodebr/data_release_v0.1.0/municipio.parquet"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_cep_localidade.parquet"                  </span></span>
+<span><span class="co">#&gt; [2] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_cep.parquet"                             </span></span>
+<span><span class="co">#&gt; [3] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_localidade.parquet"                      </span></span>
+<span><span class="co">#&gt; [4] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_cep_localidade.parquet"       </span></span>
+<span><span class="co">#&gt; [5] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_localidade.parquet"           </span></span>
+<span><span class="co">#&gt; [6] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_numero_cep_localidade.parquet"</span></span>
+<span><span class="co">#&gt; [7] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_numero_localidade.parquet"    </span></span>
+<span><span class="co">#&gt; [8] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio.parquet"</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -392,7 +410,7 @@ dentro dela.</li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Daniel Herszenhut, Rafael H. M. Pereira, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">
