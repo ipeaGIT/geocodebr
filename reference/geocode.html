@@ -140,19 +140,18 @@ Alternativamente, o resultado pode ser um objeto <code>sf</code>.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Precisão dos resultados:</p>
-<p>Os resultados do <strong>geocodebr</strong> são classificados em seis amplas categorias de <code>precisao</code>:</p><ul><li><p>"numero"</p></li>
-<li><p>"numero_interpolado"</p></li>
-<li><p>"rua"</p></li>
+<p>Os resultados do <strong>geocodebr</strong> são classificados em seis amplas categorias de <code>precisao</code>:</p><ol><li><p>"numero"</p></li>
+<li><p>"numero_aproximado"</p></li>
+<li><p>"logradouro"</p></li>
 <li><p>"cep"</p></li>
 <li><p>"localidade"</p></li>
 <li><p>"municipio"</p></li>
-<li><p><code>NA</code> (não encontrado)</p></li>
-</ul><p>Cada nível de precisão pode ser desagregado em tipos de correspondência mais
+</ol><p>Cada nível de precisão pode ser desagregado em tipos de correspondência mais
 refinados.</p>
     </div>
     <div class="section level2">
     <h2 id="tipos-de-resultados">Tipos de resultados<a class="anchor" aria-label="anchor" href="#tipos-de-resultados"></a></h2>
-    <p>A coluna <code>match_type</code> fornece informações mais detalhadas sobre como
+    <p>A coluna <code>tipo_resultado</code> fornece informações mais detalhadas sobre como
 exatamente cada endereço de entrada foi encontrado no CNEFE. Em cada
 categoria,  o <strong>geocodebr</strong> calcula a média da latitude e longitude dos
 endereços incluídos no CNEFE que correspondem ao endereço de entrada, com
@@ -168,53 +167,54 @@ no qual apenas os campos (<code>"estado"</code>, <code>"municipio"</code>, <code
 médias de todos os endereços no CNEFE ao longo daquela rua e que se encontram
 na mesma localidade/bairro. Assim, as coordenadas de resultado tendem a ser o
 ponto médio do trecho daquela rua que passa dentro daquela localidade/bairro.</p>
-<p>A lista completa dos níveis de precisão (<code>precisao</code>), suas categorias de tipo
-de correspondência (<code>tipo_resultado</code>) e os campos de endereço considerados em
-cada categoria estão descritos abaixo:</p><ul><li><p>precisao: <strong>"numero"</strong></p><ul><li><p>tipo_resultado:</p></li>
-<li><p>en01: logradouro, numero, cep e localidade</p></li>
-<li><p>en02: logradouro, numero e cep</p></li>
-<li><p>en03: logradouro, numero e localidade</p></li>
-<li><p>en04: logradouro e numero</p></li>
-<li><p>pn01: logradouro, numero, cep e localidade</p></li>
-<li><p>pn02: logradouro, numero e cep</p></li>
-<li><p>pn03: logradouro, numero e localidade</p></li>
-<li><p>pn04: logradouro e numero</p></li>
-</ul></li>
-<li><p>precisao: <strong>"numero_aproximado"</strong></p><ul><li><p>tipo_resultado:</p></li>
-<li><p>ei01: logradouro, numero, cep e localidade</p></li>
-<li><p>ei02: logradouro, numero e cep</p></li>
-<li><p>ei03: logradouro, numero e localidade</p></li>
-<li><p>ei04: logradouro e numero</p></li>
-<li><p>pi01: logradouro, numero, cep e localidade</p></li>
-<li><p>pi02: logradouro, numero e cep</p></li>
-<li><p>pi03: logradouro, numero e localidade</p></li>
-<li><p>pi04: logradouro e numero</p></li>
-</ul></li>
-<li><p>precisao: <strong>"logradouro"</strong> (quando o número de entrada está faltando 'S/N')</p><ul><li><p>tipo_resultado:</p><ul><li><p>er01: logradouro, cep e localidade</p></li>
-<li><p>er02: logradouro e cep</p></li>
-<li><p>er03: logradouro e localidade</p></li>
-<li><p>er04: logradouro</p></li>
-<li><p>pr01: logradouro, cep e localidade</p></li>
-<li><p>pr02: logradouro e cep</p></li>
-<li><p>pr03: logradouro e localidade</p></li>
-<li><p>pr04: logradouro</p></li>
-</ul></li>
-</ul></li>
-<li><p>precisao: <strong>"cep"</strong></p><ul><li><p>tipo_resultado:</p><ul><li><p>ec01: municipio, cep, localidade</p></li>
-<li><p>ec02: municipio, cep</p></li>
-</ul></li>
-</ul></li>
-<li><p>precisao: <strong>"localidade"</strong></p><ul><li><p>tipo_resultado:</p><ul><li><p>eb01: municipio, localidade</p></li>
-</ul></li>
-</ul></li>
-<li><p>precisao: <strong>"municipio"</strong></p><ul><li><p>tipo_resultado:</p><ul><li><p>em01: municipio</p></li>
-</ul></li>
-</ul></li>
-</ul><p><em><strong>Nota:</strong></em> As categorias de <code>match_type</code> que começam com 'p' utilizam
-correspondência probabilística do campo logradouro, enquanto os tipos que
-começam com 'e' utilizam apenas correspondência determinística. <strong>As
-categorias de <code>tipo_resultado</code> que usam correspondência probabilística ainda
-não estão implementadas no pacote geocodebr</strong>.</p>
+<p>A coluna <code>tipo_resultado</code> fornece informações mais detalhadas sobre os campos de
+endereço utilizados no cálculo das coordenadas de cada endereço de entrada. Cada
+categoria é nomeada a partir de um código de quatro caracteres:</p><ul><li><p>o primeiro caracter, sempre <code>d</code> ou <code>p</code>, determina se a correspondência foi
+feita de forma determinística (<code>d</code>) ou probabilística (<code>p</code>) - a segunda opção
+ainda não foi implementada no pacote, mas é planejada em versões futuras;</p></li>
+<li><p>o segundo faz menção à categoria de <code>precisao</code> na qual o resultado foi
+classificado (<code>n</code> para <code>"numero"</code>, <code>a</code> para <code>"numero_aproximado"</code>, <code>r</code> para
+<code>"logradouro"</code>, <code>c</code> para <code>"cep"</code>, <code>b</code> para <code>"localidade"</code> e <code>m</code> para <code>"municipio"</code>);</p></li>
+<li><p>o terceiro e o quarto caracteres designam a classificação de cada categoria
+dentro de seu grupo - via de regra, quanto menor o número formado por esses
+caracteres, mais precisa são as coordenadas calculadas.</p></li>
+</ul><p>As categorias de <code>tipo_resultado</code> são listadas abaixo, junto às categorias de
+<code>precisao</code> a qual elas estão associadas:</p><ul><li><p>precisao <code>"numero"</code></p></li>
+<li><p><code>dn01</code> - logradouro, numero, cep e localidade</p></li>
+<li><p><code>dn02</code> - logradouro, numero e cep</p></li>
+<li><p><code>dn03</code> - logradouro, numero e localidade</p></li>
+<li><p><code>dn04</code> - logradouro e numero</p></li>
+<li><p><code>pn01</code> - logradouro, numero, cep e localidade</p></li>
+<li><p><code>pn02</code> - logradouro, numero e cep</p></li>
+<li><p><code>pn03</code> - logradouro, numero e localidade</p></li>
+<li><p><code>pn04</code> - logradouro e numero</p></li>
+<li><p>precisao <code>"numero_aproximado"</code></p></li>
+<li><p><code>da01</code> - logradouro, numero, cep e localidade</p></li>
+<li><p><code>da02</code> - logradouro, numero e cep</p></li>
+<li><p><code>da03</code> - logradouro, numero e localidade</p></li>
+<li><p><code>da04</code> - logradouro e numero</p></li>
+<li><p><code>pa01</code> - logradouro, numero, cep e localidade</p></li>
+<li><p><code>pa02</code> - logradouro, numero e cep</p></li>
+<li><p><code>pa03</code> - logradouro, numero e localidade</p></li>
+<li><p><code>pa04</code> - logradouro e numero</p></li>
+<li><p>precisao <code>"logradouro"</code> (quando o número de entrada está faltando 'S/N')</p></li>
+<li><p><code>dl01</code> - logradouro, cep e localidade</p></li>
+<li><p><code>dl02</code> - logradouro e cep</p></li>
+<li><p><code>dl03</code> - logradouro e localidade</p></li>
+<li><p><code>dl04</code> - logradouro</p></li>
+<li><p><code>pl01</code> - logradouro, cep e localidade</p></li>
+<li><p><code>pl02</code> - logradouro e cep</p></li>
+<li><p><code>pl03</code> - logradouro e localidade</p></li>
+<li><p><code>pl04</code> - logradouro</p></li>
+<li><p>precisao <code>"cep"</code></p></li>
+<li><p><code>dc01</code> - municipio, cep, localidade</p></li>
+<li><p><code>dc02</code> - municipio, cep</p></li>
+<li><p>precisao <code>"localidade"</code></p></li>
+<li><p><code>db01</code> - municipio, localidade</p></li>
+<li><p>precisao <code>"municipio"</code></p></li>
+<li><p><code>dm01</code> - municipio</p></li>
+</ul><p>Endereços não encontrados são retornados com latitude, longitude, precisão e
+tipo de resultado <code>NA</code>.</p>
     </div>
 
     <div class="section level2">
@@ -239,7 +239,6 @@ não estão implementadas no pacote geocodebr</strong>.</p>
 <span class="r-in"><span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Foram encontrados e resolvidos 1 casos de empate.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       id            nm_logradouro Numero       Cep               Bairro</span>
@@ -252,12 +251,12 @@ não estão implementadas no pacote geocodebr</strong>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6:     6      Rua Princesa Isabel    263           Estacao Experimental</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       nm_municipio code_muni  nm_uf        lat       lon tipo_resultado</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             &lt;char&gt;     &lt;int&gt; &lt;char&gt;      &lt;num&gt;     &lt;num&gt;         &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     Nova Iguacu   3303500     RJ -22.695496 -43.47118           en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Duque de Caxias   3301702     RJ -22.779174 -43.31134           en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Angra dos Reis   3300100     RJ -22.978837 -44.20848           er01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  Rio de Janeiro   3304557     RJ -22.868992 -43.51150           er01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     Mangaratiba   3302601     RJ -22.929864 -43.97214           en01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:      Rio Branco   1200401     AC  -9.963436 -67.83559           en03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     Nova Iguacu   3303500     RJ -22.695496 -43.47118           dn01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: Duque de Caxias   3301702     RJ -22.779174 -43.31134           dn01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  Angra dos Reis   3300100     RJ -22.978837 -44.20848           dl01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  Rio de Janeiro   3304557     RJ -22.868992 -43.51150           dl01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:     Mangaratiba   3302601     RJ -22.929864 -43.97214           dn01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:      Rio Branco   1200401     AC  -9.963436 -67.83559           dn03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      precisao</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     numero</span>

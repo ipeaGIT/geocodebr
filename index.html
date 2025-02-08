@@ -105,7 +105,13 @@
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Cabe destacar aqui o papel de três argumentos da função <code><a href="reference/geocode.html">geocode()</a></code>: - <code>resultado_completo</code>: serve para indicar se o usuário quer que o output contenha colunas extras, como o endereço encontrado, bairro encontrado etc. - <code>resolver_empates</code>: serve para indicar se o usuário quer que a função resolva automaticamente casos de empate, i.e. casos que o endereço de input do usuário pode ser referir a diferentes localidades na cidade (e.g. logradouros diferentes com mesmo nome mas em bairros distintos) - <code>resultado_sf</code>: quando <code>TRUE</code>, o output retornado como um objeto espacial de classe <code>sf</code> simple feature.</p>
+<p>Cabe também destacar aqui outros dois argumentos da função <code><a href="reference/geocode.html">geocode()</a></code>:</p>
+<ul>
+<li>
+<code>resolver_empates</code>: serve para indicar se o usuário quer que a função resolva automaticamente casos de empate, i.e. casos que o endereço de input do usuário pode ser referir a diferentes localidades na cidade (e.g. logradouros diferentes com mesmo nome mas em bairros distintos)</li>
+<li>
+<code>resultado_sf</code>: quando <code>TRUE</code>, o output é retornado como um objeto espacial de classe <code>sf</code> simple feature.</li>
+</ul>
 <p>Os resultados do <strong>{geocodebr}</strong> são classificados em seis categorias gerais de <code>precisao</code>, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. Para mais informações, consulte a documentação da função ou a <strong>vignette de geocode</strong>.</p>
 </div>
 <div class="section level3">
