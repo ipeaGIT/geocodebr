@@ -25,25 +25,33 @@ br_s <- br |> sf::st_transform(crs=3857) |>
 # plot(st_sample(st_cast(br_s$geom[1],"MULTILINESTRING"), 30))
 
 # sample points
-set.seed(42)
-n_points <- 120
+set.seed(20)
+n_points <- 1
 points_sf <- sf::st_sample(br_s, size = n_points, type='hexagonal')
 points_sf <- sf::st_transform(points_sf, crs=4674)
 points_df <- sfheaders::sfc_to_df(points_sf)
-points_df$image <- "./man/figures/location_icon.png"
+points_df$image <- "./man/figures/location_icon_w.png"
 #points_df$image <- "person_icon_black.png"
-points_df$fsize <- sample(c(.02,.03, .05), size = nrow(points_df), replace = T)
+points_df$fsize <- sample(c(.03,.05, .07), size = nrow(points_df), replace = T)
+points_df$fsize <- 4
+
+# # jitter
+# points_df$x <- points_df$x + runif(n_points, min = 0, max = 0.01)
+# points_df$y <- points_df$y + runif(n_points, min = 0, max = 0.01)
+points_df$x <- -54.1873
+points_df$y <- -7.0
+
 
 ### build logo ---------------
 
 ### .png
-ccol <- '#ff7c43' # '#5c997e' # '#79af97'
+ccol <- '#3B6790' # '#5c997e' # '#79af97'
 plot_y <-
   ggplot() +
   geom_sf(data=sf::st_transform(br_s, crs=4674), color=NA, fill=ccol) +
-  geom_image(data=subset(points_df, fsize==.02), aes(x, y, image=image),  size=.02) +
-  geom_image(data=subset(points_df, fsize==.03), aes(x, y, image=image),  size=.03) +
-  geom_image(data=subset(points_df, fsize==.05), aes(x, y, image=image),  size=.05) +
+  geom_image(data=subset(points_df, fsize==4), aes(x, y, image=image),  size=.49) +
+  # geom_image(data=subset(points_df, fsize==.03), aes(x, y, image=image),  size=.03) +
+  # geom_image(data=subset(points_df, fsize==.05), aes(x, y, image=image),  size=.05) +
   # geom_point(data=points_df, aes(x, y, image=image, size=fsize)) +
   theme_void()
 
@@ -55,7 +63,7 @@ ffont <- 'sans' # sans  Montserrat  Roboto
 sticker(plot_y,
 
         # package name
-        package= 'geocodebr', p_size=4, p_x = .51, p_y = .73, p_color = "white",
+        package= 'geocodebr', p_size=5, p_x = 1, p_y = .73, p_color = "white",
         p_family=ffont, p_fontface='bold',
 
         # ggplot image size and position
@@ -66,7 +74,7 @@ sticker(plot_y,
 
         # url
         url = "github.com/ipeaGIT/geocodebr", u_color= "white",
-         u_size = 4, u_family=ffont,
+         u_size = 1.3, u_family=ffont, u_x = 1.05,
         # u_x = 1.2, u_y = .19,
 
         # save output name and resolution

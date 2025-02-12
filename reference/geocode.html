@@ -17,7 +17,7 @@ utilizam o sistema de referência geodésico "SIRGAS2000", CRS(4674).'></head><b
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@ utilizam o sistema de referência geodésico "SIRGAS2000", CRS(4674).'></head><b
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/geocodebr.html">Get started</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/ipeaGIT/geocodebr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -179,8 +180,7 @@ classificado (<code>n</code> para <code>"numero"</code>, <code>a</code> para <co
 dentro de seu grupo - via de regra, quanto menor o número formado por esses
 caracteres, mais precisa são as coordenadas calculadas.</p></li>
 </ul><p>As categorias de <code>tipo_resultado</code> são listadas abaixo, junto às categorias de
-<code>precisao</code> a qual elas estão associadas:</p><ul><li><p>precisao <code>"numero"</code></p></li>
-<li><p><code>dn01</code> - logradouro, numero, cep e localidade</p></li>
+<code>precisao</code> a qual elas estão associadas:</p><ul><li><p>precisao <code>"numero"</code></p><ul><li><p><code>dn01</code> - logradouro, numero, cep e localidade</p></li>
 <li><p><code>dn02</code> - logradouro, numero e cep</p></li>
 <li><p><code>dn03</code> - logradouro, numero e localidade</p></li>
 <li><p><code>dn04</code> - logradouro e numero</p></li>
@@ -188,8 +188,8 @@ caracteres, mais precisa são as coordenadas calculadas.</p></li>
 <li><p><code>pn02</code> - logradouro, numero e cep</p></li>
 <li><p><code>pn03</code> - logradouro, numero e localidade</p></li>
 <li><p><code>pn04</code> - logradouro e numero</p></li>
-<li><p>precisao <code>"numero_aproximado"</code></p></li>
-<li><p><code>da01</code> - logradouro, numero, cep e localidade</p></li>
+</ul></li>
+<li><p>precisao <code>"numero_aproximado"</code></p><ul><li><p><code>da01</code> - logradouro, numero, cep e localidade</p></li>
 <li><p><code>da02</code> - logradouro, numero e cep</p></li>
 <li><p><code>da03</code> - logradouro, numero e localidade</p></li>
 <li><p><code>da04</code> - logradouro e numero</p></li>
@@ -197,8 +197,8 @@ caracteres, mais precisa são as coordenadas calculadas.</p></li>
 <li><p><code>pa02</code> - logradouro, numero e cep</p></li>
 <li><p><code>pa03</code> - logradouro, numero e localidade</p></li>
 <li><p><code>pa04</code> - logradouro e numero</p></li>
-<li><p>precisao <code>"logradouro"</code> (quando o número de entrada está faltando 'S/N')</p></li>
-<li><p><code>dl01</code> - logradouro, cep e localidade</p></li>
+</ul></li>
+<li><p>precisao <code>"logradouro"</code> (quando o número de entrada está faltando 'S/N')</p><ul><li><p><code>dl01</code> - logradouro, cep e localidade</p></li>
 <li><p><code>dl02</code> - logradouro e cep</p></li>
 <li><p><code>dl03</code> - logradouro e localidade</p></li>
 <li><p><code>dl04</code> - logradouro</p></li>
@@ -206,20 +206,22 @@ caracteres, mais precisa são as coordenadas calculadas.</p></li>
 <li><p><code>pl02</code> - logradouro e cep</p></li>
 <li><p><code>pl03</code> - logradouro e localidade</p></li>
 <li><p><code>pl04</code> - logradouro</p></li>
-<li><p>precisao <code>"cep"</code></p></li>
-<li><p><code>dc01</code> - municipio, cep, localidade</p></li>
+</ul></li>
+<li><p>precisao <code>"cep"</code></p><ul><li><p><code>dc01</code> - municipio, cep, localidade</p></li>
 <li><p><code>dc02</code> - municipio, cep</p></li>
-<li><p>precisao <code>"localidade"</code></p></li>
-<li><p><code>db01</code> - municipio, localidade</p></li>
-<li><p>precisao <code>"municipio"</code></p></li>
-<li><p><code>dm01</code> - municipio</p></li>
+</ul></li>
+<li><p>precisao <code>"localidade"</code></p><ul><li><p><code>db01</code> - municipio, localidade</p></li>
+</ul></li>
+<li><p>precisao <code>"municipio"</code></p><ul><li><p><code>dm01</code> - municipio</p></li>
+</ul></li>
 </ul><p>Endereços não encontrados são retornados com latitude, longitude, precisão e
 tipo de resultado <code>NA</code>.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># ler amostra de dados</span></span></span>
 <span class="r-in"><span><span class="va">data_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">data_path</span><span class="op">)</span></span></span>
