@@ -58,13 +58,18 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="geocodebr-geolocalização-de-endereços-brasileiros">geocodebr: Geolocalização de Endereços Brasileiros<a class="anchor" aria-label="anchor" href="#geocodebr-geolocaliza%C3%A7%C3%A3o-de-endere%C3%A7os-brasileiros"></a>
 </h1></div>
-<p><a href="https://CRAN.R-project.org/package=geocodebr" class="external-link"><img src="https://www.r-pkg.org/badges/version/geocodebr" alt="CRAN status"></a> <a href="https://github.com/ipeaGIT/geocodebr/actions" class="external-link"><img src="https://github.com/ipeaGIT/geocodebr/workflows/check/badge.svg" alt="check"></a> <a href="https://app.codecov.io/gh/ipeaGIT/geocodebr?branch=main" class="external-link"><img src="https://codecov.io/gh/ipeaGIT/geocodebr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg" alt="Lifecycle: experimental"></a></p>
+<p><a href="https://CRAN.R-project.org/package=geocodebr" class="external-link"><img src="https://www.r-pkg.org/badges/version/geocodebr" alt="CRAN status"></a> <!-- [![CRAN/METACRAN Total downloads](https://cranlogs.r-pkg.org/badges/grand-total/geocodebr?color=blue)](https://CRAN.R-project.org/package=geocodebr) --> <a href="https://github.com/ipeaGIT/geocodebr/actions" class="external-link"><img src="https://github.com/ipeaGIT/geocodebr/workflows/check/badge.svg" alt="check"></a> <a href="https://app.codecov.io/gh/ipeaGIT/geocodebr?branch=main" class="external-link"><img src="https://codecov.io/gh/ipeaGIT/geocodebr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg" alt="Lifecycle: experimental"></a></p>
 <p>O <strong>{geocodebr}</strong> é um pacote computacional para geolicalização de endereços Brasileiros. O pacote oferece uma maneira simples e eficiente de geolocalizar endereços para encontrar suas coordenadas geográficas. O pacote é baseado em conjuntos de dados espaciais abertos de endereços brasileiros, utilizando principalmente o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE). O CNEFE é <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a> pelo Instituto Brasileiro de Geografia e Estatística (IBGE). Atualmente, o pacote está disponível apenas em R.</p>
 <div class="section level2">
 <h2 id="instalação">Instalação<a class="anchor" aria-label="anchor" href="#instala%C3%A7%C3%A3o"></a>
 </h2>
-<p>O pacote ainda não está disponível no CRAN. Você pode instalar a versão em desenvolvimento com o código abaixo:</p>
+<p>A última versão estável pode ser baixada do CRAN com o comando a seguir:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># from CRAN</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"r5r"</span><span class="op">)</span></span></code></pre></div>
+<p>Caso prefira, a versão em desenvolvimento:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ipeaGIT/geocodebr"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -79,7 +84,7 @@
 <li><p>O primeiro passo é usar a função <code><a href="reference/definir_campos.html">definir_campos()</a></code> para indicar os nomes das colunas no seu <code>data.frame</code> que correspondem a cada campo dos endereços.</p></li>
 <li><p>O segundo passo é usar a função <code><a href="reference/geocode.html">geocode()</a></code> para encontrar as coordenadas geográficas dos endereços de input.</p></li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># carregando uma amostra de dados</span></span>
