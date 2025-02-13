@@ -189,16 +189,18 @@ output é acrescido de algumas colunas extras.</p>
 <p>Cabe também destacar aqui outros dois argumentos da função
 <code><a href="../reference/geocode.html">geocode()</a></code>:</p>
 <ul>
-<li>
-<code>resolver_empates</code>: serve para indicar se o usuário quer
-que a função resolva automaticamente casos de empate, i.e. casos que o
-endereço de input do usuário pode ser referir a diferentes localidades
-na cidade (e.g. logradouros diferentes com mesmo nome mas em bairros
-distintos)</li>
-<li>
-<code>resultado_sf</code>: quando <code>TRUE</code>, o output é
+<li><p><code>resolver_empates</code>: serve para indicar se o usuário
+quer que a função resolva automaticamente casos de empate, i.e. casos
+que o endereço de input do usuário pode se referir a diferentes
+localidades na cidade (e.g. logradouros diferentes com mesmo nome mas em
+bairros distintos). Quando <code>TRUE</code>, a função resolve os
+empates selecioando os endereços com maior número de visitas do CNEFE.
+Quando <code>FALSE</code>, a função retorna todos os resultados
+indicando os casos empatados na coluna ‘empate’ para que o usuário possa
+inspecionar cada caso coluna ‘endereco_encontrado’.</p></li>
+<li><p><code>resultado_sf</code>: quando <code>TRUE</code>, o output é
 retornado como um objeto espacial de classe <code>sf</code> simple
-feature.</li>
+feature.</p></li>
 </ul>
 <p>As coordendas espaciais do resultado usam o sistema de referência
 SIRGAS2000, padrão adotado pelo IBGE em todo o Brasil. Cada par de
