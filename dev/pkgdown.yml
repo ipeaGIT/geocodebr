@@ -2,8 +2,10 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  geocode_reverso: geocode_reverso.html
+  geocode: geocode.html
   geocodebr: geocodebr.html
-last_built: 2025-03-08T13:58Z
+last_built: 2025-03-09T01:51Z
 urls:
   reference: https://ipeagit.github.io/geocodebr/reference
   article: https://ipeagit.github.io/geocodebr/articles
