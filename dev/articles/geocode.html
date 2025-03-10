@@ -69,7 +69,7 @@
 
       <h1>Geocode</h1>
             
-            <h4 data-toc-skip class="date">2025-03-09</h4>
+            <h4 data-toc-skip class="date">2025-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocode.Rmd" class="external-link"><code>vignettes/geocode.Rmd</code></a></small>
       <div class="d-none name"><code>geocode.Rmd</code></div>
@@ -118,11 +118,12 @@ indicamos que coluna que contém a informação de logradouro se chama
 encontrar as coordenadas geográficas dos dados de input.</li>
 </ol>
 <p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
-dados do CNEFE estejam armazenados localmente. No total, esses dados
-somam cerca de 3 GB, o que pode fazer com que a primeira execução da
-função demore, já que é necessário baixar os dados para a sua máquina.
-Esses dados, no entanto, são salvos de forma persistente, logo eles são
-baixados uma única vez.</p>
+dados do CNEFE estejam armazenados localmente. A primeita vez que a
+função é executada, ela baixa os dados do CNEFE e salva em um cache
+local na sua máquina. No total, esses dados somam cerca de 3 GB, o que
+pode fazer com que a primeira execução da função demore. Esses dados, no
+entanto, são salvos de forma persistente, logo eles são baixados uma
+única vez. Mais informações sobre o cache de dados <a href="https://ipeagit.github.io/geocodebr/articles/geocodebr.html#cache-de-dados">aqui</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># geolicalização</span></span>
 <span><span class="va">ends_geo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geocode.html">geocode</a></span><span class="op">(</span></span>

@@ -69,7 +69,7 @@
 
       <h1>Introdução ao geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-03-09</h4>
+            <h4 data-toc-skip class="date">2025-03-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -80,10 +80,10 @@
 <p>Geolocalização refere-se ao ato de encontrar um ponto no espaço,
 geralmente representado por um par de coordenadas, a partir de um
 determinado endereço. O <strong>geocodebr</strong> permite geolocalizar
-endereços brasileiros de forma simples e eficiente, a partir de dados
-públicos de endereços do Brasil. A principal base de referência é o
-Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE), um
-conjunto de dados coletado e <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a>
+endereços brasileiros de forma simples e eficiente e sem limite de
+número de consultas, a partir de dados públicos de endereços do Brasil.
+A principal base de referência é o Cadastro Nacional de Endereços para
+Fins Estatísticos (CNEFE), um conjunto de dados coletado e <a href="https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html" class="external-link">publicado</a>
 pelo Instituto Brasileiro de Geografia e Estatística (IBGE) que contém
 os endereços de mais de 110 milhões de domicílios e estabelecimentos do
 país.</p>
@@ -112,8 +112,8 @@ geolocalização de dados:</p>
 <div class="section level3">
 <h3 id="geolocalização-de-endereços-para-coordenadas-espaciais">1. Geolocalização: de endereços para coordenadas espaciais<a class="anchor" aria-label="anchor" href="#geolocaliza%C3%A7%C3%A3o-de-endere%C3%A7os-para-coordenadas-espaciais"></a>
 </h3>
-<p>Uma que você possui uma tabela de dados (<code>data.frame</code>) com
-endereços no Brasil, a geolocalização desses dados pode ser feita em
+<p>Uma vez que você possui uma tabela de dados (<code>data.frame</code>)
+com endereços no Brasil, a geolocalização desses dados pode ser feita em
 apenas dois passos:</p>
 <ol style="list-style-type: decimal">
 <li>O primeiro passo é usar a função <code><a href="../reference/definir_campos.html">definir_campos()</a></code> para
@@ -124,6 +124,8 @@ encontrar as coordenadas geográficas dos endereços de input.</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Linking to GEOS 3.10.2, GDAL 3.4.1, PROJ 8.2.1; sf_use_s2() is TRUE</span></span>
 <span></span>
 <span><span class="co"># carregando uma amostra de dados</span></span>
 <span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -148,7 +150,18 @@ encontrar as coordenadas geográficas dos endereços de input.</li>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Foram encontrados 1 casos de empate. Estes casos foram marcados com valor igual</span></span>
+<span><span class="co">#&gt; `TRUE` na coluna 'empate', e podem ser inspecionados na coluna</span></span>
+<span><span class="co">#&gt; 'endereco_encontrado'. Alternativamente, use `resolver_empates==TRUE` para que</span></span>
+<span><span class="co">#&gt; o pacote lide com os empates automaticamente.</span></span></code></pre></div>
+<p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
+dados do CNEFE estejam armazenados localmente. A primeita vez que a
+função é executada, ela baixa os dados do CNEFE e salva em um cache
+local na sua máquina. No total, esses dados somam cerca de 3 GB, o que
+pode fazer com que a primeira execução da função demore. Esses dados, no
+entanto, são salvos de forma persistente, logo eles são baixados uma
+única vez. Ver abaixo mais informações sobre o cache de dados.</p>
 <p>Os resultados do <strong>{geocodebr}</strong> são classificados em
 seis categorias gerais de <code>precisao</code>, dependendo do nível de
 exatidão com que cada endereço de input foi encontrado nos dados do
@@ -169,6 +182,7 @@ conjunto de coordenadas geográficas. Mais detalhes na <a href="https://ipeagit.
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/pontos.rds"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># seleciona somente os primeiros 20 pontos</span></span>
 <span><span class="va">pontos</span> <span class="op">&lt;-</span> <span class="va">pontos</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span></span>
 <span></span>
 <span><span class="co"># geocode reverso</span></span>
@@ -177,16 +191,15 @@ conjunto de coordenadas geográficas. Mais detalhes na <a href="https://ipeagit.
 <span>  dist_max <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_enderecos</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="busca-por-ceps">3. Busca por CEPs<a class="anchor" aria-label="anchor" href="#busca-por-ceps"></a>
 </h3>
-<p>Por fim, a função <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> permite o fazer
-consultas de CEPs para encontrar endereços correspondentes e suas
-coordenadas espaciais.</p>
+<p>Por fim, a função <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> permite fazer
+consultas de CEPs para encontrar endereços associados a cada CEP. A
+função recebe um vetor de CEPs e retorna um <code>data.frame</code> com
+os endereços e as coordenadas geográficas de cada CEP.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># amostra de CEPs</span></span>
 <span><span class="va">ceps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"70390-025"</span>, <span class="st">"20071-001"</span><span class="op">)</span></span>
@@ -195,9 +208,7 @@ coordenadas espaciais.</p>
 <span>  cep <span class="op">=</span> <span class="va">ceps</span>,</span>
 <span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_ceps</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
