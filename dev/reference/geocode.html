@@ -104,11 +104,12 @@ adicionais, como o endereço encontrado de referência. Por padrão, é <code>FA
 
 <dt id="arg-resolver-empates">resolver_empates<a class="anchor" aria-label="anchor" href="#arg-resolver-empates"></a></dt>
 <dd><p>Lógico. Alguns resultados da geolocalização podem
-indicar diferentes coordenadas possíveis (e.g. duas ruas diferentes com
-o mesmo nome em uma mesma cidade). Esses casos são trados como 'empate'
-e o parâmetro <code>resolver_empates</code> indica se a função deve resolver esses
-empates automaticamente. Por padrão, é <code>FALSE</code>, e a função retorna
-apenas o caso mais provável.</p></dd>
+indicar diferentes coordenadas possíveis (e.g. duas ruas diferentes com o
+mesmo nome em uma mesma cidade). Esses casos são trados como 'empate' e o
+parâmetro <code>resolver_empates</code> indica se a função deve resolver esses empates
+automaticamente. Por padrão, é <code>FALSE</code>, e a função retorna apenas o caso
+mais provável. Para mais detalhes sobre como é feito o processo de
+desempate, consulte abaixo a seção "Detalhes".</p></dd>
 
 
 <dt id="arg-resultado-sf">resultado_sf<a class="anchor" aria-label="anchor" href="#arg-resultado-sf"></a></dt>
@@ -153,7 +154,28 @@ Alternativamente, o resultado pode ser um objeto <code>sf</code>.</p>
 <li><p>"municipio"</p></li>
 </ol><p>Cada nível de precisão pode ser desagregado em tipos de correspondência mais
 refinados.</p>
-    </div>
+<p>Lidando com casos de empate:</p>
+<p>No processo de geolocalização de dados, é possível que para alguns endereços
+de input sejam encontrados diferentes coordenadas possíveis (e.g. duas ruas
+diferentes com o mesmo nome, mas em bairros distintos em uma mesma cidade).
+Esses casos são trados como empate'. Quando a função <code>geocode()</code> recebe o
+o parâmetro <code>resolver_empates = TRUE</code>, os casos de empate são resolvidos
+automaticamente pela função. A solução destes empates é feita da seguinte
+maneira:</p><ol><li><p>Quando se encontra diferente coordenadas possíveis para um endereço de
+input, nós assumimos que essas coordendas pertencem provavelmente a endereços
+diferentes se (a) estas coordenadas estão a mais de 1Km entre si, ou (b) estão
+associadas a um logradouro 'ambíguo', i.e. que costumam se repetir em muitos
+bairros (e.g. "RUA A", "RUA QUATRO", "RUA 10", etc). Nestes casos, a solução
+de desempate é retornar o ponto com maior número de estabelecimentos no CNEFE,
+valor indicado na coluna <code>"contagem_cnefe"</code>.</p></li>
+<li><p>Quando as coordenadas possivelmente associadas a um endereço estão a menos
+de 1Km entre si e não se trata de um logradouro 'ambíguo', nós assumimos que
+os pontos pertencem provavelmente ao mesmo logradouro (e.g. diferentes CEPs
+ao longo de uma mesma rua). Nestes casos, a solução de desempate é retornar
+um ponto que resulta da média das coordenadas dos pontos possíveis ponderada
+pelo valor de <code>"contagem_cnefe"</code>. Nesse caso, a coluna de output
+<code>"endereco_encontrado"</code> recebe valor do ponto com maior <code>"contagem_cnefe"</code>.</p></li>
+</ol></div>
     <div class="section level2">
     <h2 id="tipos-de-resultados">Tipos de resultados<a class="anchor" aria-label="anchor" href="#tipos-de-resultados"></a></h2>
     <p>A coluna <code>tipo_resultado</code> fornece informações mais detalhadas sobre como
@@ -245,6 +267,7 @@ tipo de resultado <code>NA</code>.</p>
 <span class="r-in"><span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>no non-missing arguments to max; returning -Inf</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       id            nm_logradouro Numero       Cep               Bairro</span>
@@ -279,14 +302,14 @@ tipo de resultado <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    empate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;lgcl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    logradouro_encontrado empate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt; &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:                  &lt;NA&gt;  FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
