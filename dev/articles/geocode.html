@@ -264,8 +264,7 @@ partir de um código de quatro caracteres:</p>
 <ul>
 <li>o primeiro, sempre <code>d</code> ou <code>p</code>, determina se a
 correspondência foi feita de forma determinística (<code>d</code>) ou
-probabilística (<code>p</code>) - a segunda opção ainda não foi
-implementada no pacote, mas é planejada em versões futuras;</li>
+probabilística (<code>p</code>);</li>
 <li>o segundo faz menção à categoria de <code>precisao</code> na qual o
 resultado foi classificado (<code>n</code> para <code>"numero"</code>,
 <code>a</code> para <code>"numero_aproximado"</code>, <code>l</code>
@@ -364,13 +363,6 @@ faltando ‘S/N’)
 </ul>
 <p>Endereços não encontrados são retornados com latitude, longitude,
 precisão e tipo de resultado <code>NA</code>.</p>
-<p><strong><em>Nota:</em></strong> As categorias de
-<code>tipo_resultado</code> que começam com ‘p’ utilizam correspondência
-probabilística do campo logradouro, enquanto os tipos que começam com
-‘e’ utilizam apenas correspondência determinística. <strong>As
-categorias de <code>tipo_resultado</code> que usam correspondência
-probabilística ainda não estão implementados no pacote
-geocodebr</strong>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
