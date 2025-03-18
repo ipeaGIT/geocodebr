@@ -1,6 +1,8 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://ipeagit.github.io/geocodebr/404.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/LICENSE-text.html</loc></url>
+<url><loc>https://ipeagit.github.io/geocodebr/articles/geocode.html</loc></url>
+<url><loc>https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/articles/geocodebr.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/articles/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/authors.html</loc></url>
@@ -8,6 +10,7 @@
 <url><loc>https://ipeagit.github.io/geocodebr/news/index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/add_precision_col.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/arrow_open_dataset.html</loc></url>
+<url><loc>https://ipeagit.github.io/geocodebr/reference/busca_por_cep.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/cache_message.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/create_index.html</loc></url>
 <url><loc>https://ipeagit.github.io/geocodebr/reference/definir_campos.html</loc></url>
