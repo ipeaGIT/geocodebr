@@ -17,7 +17,7 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.'></head><
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -242,6 +242,15 @@ caracteres, mais precisa são as coordenadas calculadas.</p></li>
 </ul><p>Endereços não encontrados são retornados com latitude, longitude, precisão e
 tipo de resultado <code>NA</code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="busca-probabilitisca">Busca probabilitisca<a class="anchor" aria-label="anchor" href="#busca-probabilitisca"></a></h2>
+    <p>Os tipos de resultado com busca probabilitisca usam como base o algoritmo de
+semelhança de Jaro para comparar as strings de 'logradouro' dos dados de
+input e da base de endereços do geocodebr. O pacote considera como match o
+logradouro da base de endereços que apresenta a maior semelhança de
+Jaro condicionado a uma semelhança mínima de <code>0.85</code>, e desde que também haja
+match determinístico em ao menos um dos campos "cep" e "localidade".</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -301,14 +310,14 @@ tipo de resultado <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6: RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    logradouro_encontrado empate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt; &lt;lgcl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                  &lt;NA&gt;  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                  &lt;NA&gt;  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  &lt;NA&gt;  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:                  &lt;NA&gt;  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:                  &lt;NA&gt;  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:                  &lt;NA&gt;  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    empate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:  FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -320,7 +329,7 @@ tipo de resultado <code>NA</code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer></div>
