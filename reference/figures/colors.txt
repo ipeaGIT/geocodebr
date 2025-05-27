@@ -1,0 +1,16 @@
+3 Chao #fdefd5
+4 Ruas #fddbb8
+9 Ruas #fddbb8
+8 Borda #2b3853
+5 nome e pin #ffd9b6
+
+2 sombra prédio destaque #54aa9d
+7 sunny prédio destaque  #69beab
++ Teto prédios destaque  #81cab9
+
+6 sunny prédios normais #fab081
+Sombra prédios normais #f69a69
++ Teto prédios normais #fac196
+
+
+
