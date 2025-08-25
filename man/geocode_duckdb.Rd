@@ -64,7 +64,7 @@ Alternativamente, o resultado pode ser um objeto \code{sf}.
 \description{
 Geocodifica endereços brasileiros com base nos dados do CNEFE. Os endereços
 de input devem ser passados como um \code{data.frame}, no qual cada coluna
-descreve um campo do endereço (logradouro, número, cep, etc). O resultados dos
+descreve um campo do endereço (logradouro, número, cep, etc). Os resultados dos
 endereços geolocalizados podem seguir diferentes níveis de precisão. Consulte
 abaixo a seção "Detalhes" para mais informações. As coordenadas de output
 utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.
