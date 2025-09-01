@@ -25,11 +25,11 @@ set.seed(42)
 
 
 # cad unico --------------------------------------------------------------------
-sample_size <- 5000000
+sample_size <- 1000000
 
 cad_con <- ipeadatalake::ler_cadunico(
   data = 202312,
-  tipo = 'familia',
+  base = 'familia',
   as_data_frame = F,
   colunas = c("co_familiar_fam", "co_uf", "cd_ibge_cadastro",
               "no_localidade_fam", "no_tip_logradouro_fam",
@@ -62,7 +62,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  # dplyr::slice_sample(n = sample_size) |> # sample 20K
+  dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 
@@ -262,7 +262,7 @@ data.table::setDT(rais)
 rais[, numero := gsub("[^0-9]", "", logradouro)]
 
 # remove numbers from logradouro
-rais[, logradouro_no_numbers := gsub("\\d+", "", logradouro)]
+rais[, logradouro_no_numbers := gsub("//d+", "", logradouro)]
 rais[, logradouro_no_numbers := gsub(",", "", logradouro_no_numbers)]
 
 rais[, id := 1:nrow(rais)]
@@ -456,6 +456,60 @@ subset(t , logradouro_no_numbers %like% "DESEMBARGADOR SOUTO MAIOR")
 
 
 
+
+
+
+# censo escolar ---------------------------------
+
+
+
+# cad unico --------------------------------------------------------------------
+
+censo_escolar <- ipeadatalake::ler_censo_escolar(
+  ano = 2022,
+  base = 'basica'
+  )  |>
+  select(
+    c("NU_ANO_CENSO",                "NO_REGIAO",
+      "CO_REGIAO",                   "NO_UF",
+      "SG_UF",                       "CO_UF",
+      "NO_MUNICIPIO",                "CO_MUNICIPIO",
+      "NO_MESORREGIAO",              "CO_MESORREGIAO",
+      "NO_MICRORREGIAO",             "CO_MICRORREGIAO",
+      "CO_DISTRITO",                 "NO_ENTIDADE",
+      "CO_ENTIDADE",                 "TP_DEPENDENCIA",
+      "TP_CATEGORIA_ESCOLA_PRIVADA", "TP_LOCALIZACAO",
+      "TP_LOCALIZACAO_DIFERENCIADA", "DS_ENDERECO",
+      "NU_ENDERECO",                 "DS_COMPLEMENTO",
+      "NO_BAIRRO",                   "CO_CEP",
+      "NU_DDD")
+    ) |>
+  dplyr::collect()
+
+
+censo_escolar$id <- 1:nrow(censo_escolar)
+
+fields_cad <- geocodebr::definir_campos(
+  logradouro = 'DS_ENDERECO',
+  numero = 'NU_ENDERECO',
+  cep = 'CO_CEP',
+  localidade = 'NO_BAIRRO',
+  municipio = 'NO_MUNICIPIO',
+  estado = 'NO_UF'
+)
+
+# bench::mark( iterations = 1,
+bench::system_time(
+  geo <- geocodebr::geocode(
+    enderecos  = censo_escolar,
+    campos_endereco = fields_cad,
+    resultado_completo = T,
+    n_cores = 25, # 7
+    verboso = T,
+    resultado_sf = F,
+    resolver_empates = F
+  )
+)
 
 
 
