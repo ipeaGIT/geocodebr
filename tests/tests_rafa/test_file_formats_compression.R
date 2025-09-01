@@ -119,28 +119,44 @@ pasta_ipc <- "C:/Users/r1701707/Desktop/geo_ipc/"
 pasta_ori <- "C:/Users/r1701707/Desktop/geo_original/"
 pasta_cmp <- "C:/Users/r1701707/Desktop/geo_compressed/"
 
-geocodebr::definir_pasta_cache(pasta_ipc)
+geocodebr::definir_pasta_cache(pasta_cmp)
 geocodebr::listar_pasta_cache()
 
-bench::mark( iterations =5,
-             temp_dfgeo2 <- geocodebr::geocode(
-               enderecos = input_df,
-               campos_endereco = campos,
-               n_cores = ncores,
+bench::mark( iterations = 1,
+             # temp_dfgeo2 <- geocodebr::geocode(
+             #   enderecos = input_df,
+             #   campos_endereco = campos,
+             #   n_cores = ncores,
+             #   resultado_completo = T,
+             #   verboso = T,
+             #   resultado_sf = F,
+             #   resolver_empates = F
+             # )
+             cadgeo <- geocodebr::geocode(
+               enderecos  = cad,
+               campos_endereco = fields_cad,
                resultado_completo = T,
+               n_cores = 7,
                verboso = T,
                resultado_sf = F,
                resolver_empates = F
              )
 )
 
+# 1 iteration 20k
+# expression     min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+#   original   26.2s  26.2s    0.0381    62.6MB    0.343     1     9      26.2s <dt>   <Rprofmem> <bench_tm> <tibble>
+# compressed   26.6s  26.6s    0.0376      66MB    0.338     1     9      26.6s <dt>   <Rprofmem> <bench_tm> <tibble>
+#        ipc  31.9s  31.9s    0.0313    56.9MB    0.345     1    11      31.9s <dt>   <Rprofmem> <bench_tm> <tibble>
 
-# expression   min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#   original 26.2s  26.2s    0.0381    62.6MB    0.343     1     9      26.2s <dt>   <Rprofmem> <bench_tm> <tibble>
-#   original 24.9s  25.4s    0.0393    65.5MB    0.385     5    49      2.12m <dt>   <Rprofmem> <bench_tm> <tibble>
-# compressed 26.6s  26.6s    0.0376      66MB    0.338     1     9      26.6s <dt>   <Rprofmem> <bench_tm> <tibble>
-# compressed 27.7s  28.1s    0.0346    38.4MB    0.166     5    24      2.41m <dt>   <Rprofmem> <bench_tm> <tibble>
-# ipc        31.9s  31.9s    0.0313    56.9MB    0.345     1    11      31.9s <dt>   <Rprofmem> <bench_tm> <tibble>
-# ipc        31.2s  31.9s    0.0307    38.6MB    0.252     5    41      2.71m <dt>   <Rprofmem> <bench_tm> <tibble>
+# 5 iterations 20k
+# expression     min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+#   original   24.9s  25.4s    0.0393    65.5MB    0.385     5    49      2.12m <dt>   <Rprofmem> <bench_tm> <tibble>
+# compressed   27.7s  28.1s    0.0346    38.4MB    0.166     5    24      2.41m <dt>   <Rprofmem> <bench_tm> <tibble>
+#        ipc   31.2s  31.9s    0.0307    38.6MB    0.252     5    41      2.71m <dt>   <Rprofmem> <bench_tm> <tibble>
 
-
+# 1 iteration 1 mi addresses
+# expression     min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+#        ipc   2.13m  2.13m   0.00782    1.52GB    0.407     1    52      2.13m <dt>
+#   original   2.21m  2.21m   0.00755    1.52GB    0.400     1    53      2.21m <dt>
+# compressed   2.37m  2.37m   0.00704    1.51GB    0.331     1    47      2.37m <dt>

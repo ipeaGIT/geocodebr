@@ -25,11 +25,11 @@ set.seed(42)
 
 
 # cad unico --------------------------------------------------------------------
-sample_size <- 5000000
+sample_size <- 1000000
 
 cad_con <- ipeadatalake::ler_cadunico(
   data = 202312,
-  tipo = 'familia',
+  base = 'familia',
   as_data_frame = F,
   colunas = c("co_familiar_fam", "co_uf", "cd_ibge_cadastro",
               "no_localidade_fam", "no_tip_logradouro_fam",
@@ -62,7 +62,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  # dplyr::slice_sample(n = sample_size) |> # sample 20K
+  dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 

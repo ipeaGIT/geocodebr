@@ -35,5 +35,8 @@ create_geocodebr_db <- function( # nocov start
   # Set Memory limit
   # DBI::dbExecute(con, "SET memory_limit = '8GB'")
 
+  # DBI::dbExecute(con, "INSTALL arrow FROM community; LOAD arrow;")
+  # DBI::dbExecute(con, "LOAD arrow;")
+
   return(con)
 } # nocov end

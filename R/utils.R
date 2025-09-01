@@ -10,7 +10,7 @@
 arrow_open_dataset <- function(filename){
 
   tryCatch(
-    arrow::open_dataset(filename),
+    arrow::open_dataset(filename, format = 'parquet'),
     error = function(e){
       msg <- paste(
         "Arquivo local possivelmente corrompido. ",
