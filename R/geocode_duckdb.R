@@ -1,4 +1,5 @@
-#' Geolocaliza endereços no Brasil
+#' Geolocaliza endereços no Brasil usando uma implementação em duckdb para o
+#' tratamento de empates.
 #'
 #' Geocodifica endereços brasileiros com base nos dados do CNEFE. Os endereços
 #' de input devem ser passados como um `data.frame`, no qual cada coluna
@@ -56,7 +57,7 @@
 #'   estado = "nm_uf"
 #' )
 #'
-#' df <- geocodebr::geocode(
+#' df <- geocodebr::geocode_duckdb(
 #'   enderecos = input_df,
 #'   campos_endereco = fields,
 #'   resolver_empates = TRUE,
@@ -66,7 +67,7 @@
 #' head(df)
 #'
 #' @export
-geocode <- function(enderecos,
+geocode_duckdb <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = FALSE,
@@ -180,7 +181,7 @@ geocode <- function(enderecos,
       municipio_encontrado = arrow::string(),
       estado_encontrado = arrow::string(),
       similaridade_logradouro = arrow::float16()
-      )
+    )
   }
 
   output_db_arrow <- arrow::arrow_table(schema = schema_output_db)
@@ -215,7 +216,7 @@ geocode <- function(enderecos,
         } else if (match_type %in% number_interpolation_types ) { match_weighted_cases
         } else if (match_type %in% c(probabilistic_exact_types, probabilistic_types_no_number)) { match_cases_probabilistic
         } else if (match_type %in% probabilistic_interpolation_types) { match_weighted_cases_probabilistic
-          }
+        }
 
       n_rows_affected <- match_fun(
         con,
@@ -260,15 +261,15 @@ geocode <- function(enderecos,
 
   data.table::setDT(output_df)
 
+  # casos de empate -----------------------------------------------
+  if (nrow(output_df) > n_rows) {
+    output_df <- trata_empates_geocode_duckdb(output_df, con, resolver_empates, verboso)
+  }
+
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
-
-  # casos de empate -----------------------------------------------
-  if (nrow(output_df) > n_rows) {
-    output_df <- trata_empates_geocode(output_df, resolver_empates, verboso)
-    }
-
+  data.table::setDT(output_df)
   # drop geocodebr temp id column
   output_df[, tempidgeocodebr := NULL]
 
@@ -282,7 +283,7 @@ geocode <- function(enderecos,
       x = 'lon',
       y = 'lat',
       keep = TRUE
-      )
+    )
 
     sf::st_crs(output_sf) <- 4674
     return(output_sf)
