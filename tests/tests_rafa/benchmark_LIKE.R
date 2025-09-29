@@ -64,7 +64,7 @@ input_df <- arrow::read_parquet(data_path)
 #   localidade = 'bairro',
 #   municipio = 'municipio',
 #   estado = 'uf')
-# resolver_empates = F
+# resolver_empates = T
 
 
 # benchmark different approaches ------------------------------------------------------------------
