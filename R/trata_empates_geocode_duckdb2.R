@@ -99,8 +99,8 @@ trata_empates_geocode_duckdb2 <- function(output_df = parent.frame()$output_df,
   # nrow(a)
   # 22705 - 22138
 
-  missing_ids <- setdiff(output_df2$id, a$id)
-  aa <- output_df2[ id %in% missing_ids]
+  # missing_ids <- setdiff(output_df2$id, a$id)
+  # aa <- output_df2[ id %in% missing_ids]
 
 
 
@@ -109,8 +109,7 @@ trata_empates_geocode_duckdb2 <- function(output_df = parent.frame()$output_df,
     conn = con,
     statement = "SELECT COUNT(DISTINCT tempidgeocodebr)
                  FROM output_df2
-                 WHERE empate = TRUE"
-    )[[1]]
+                 WHERE empate = TRUE")[[1]]
 
 
   # se nao for para resolver empates:
@@ -162,6 +161,8 @@ trata_empates_geocode_duckdb2 <- function(output_df = parent.frame()$output_df,
       conn = con,
       statement = "SELECT DISTINCT tempidgeocodebr FROM df_sem_empate"
       )[[1]] |> sort()
+
+
 
     # b) empatados perdidos (dis > 1Km e lograoduros ambiguos)  ---------------------------
 
@@ -277,7 +278,7 @@ trata_empates_geocode_duckdb2 <- function(output_df = parent.frame()$output_df,
         "Foram encontrados e resolvidos {n_casos_empate} {plural} de empate."
       ))
     }
-  }
 
-  return(resultado_df)
+    return(resultado_df)
+  }
 }
