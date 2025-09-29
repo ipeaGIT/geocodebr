@@ -56,8 +56,8 @@ bench::mark( iterations = 1,
 #    dt 729            28.4s  28.4s    0.0352    64.1MB    0.281     1     8      28.4s <dt>
 # duck2 700            28.9s  28.9s    0.0346    64.7MB    0.277     1     8      28.9s <df>
 
-bench::mark( iterations = 1,
-             geo_duck <- geocodebr::geocode_duckdb(
+bench::mark( iterations = 1,check = F,
+             geo_duckF <- geocodebr::geocode_duckdb(
                enderecos = input_df,
                campos_endereco = campos,
                n_cores = ncores,
@@ -65,6 +65,15 @@ bench::mark( iterations = 1,
                verboso = T,
                resultado_sf = F,
                resolver_empates = F
+             ),
+             geo_duckT <- geocodebr::geocode_duckdb(
+               enderecos = input_df,
+               campos_endereco = campos,
+               n_cores = ncores,
+               resultado_completo = T,
+               verboso = T,
+               resultado_sf = F,
+               resolver_empates = T
              )
 )
 
