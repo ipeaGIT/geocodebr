@@ -48,7 +48,6 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
     all_files <- paste0(all_files, ".parquet")
   }
 
-
   data_urls <- glue::glue(
     "https://github.com/ipeaGIT/padronizacao_cnefe/releases/",
     "download/{data_release}/{all_files}"
@@ -57,7 +56,8 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
   if (!cache) {
     data_dir <- as.character(fs::path_norm(tempfile("standardized_cnefe")))
   } else {
-    data_dir <- listar_pasta_cache()
+
+    data_dir <- update_data_release()
   }
   fs::dir_create(data_dir)
 

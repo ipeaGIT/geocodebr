@@ -150,3 +150,49 @@ message_removed_cache_dir <- function(cache_dir) {
     )
   )
 }
+
+
+#' Atualiza dados no release local
+#'
+#' Detecta se o release local esta desatualizado. Se sim, apaga a pasta de cache
+#' do release local e atualiza a versao do release no caminho da pasta
+#'
+#' @return Retorna de forma invisível o caminho do diretório de cache.
+#'
+#' @examplesIf identical(TRUE, FALSE)
+#' update_data_release()
+
+#' update cache
+update_data_release <- function() {
+
+  # list cache local
+  cache_dir <- geocodebr::listar_pasta_cache()
+
+  # versao numerica dos releases local e do pacote
+  local_release <- gsub("[^0-9]", "", basename(cache_dir)) |> as.numeric()
+  pkg_release <- gsub("[^0-9]", "", data_release) |> as.numeric()
+
+  if (is.na(local_release) | local_release==pkg_release) {
+    return(cache_dir)
+    }
+
+  if (local_release != pkg_release) {
+
+    # deleta os dados do release local
+    suppressMessages(
+      geocodebr::deletar_pasta_cache()
+      )
+
+    # cria pasta de cache do novo release
+    cache_dir_new_release <- sub("v[0-9]+\\.[0-9]+\\.[0-9]+$",
+                                 data_release,
+                                 cache_dir
+                                 )
+    suppressMessages(
+      geocodebr::definir_pasta_cache(cache_dir_new_release)
+      )
+
+    return(cache_dir_new_release)
+  }
+
+}
