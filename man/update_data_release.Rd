@@ -2,7 +2,7 @@
 % Please edit documentation in R/cache.R
 \name{update_data_release}
 \alias{update_data_release}
-\title{Atualiza data release local}
+\title{Atualiza dados no release local}
 \usage{
 update_data_release()
 }
@@ -10,12 +10,12 @@ update_data_release()
 Retorna de forma invisível o caminho do diretório de cache.
 }
 \description{
-Detecta se o release local esta desatualizado e apaga a pasta de cache do
-release anterior
+Detecta se o release local esta desatualizado. Se sim, apaga a pasta de cache
+do release local e atualiza a versao do release no caminho da pasta
 }
 \examples{
 \dontshow{if (identical(TRUE, FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
-deletar_pasta_cache()
+update_data_release()
 update cache
 \dontshow{\}) # examplesIf}
 }

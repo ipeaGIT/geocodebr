@@ -1,3 +1,21 @@
+# geocodebr 0.3.0
+
+## Mudanças grandes (Major changes)
+
+- O output da função `geocode()` agora inclui uma nova coluna `desvio_metros` que apresenta uma forma intuitiva o grau de incerteza do resultado encontrado. [Encerra issue #1](https://github.com/ipeaGIT/geocodebr/issues/11).
+- Nova base de dados com release `v0.3.0`. A principal mudança aqui foi a 
+estratégia de agregação de coordenadas. Na versão anterior, a base consistia numa
+média simples das coordenadas dos pontos que pertenciam ao mesmo grupo de colunas.
+Na atual versão, esse cálculo é feito em duas etapas. Primeiro encontramos o ponto 
+médio e calculamos sua distância até todos os pontos. Em seguida, descartamos 
+aqueles pontos que estão  acima do percentil 95% de distância, e calculamos então 
+novo ponto médio. Isso evita eventual distorções quando há poucos pontos muito 
+isolados. 
+- A nova base de dados (com release `v0.3.0`) utiliza arquivos em formato `.parquet`
+compactados, o que acelera o processo de download dos dados e diminuiu pela metada
+o tamanho dos arquivos armazenados locamente, de `2.98` GB para `1.44` GB.
+
+
 # geocodebr 0.2.1
 
 ## Correção de bugs (Bug fixes)
@@ -37,4 +55,4 @@
 
 # geocodebr 0.1.0
 
-- Primeira versão estável.
+- Primeira versão.

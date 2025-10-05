@@ -72,18 +72,8 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.
 \details{
 Precisão dos resultados:
 
-Os resultados do \strong{{geocodebr}} são classificados em seis amplas categorias de \code{precisao}:
-\enumerate{
-\item "numero"
-\item "numero_aproximado"
-\item "logradouro"
-\item "cep"
-\item "localidade"
-\item "municipio"
-}
-
-Cada nível de precisão pode ser desagregado em tipos de correspondência mais
-refinados.
+A precisão dos resultados do \strong{{geocodebr}} são apresentadas em 3 colunas,
+\code{precisao}, \code{tipo_resultado} e \code{desvio_metros}, explicadas abaixo.
 
 Lidando com casos de empate:
 
@@ -111,6 +101,22 @@ pelo valor de \code{"contagem_cnefe"}. Nesse caso, a coluna de output
 \code{"endereco_encontrado"} recebe valor do ponto com maior \code{"contagem_cnefe"}.
 }
 }
+\section{Precisão}{
+Os resultados do \strong{{geocodebr}} são classificados em seis amplas categorias
+de \code{precisao}:
+\enumerate{
+\item "numero"
+\item "numero_aproximado"
+\item "logradouro"
+\item "cep"
+\item "localidade"
+\item "municipio"
+}
+
+Cada nível de precisão pode ser desagregado em tipos de resultado mais
+refinados.
+}
+
 \section{Tipos de resultados}{
 A coluna \code{tipo_resultado} fornece informações mais detalhadas sobre como
 exatamente cada endereço de entrada foi encontrado no CNEFE. Em cada
@@ -198,13 +204,34 @@ Endereços não encontrados são retornados com latitude, longitude, precisão e
 tipo de resultado \code{NA}.
 }
 
-\section{Busca probabilitisca}{
+\section{Desvio em metros}{
+A coluna \code{desvio_metros} apresenta uma forma intuitiva e prática de saber o
+grau de incerteza do resultado encontrado. Essa coluna informa que pelo menos
+95\% de todos os pontos do CNEFE que possuem corrêspondência com o endereço de
+input  estão num raio de x metros da localização encontrada.
+
+Um desvio de \code{30} metros, por exemplo, tende a representar um resultado muito
+confiável. A depender de como o dado geolocalizado será utilizado, até mesmos
+resultados com um \code{desvio_metros} de até 500 ou 900 metros podem ser ser
+aceitáveis.
+
+A coluna \code{desvio_metros} pode ser particularmente útil para decidir por exemplo
+se um resultado encontrado com a \code{precisao} de CEP deveria ser aceitável.
+Muitas cidades do Brasil possuem um CEP único, o que tende a gerar resultados
+com altíssimo grau de incerteza. Em várias cidades, no entanto, um CEP pode ser
+circunscrito a uma área muito pequena e as vezes até um único edifício. Nesses
+casos, o valor do \code{desvio_metros} tende a ser bem pequeno.
+}
+
+\section{Busca probabilistica}{
 Os tipos de resultado com busca probabilitisca usam como base o algoritmo de
 semelhança de Jaro para comparar as strings de 'logradouro' dos dados de
 input e da base de endereços do geocodebr. O pacote considera como match o
-logradouro da base de endereços que apresenta a maior semelhança de
-Jaro condicionado a uma semelhança mínima de \code{0.85}, e desde que também haja
-match determinístico em ao menos um dos campos "cep" e "localidade".
+logradouro da base de endereços que apresenta a maior semelhança de Jaro
+condicionado a uma semelhança mínima, e desde que também haja match
+determinístico em ao menos um dos campos "cep" e "localidade".
+O {geocodebr} utiliza uma semelhança mínima de \code{0.85} nos casos de match
+probabilistico, e de \code{0.90} nos demais casos.
 }
 
 \examples{

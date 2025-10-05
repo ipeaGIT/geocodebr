@@ -7,6 +7,8 @@ match_cases <- function( # nocov start
     match_type = match_type,
     resultado_completo){
 
+  # match_type = "dn01"
+
   # read corresponding parquet file
   table_name <- paste(key_cols, collapse = "_")
   table_name <- gsub('estado_municipio', 'municipio', table_name)
@@ -29,6 +31,8 @@ match_cases <- function( # nocov start
     dplyr::filter(municipio %in% input_municipio) |>
     dplyr::compute()
 
+  # c <- collect(filtered_cnefe)
+  # summary(c$desvio_metros)
 
   # register filtered_cnefe to db
   duckdb::duckdb_register_arrow(con, "filtered_cnefe", filtered_cnefe)
@@ -39,7 +43,8 @@ match_cases <- function( # nocov start
     collapse = ' AND '
   )
 
-  # cols that cannot be null
+  # cols from x that cannot be null
+  # isso serve como filtro pre-join, pra fazer o join soh em quem nao foi encontrado ainda
   cols_not_null <-  paste(
     glue::glue("{x}.{key_cols} IS NOT NULL"),
     collapse = ' AND '
@@ -69,9 +74,13 @@ match_cases <- function( # nocov start
 
   # summarize query
   query_match <- glue::glue(
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, tipo_resultado, endereco_encontrado, contagem_cnefe {colunas_encontradas})
-      SELECT {x}.tempidgeocodebr, filtered_cnefe.lat, filtered_cnefe.lon,
-             '{match_type}' AS tipo_resultado, filtered_cnefe.endereco_completo AS endereco_encontrado,
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
+      SELECT {x}.tempidgeocodebr,
+             filtered_cnefe.lat,
+             filtered_cnefe.lon,
+             filtered_cnefe.endereco_completo AS endereco_encontrado,
+             '{match_type}' AS tipo_resultado,
+             filtered_cnefe.desvio_metros,
              filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
       LEFT JOIN filtered_cnefe
@@ -81,6 +90,8 @@ match_cases <- function( # nocov start
 
   DBI::dbSendQueryArrow(con, query_match)
   # a <- DBI::dbReadTable(con, 'output_db')
+  # summary(a$desvio_metros)
+  # summary(a$lat)
 
   duckdb::duckdb_unregister_arrow(con, "filtered_cnefe")
 

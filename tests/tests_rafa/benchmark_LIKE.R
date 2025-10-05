@@ -101,38 +101,8 @@ bench::mark( iterations = 1,
 )
 # sequencia de matches
 #   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-# 2nd best      25.7s  25.7s    0.0389    67.1MB    0.350     1     9      25.7s ;;787 empates
-# ideal         23.8s  23.8s    0.0420    38.1MB    0.378     1     9      23.8s ;;724
+#           v3  36.7s  36.7s    0.0272    63.2MB    0.272     1    10      36.7s <dt>
 
-
-# expression       min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# <bch:expr>     <bch> <bch:>     <dbl> <bch:byt>    <dbl> <int> <dbl>   <bch:tm> <list> <list>
-#   current      1.01m  1.01m    0.0165    81.3MB    0.182     1    11      1.01m <dt>   <Rprofmem>
-#   ender_arrw   59.6s  59.6s    0.0168    81.2MB    0.201     1    12      59.6s <dt>   <Rprofmem>
-#                40.2s  40.2s    0.0249      83MB    0.323     1    13      40.2s <dt>   <Rprofmem>
-#                30.3s  30.3s    0.0330    71.8MB    0.363     1    11      30.3s <dt>   <Rprofmem> 715 empates
-#                26.2s  26.2s    0.0382    70.3MB    0.343     1     9      26.2s <dt>   <Rprofmem> 722
-#                24.5s  24.5s    0.0409    70.3MB    0.368     1     9      24.5s <dt>   <Rprofmem> 722
-#                24.1s  24.1s    0.0414    63.8MB    0.373     1     9      24.1s <dt>   <Rprofmem> 704
-# prob befo det  24.4s  24.4s    0.0411    39.3MB    0.411     1    10      24.4s <dt>   <Rprofmem> 723
-# prob after det 24.9s  24.9s    0.0401      67MB    0.401     1    10      24.9s <dt>   <Rprofmem> 810
-#                match prob
-# filter               25.7s  25.7s    0.0389    63.8MB    0.350     1     9      25.7s <dt>   <Rprofmem> <bench_tm>
-# distinct             27s    27s    0.0371    91.1MB    0.334     1     9        27s <dt>   <Rprofmem> <bench_tm>
-
-# 20K prob numero pn
-# atual:   46.69s / 706 empates
-# old:     34.91s / 783
-# 20250318 40.21s / 698 empates
-
-# 1.56m com arrow distinct
-# 1.47m com parquet no pn
-# 1.90m com parquet no pn e pa
-# 1.6 com write arrwo table   >>>>>>>>>>>> implementar com certeza
-# 1.3m e arrow distinc
-# 1.32m e arrow distinc  e outuop_arrw
-# 1.06m e arrow distinc  e outuop_arrw e sendQueryArrow (na tomada)
-# 1.06m isso + tudo com sendQueryArrow  (na tomada)
 
 
 

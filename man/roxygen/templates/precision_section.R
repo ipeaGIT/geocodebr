@@ -1,6 +1,12 @@
 #' @details Precisão dos resultados:
 #'
-#' Os resultados do **{geocodebr}** são classificados em seis amplas categorias de `precisao`:
+#' A precisão dos resultados do **{geocodebr}** são apresentadas em 3 colunas,
+#' `precisao`, `tipo_resultado` e `desvio_metros`, explicadas abaixo.
+#'
+#' # Precisão
+#'
+#' Os resultados do **{geocodebr}** são classificados em seis amplas categorias
+#' de `precisao`:
 #'
 #' 1. "numero"
 #' 2. "numero_aproximado"
@@ -9,7 +15,7 @@
 #' 5. "localidade"
 #' 6. "municipio"
 #'
-#' Cada nível de precisão pode ser desagregado em tipos de correspondência mais
+#' Cada nível de precisão pode ser desagregado em tipos de resultado mais
 #' refinados.
 #'
 #' # Tipos de resultados
@@ -90,12 +96,32 @@
 #' Endereços não encontrados são retornados com latitude, longitude, precisão e
 #' tipo de resultado `NA`.
 #'
-#' # Busca probabilitisca
+#' # Desvio em metros
+#'
+#' A coluna `desvio_metros` apresenta uma forma intuitiva e prática de saber o
+#' grau de incerteza do resultado encontrado. Essa coluna informa que pelo menos
+#' 95% de todos os pontos do CNEFE que possuem corrêspondência com o endereço de
+#' input  estão num raio de x metros da localização encontrada.
+#'
+#' Um desvio de `30` metros, por exemplo, tende a representar um resultado muito
+#' confiável. A depender de como o dado geolocalizado será utilizado, até mesmos
+#' resultados com um `desvio_metros` de até 500 ou 900 metros podem ser ser
+#' aceitáveis.
+#'
+#' A coluna `desvio_metros` pode ser particularmente útil para decidir por exemplo
+#' se um resultado encontrado com a `precisao` de CEP deveria ser aceitável.
+#' Muitas cidades do Brasil possuem um CEP único, o que tende a gerar resultados
+#' com altíssimo grau de incerteza. Em várias cidades, no entanto, um CEP pode ser
+#' circunscrito a uma área muito pequena e as vezes até um único edifício. Nesses
+#' casos, o valor do `desvio_metros` tende a ser bem pequeno.
+#'
+#' # Busca probabilistica
 #'
 #' Os tipos de resultado com busca probabilitisca usam como base o algoritmo de
 #' semelhança de Jaro para comparar as strings de 'logradouro' dos dados de
 #' input e da base de endereços do geocodebr. O pacote considera como match o
-#' logradouro da base de endereços que apresenta a maior semelhança de
-#' Jaro condicionado a uma semelhança mínima de `0.85`, e desde que também haja
-#' match determinístico em ao menos um dos campos "cep" e "localidade".
-#'
+#' logradouro da base de endereços que apresenta a maior semelhança de Jaro
+#' condicionado a uma semelhança mínima, e desde que também haja match
+#' determinístico em ao menos um dos campos "cep" e "localidade".
+#' O {geocodebr} utiliza uma semelhança mínima de `0.85` nos casos de match
+#' probabilistico, e de `0.90` nos demais casos.

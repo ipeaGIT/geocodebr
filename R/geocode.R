@@ -158,9 +158,10 @@ geocode <- function(enderecos,
     lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
     lon = arrow::float16(),
     endereco_encontrado = arrow::string(),
-    logradouro_encontrado = arrow::string(),
     tipo_resultado = arrow::string(),
-    contagem_cnefe = arrow::int32()
+    desvio_metros = arrow::float16(),
+    contagem_cnefe = arrow::int32(),
+    logradouro_encontrado = arrow::string()
   )
 
   if (isTRUE(resultado_completo)) {
@@ -170,16 +171,17 @@ geocode <- function(enderecos,
       lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
       lon = arrow::float16(),
       endereco_encontrado = arrow::string(),
-      logradouro_encontrado = arrow::string(),
       tipo_resultado = arrow::string(),
+      desvio_metros = arrow::float16(),
       contagem_cnefe = arrow::int32(),
-      #
+      logradouro_encontrado = arrow::string(),
+      # additional columns
+      similaridade_logradouro = arrow::float16(),
       numero_encontrado = arrow::int32(),
       localidade_encontrada = arrow::string(),
       cep_encontrado = arrow::string(),
       municipio_encontrado = arrow::string(),
-      estado_encontrado = arrow::string(),
-      similaridade_logradouro = arrow::float16()
+      estado_encontrado = arrow::string()
       )
   }
 
@@ -207,6 +209,8 @@ geocode <- function(enderecos,
 
     if (verboso) update_progress_bar(matched_rows, match_type)
 
+    # somente busca essa categoria match_type se todas colunas estiverem na base
+    # caso contrario, passa para proxima categoria
     if (all(key_cols %in% names(input_padrao))) {
 
       # select match function
@@ -266,7 +270,7 @@ geocode <- function(enderecos,
 
   # casos de empate -----------------------------------------------
   if (nrow(output_df) > n_rows) {
-    output_df <- trata_empates_geocode(output_df, resolver_empates, verboso)
+    output_df2 <- trata_empates_geocode(output_df, resolver_empates, verboso)
     }
 
   # drop geocodebr temp id column
