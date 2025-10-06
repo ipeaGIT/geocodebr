@@ -13,7 +13,7 @@ novo ponto médio. Isso evita eventual distorções quando há poucos pontos mui
 isolados. 
 - A nova base de dados (com release `v0.3.0`) utiliza arquivos em formato `.parquet`
 compactados, o que acelera o processo de download dos dados e diminuiu pela metada
-o tamanho dos arquivos armazenados locamente, de `2.98` GB para `1.44` GB.
+o tamanho dos arquivos armazenados locamente, de `2.98` GB para `1.17` GB.
 
 
 # geocodebr 0.2.1
