@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.github$
 ^tests_rafa$
+^tests_pedro$
 ^data_prep
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$

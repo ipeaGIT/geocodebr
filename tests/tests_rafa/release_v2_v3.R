@@ -100,3 +100,112 @@ changers_num <- setdiff(
 
 
 subset(v2, id %in% changers_num)$tipo_resultado |> table()
+
+
+
+# teste de distancias -----------------
+
+
+
+
+library(data.table)
+library(mapview)
+library(sf)
+library(dplyr)
+
+# open input data
+data_path <- system.file("extdata/large_sample.parquet", package = "geocodebr")
+input_df <- arrow::read_parquet(data_path)
+
+
+geocodebr::listar_dados_cache()
+geocodebr::deletar_pasta_cache()
+
+ncores <- 7
+
+campos <- geocodebr::definir_campos(
+  logradouro = 'logradouro',
+  numero = 'numero',
+  cep = 'cep',
+  localidade = 'bairro',
+  municipio = 'municipio',
+  estado = 'uf'
+)
+
+bench::mark( iterations = 1,
+             v3 <- geocodebr::geocode(
+               enderecos = input_df,
+               campos_endereco = campos,
+               n_cores = ncores,
+               resultado_completo = T,
+               verboso = T,
+               resultado_sf = F,
+               resolver_empates = T
+             )
+)
+
+# expression            min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result
+#   1 v2 <- geocodeb… 40.1s  40.1s    0.0249    3.08GB   0.0748     1     3      40.1s <dt>
+#   1 v3 <- geocodeb… 54.7s  54.7s    0.0183    1.27GB    0.128     1     7      54.7s <dt>
+
+
+
+# distancia
+dt.haversine <- function(lat_from, lon_from, lat_to, lon_to, r = 6378137){
+  radians <- pi/180
+  lat_to <- lat_to * radians
+  lat_from <- lat_from * radians
+  lon_to <- lon_to * radians
+  lon_from <- lon_from * radians
+  dLat <- (lat_to - lat_from)
+  dLon <- (lon_to - lon_from)
+  a <- (sin(dLat/2)^2) + (cos(lat_from) * cos(lat_to)) * (sin(dLon/2)^2)
+  return(2 * atan2(sqrt(a), sqrt(1 - a)) * r)
+}
+
+df <- dplyr::left_join(v2, v3, by='id')
+data.table::setDT(df)
+df[, dist  := dt.haversine(lat.x,lon.x, lat.y, lon.y) ]
+
+summary(df$dist)
+#   Min.   1st Qu.    Median      Mean   3rd Qu.      Max.
+# 0.002     0.193     2.900   112.337    19.030 31080.604
+
+# eh tudo muito proximo. Onde tem distancia muito grande,
+# a grande maioria eh caso de empate de enderecos complicados
+# entao o que causa a diferenca foi mais a solucao do empate em si
+stats::quantile(df$dist, probs =c(.9, .95, .99))
+#      90%       95%       99%
+# 153.2783  507.0716 1811.1621
+
+
+
+
+df2 <- df |> filter(dist > 1000)
+i <- df2$id[10]
+
+v2i <- sfheaders::sf_point(
+  obj = subset(df2, id == i),
+  x = 'lon.x',
+  y = 'lat.x',
+  keep = TRUE
+)
+v3i <- sfheaders::sf_point(
+  obj = subset(df2, id == i),
+  x = 'lon.y',
+  y = 'lat.y',
+  keep = TRUE
+)
+sf::st_crs(v2i) <- 4674
+sf::st_crs(v3i) <- 4674
+
+mapview::mapview(v2i, col.regions = "blue") +
+  mapview(v3i, col.regions = "red")
+v3i$precisao.x
+v3i$precisao.y
+v3i$endereco_encontrado.x
+v3i$endereco_encontrado.y
+
+
+
+janitor::tabyl(df2$empate.x)

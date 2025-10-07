@@ -136,7 +136,7 @@ perform_requests_in_parallel <- function(requests, dest_files, verboso) {
     requests,
     paths = dest_files,
     on_error = "continue",
-    progress = ifelse(verboso == TRUE, 'z', FALSE)
+    progress = ifelse(verboso == TRUE, ' ', FALSE)
   )
 }
 

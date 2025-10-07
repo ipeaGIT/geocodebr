@@ -44,7 +44,7 @@
 #'
 #' # ler amostra de dados
 #' data_path <- system.file("extdata/small_sample.csv", package = "geocodebr")
-#' input_df <- read.csv(data_path)
+#' input_df <- read.csv(data_path)[1:2,]
 #'
 #' fields <- geocodebr::definir_campos(
 #'   logradouro = "nm_logradouro",
