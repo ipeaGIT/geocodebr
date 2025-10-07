@@ -22,7 +22,7 @@ tester <- function(pontos = points,
     dist_max = dist_max,
     verboso = verboso,
     cache = cache,
-    n_cores =n_cores
+    n_cores = n_cores
   )
 }
 

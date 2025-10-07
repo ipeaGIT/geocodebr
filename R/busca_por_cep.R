@@ -55,16 +55,19 @@ busca_por_cep <- function(cep,
     cache = cache
   )
 
+  # build path to local file
+  path_to_parquet <- fs::path(
+    listar_pasta_cache(),
+    glue::glue("geocodebr_data_release_{data_release}"),
+    paste0("municipio_logradouro_cep_localidade.parquet")
+  )
 
   # Load CNEFE data and filter it to include only states
   # present in the input table, reducing the search scope
   # Narrow search global scope of cnefe to bounding box
-  path_to_parquet <- paste0(listar_pasta_cache(), "/municipio_logradouro_cep_localidade.parquet")
   cnefe <- arrow_open_dataset( path_to_parquet )
 
   # filtrar por uf ?
-
-
   output_df <- cnefe |>
     dplyr::select(cep, estado, municipio, logradouro, localidade, lat, lon) |>  # Drop the n_casos column
     dplyr::filter(cep %in% cep_padrao) |>

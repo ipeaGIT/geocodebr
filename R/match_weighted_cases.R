@@ -13,7 +13,11 @@ match_weighted_cases <- function( # nocov start
   table_name <- get_reference_table(match_type)
 
   # build path to local file
-  path_to_parquet <- paste0(listar_pasta_cache(), "/", table_name, ".parquet")
+  path_to_parquet <- fs::path(
+    listar_pasta_cache(),
+    glue::glue("geocodebr_data_release_{data_release}"),
+    paste0(table_name,".parquet")
+  )
 
   # determine geographical scope of the search
   input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado

@@ -110,7 +110,7 @@ geocode_reverso <- function(pontos,
   # download cnefe  -------------------------------------------------------
 
   # downloading cnefe
-  cnefe_dir <- download_cnefe(
+  cnefe_dir <- geocodebr::download_cnefe(
     tabela = 'municipio_logradouro_numero_cep_localidade',
     verboso = verboso,
     cache = cache
@@ -135,12 +135,18 @@ geocode_reverso <- function(pontos,
 
   potential_munis <- lapply(X=1:nrow(coords), FUN=get_muni)
   potential_munis <- unlist(potential_munis) |> unique()
-
   potential_munis <- enderecobr::padronizar_municipios(potential_munis)
+
+  # build path to local file
+  path_to_parquet <- fs::path(
+    listar_pasta_cache(),
+    glue::glue("geocodebr_data_release_{data_release}"),
+    paste0("municipio_logradouro_numero_cep_localidade.parquet")
+  )
+
   # Load CNEFE data and filter it to include only states
   # present in the input table, reducing the search scope
   # Narrow search global scope of cnefe to bounding box
-  path_to_parquet <- paste0(listar_pasta_cache(), "/municipio_logradouro_numero_cep_localidade.parquet")
   filtered_cnefe <- arrow_open_dataset( path_to_parquet ) |>
     dplyr::filter(municipio %in% potential_munis) |>
     dplyr::compute()

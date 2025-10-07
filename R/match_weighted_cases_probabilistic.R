@@ -19,7 +19,11 @@ match_weighted_cases_probabilistic <- function( # nocov start
   key_cols <- get_key_cols(match_type)
 
   # build path to local file
-  path_to_parquet <- paste0(listar_pasta_cache(), "/", table_name, ".parquet")
+  path_to_parquet <- fs::path(
+    listar_pasta_cache(),
+    glue::glue("geocodebr_data_release_{data_release}"),
+    paste0(table_name,".parquet")
+  )
 
   # determine geographical scope of the search
   input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado
@@ -47,7 +51,12 @@ match_weighted_cases_probabilistic <- function( # nocov start
     #   dplyr::distinct() |>
     #   dplyr::compute()
 
-    path_unique_cep_loc <- paste0(listar_pasta_cache(), "/municipio_logradouro_cep_localidade.parquet")
+    path_unique_cep_loc <- fs::path(
+      listar_pasta_cache(),
+      glue::glue("geocodebr_data_release_{data_release}"),
+      paste0("municipio_logradouro_cep_localidade.parquet")
+    )
+
     unique_logradouros <- arrow_open_dataset( path_unique_cep_loc ) |>
       dplyr::filter(estado %in% input_states) |>
       dplyr::filter(municipio %in% input_municipio) |>

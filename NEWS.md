@@ -15,7 +15,7 @@ isolados.
 - A nova base de dados (com release `v0.3.0`) utiliza arquivos em formato `.parquet`
 compactados, o que acelera o processo de download dos dados e diminuiu pela metada
 o tamanho dos arquivos armazenados locamente, de `2.98` GB para `1.17` GB.
-
+- os dados de cache agora são armazenados na sub-pasta `"geocodebr_data_release_{data_release}"`, dentro da pasta de cache definida pelo usuário. Os dados de releases antigos passam a ser deletados automaticamente quando há atualização do data release. [Encerra issue #64](https://github.com/ipeaGIT/geocodebr/issues/64).
 
 # geocodebr 0.2.1
 

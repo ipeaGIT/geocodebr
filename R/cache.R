@@ -3,7 +3,7 @@ data_release <- "v0.3.0"
 listar_pasta_cache_padrao <- function() {
   fs::path(
     tools::R_user_dir("geocodebr", which = "cache"),
-    glue::glue("data_release_{data_release}")
+    glue::glue("geocodebr_data_release_{data_release}")
   )
 }
 
@@ -22,6 +22,7 @@ listar_arquivo_config <- function() {
 #' @param path Uma string. O caminho para o diretório usado para armazenar os
 #'   dados em cache.  Se `NULL`, o pacote usará um diretório versionado salvo
 #'   dentro do diretório retornado por [tools::R_user_dir()].
+#' @template verboso
 #'
 #' @return Retorna de forma invisível o caminho do diretório de cache.
 #'
@@ -32,8 +33,11 @@ listar_arquivo_config <- function() {
 #' definir_pasta_cache( path = NULL)
 #'
 #' @export
-definir_pasta_cache <- function(path) {
+definir_pasta_cache <- function(path,
+                                verboso = TRUE) {
+
   checkmate::assert_string(path, null.ok = TRUE)
+  checkmate::assert_logical(verboso, null.ok = FALSE)
 
   if (is.null(path)) {
     cache_dir <- listar_pasta_cache_padrao()
@@ -41,10 +45,12 @@ definir_pasta_cache <- function(path) {
     cache_dir <- fs::path_norm(path)
   }
 
-  cli::cli_inform(
-    c("i" = "Definido como pasta de cache {.file {cache_dir}}."),
-    class = "geocodebr_cache_dir"
-  )
+  if (isTRUE(verboso)) {
+    cli::cli_inform(
+      c("i" = "Definido como pasta de cache {.file {cache_dir}}."),
+      class = "geocodebr_cache_dir"
+      )
+    }
 
   arquivo_config <- listar_arquivo_config()
 
@@ -76,6 +82,7 @@ definir_pasta_cache <- function(path) {
 #'
 #' @export
 listar_pasta_cache <- function() {
+
   arquivo_config <- listar_arquivo_config()
 
   if (fs::file_exists(arquivo_config)) {
@@ -106,6 +113,7 @@ listar_pasta_cache <- function() {
 #'
 #' @export
 listar_dados_cache <- function(print_tree = FALSE) {
+
   checkmate::assert_logical(print_tree, any.missing = FALSE, len = 1)
 
   cache_dir <- listar_pasta_cache()
@@ -154,27 +162,38 @@ message_removed_cache_dir <- function(cache_dir) {
 
 #' Atualiza dados no release local
 #'
-#' Detecta se o release local esta desatualizado. Se sim, apaga a pasta de cache
-#' do release local e atualiza a versao do release no caminho da pasta
+#' Detecta automaticamente se o release local esta desatualizado. Se sim, apaga
+#' a pasta de cache do release local e atualiza a versao do release no caminho
+#' da pasta
 #'
 #' @return Retorna de forma invisível o caminho do diretório de cache.
 #'
-#' @examplesIf identical(TRUE, FALSE)
-#' update_data_release()
-
-#' update cache
-update_data_release <- function() {
+apaga_data_release_antigo <- function() {
 
   # list cache local
   cache_dir <- geocodebr::listar_pasta_cache()
 
+  # detect all release paths
+  local_release_path <- list.dirs(cache_dir, recursive = T)[-1]
+  local_release_path <- local_release_path[grep('geocodebr_data_release_', local_release_path)]
+
+  data_release_dir <- fs::path(
+    cache_dir,
+    glue::glue("geocodebr_data_release_{data_release}")
+  )
+
   # versao numerica dos releases local e do pacote
-  local_release <- gsub("[^0-9]", "", basename(cache_dir)) |> as.numeric()
+  local_release <- gsub("[^0-9]", "", basename(local_release_path)) |> as.numeric()
   pkg_release <- gsub("[^0-9]", "", data_release) |> as.numeric()
+
+  if (length(local_release)==0) {
+    return(cache_dir)
+  }
 
   if (is.na(local_release) | local_release==pkg_release) {
     return(cache_dir)
-    }
+  }
+
 
   if (local_release != pkg_release) {
 
@@ -183,16 +202,7 @@ update_data_release <- function() {
       geocodebr::deletar_pasta_cache()
       )
 
-    # cria pasta de cache do novo release
-    cache_dir_new_release <- sub("v[0-9]+\\.[0-9]+\\.[0-9]+$",
-                                 data_release,
-                                 cache_dir
-                                 )
-    suppressMessages(
-      geocodebr::definir_pasta_cache(cache_dir_new_release)
-      )
-
-    return(cache_dir_new_release)
+    return(cache_dir)
   }
 
 }
