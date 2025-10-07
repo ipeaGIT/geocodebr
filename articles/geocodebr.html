@@ -144,6 +144,7 @@ encontrar as coordenadas geográficas dos endereços de input.</li>
 <span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>,</span>
 <span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  resolver_empates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  h3_res <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -199,13 +200,16 @@ conjunto de coordenadas geográficas. Mais detalhes na <a href="https://ipeagit.
 <p>Por fim, a função <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> permite fazer
 consultas de CEPs para encontrar endereços associados a cada CEP. A
 função recebe um vetor de CEPs e retorna um <code>data.frame</code> com
-os endereços e as coordenadas geográficas de cada CEP.</p>
+os endereços e as coordenadas geográficas de cada CEP. O parâmetro
+<code>h3_res</code> pode ser utilizado para incluir no output o id das
+células H3 na resolução espacial desejada.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># amostra de CEPs</span></span>
 <span><span class="va">ceps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"70390-025"</span>, <span class="st">"20071-001"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df_ceps</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/busca_por_cep.html">busca_por_cep</a></span><span class="op">(</span></span>
 <span>  cep <span class="op">=</span> <span class="va">ceps</span>,</span>
+<span>  h3_res <span class="op">=</span> <span class="fl">9</span>,</span>
 <span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
