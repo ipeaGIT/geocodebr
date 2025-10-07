@@ -161,8 +161,7 @@ message_removed_cache_dir <- function(cache_dir) {
 #'
 #' @examplesIf identical(TRUE, FALSE)
 #' update_data_release()
-
-#' update cache
+#'
 update_data_release <- function() {
 
   # list cache local

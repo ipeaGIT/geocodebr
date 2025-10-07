@@ -1,3 +1,5 @@
+# possibilidade de usar dados da meta e overtura para compelemtar enderecos
+# mas pelo visto os dados deles vem do cnefe ?
 library(arrow)
 # install_arrow()
 library(sf)

@@ -16,6 +16,5 @@ do release local e atualiza a versao do release no caminho da pasta
 \examples{
 \dontshow{if (identical(TRUE, FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 update_data_release()
-update cache
 \dontshow{\}) # examplesIf}
 }
