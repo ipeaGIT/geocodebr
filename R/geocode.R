@@ -2,7 +2,7 @@
 #'
 #' Geocodifica endereços brasileiros com base nos dados do CNEFE. Os endereços
 #' de input devem ser passados como um `data.frame`, no qual cada coluna
-#' descreve um campo do endereço (logradouro, número, cep, etc). O resultados dos
+#' descreve um campo do endereço (logradouro, número, cep, etc). Os resuldos dos
 #' endereços geolocalizados podem seguir diferentes níveis de precisão. Consulte
 #' abaixo a seção "Detalhes" para mais informações. As coordenadas de output
 #' utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.
@@ -160,7 +160,9 @@ geocode <- function(enderecos,
     endereco_encontrado = arrow::string(),
     logradouro_encontrado = arrow::string(),
     tipo_resultado = arrow::string(),
-    contagem_cnefe = arrow::int32()
+    contagem_cnefe = arrow::int32(),
+    desvio_metros = arrow::int32()
+
   )
 
   if (isTRUE(resultado_completo)) {
@@ -173,6 +175,7 @@ geocode <- function(enderecos,
       logradouro_encontrado = arrow::string(),
       tipo_resultado = arrow::string(),
       contagem_cnefe = arrow::int32(),
+      desvio_metros = arrow::int32(),
       #
       numero_encontrado = arrow::int32(),
       localidade_encontrada = arrow::string(),
@@ -180,7 +183,7 @@ geocode <- function(enderecos,
       municipio_encontrado = arrow::string(),
       estado_encontrado = arrow::string(),
       similaridade_logradouro = arrow::float16()
-      )
+    )
   }
 
   output_db_arrow <- arrow::arrow_table(schema = schema_output_db)
@@ -207,6 +210,8 @@ geocode <- function(enderecos,
 
     if (verboso) update_progress_bar(matched_rows, match_type)
 
+    # somente busca essa categoria match_type se todas colunas estiverem na base
+    # caso contrario, passa para proxima categoria
     if (all(key_cols %in% names(input_padrao))) {
 
       # select match function
@@ -215,7 +220,7 @@ geocode <- function(enderecos,
         } else if (match_type %in% number_interpolation_types ) { match_weighted_cases
         } else if (match_type %in% c(probabilistic_exact_types, probabilistic_types_no_number)) { match_cases_probabilistic
         } else if (match_type %in% probabilistic_interpolation_types) { match_weighted_cases_probabilistic
-          }
+        }
 
       n_rows_affected <- match_fun(
         con,
@@ -267,7 +272,7 @@ geocode <- function(enderecos,
   # casos de empate -----------------------------------------------
   if (nrow(output_df) > n_rows) {
     output_df <- trata_empates_geocode(output_df, resolver_empates, verboso)
-    }
+  }
 
   # drop geocodebr temp id column
   output_df[, tempidgeocodebr := NULL]
@@ -282,7 +287,7 @@ geocode <- function(enderecos,
       x = 'lon',
       y = 'lat',
       keep = TRUE
-      )
+    )
 
     sf::st_crs(output_sf) <- 4674
     return(output_sf)

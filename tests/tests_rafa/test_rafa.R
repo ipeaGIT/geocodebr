@@ -1,47 +1,30 @@
-# date last modified chache
-library(httr2)
 
+df_rp <- data.frame(
+  estado = 'df',
+  # cep=70355030,
+  municipio='brasilia',
+  logradouro = "sqs 308",
+  bairro = 'asa sul'
+  )
 
-# Send a HEAD request to get the headers only
-url <- 'https://sas.anac.gov.br/sas/tarifainternacional/2024/INTERNACIONAL_2024-06.csv'
-request <- httr2::request(url)
+campos <- geocodebr::definir_campos(
+  logradouro = 'logradouro',
+  # numero = 'numero',
+  # cep = 'cep',
+  localidade = 'bairro',
+  municipio = 'municipio',
+  estado = 'estado'
+)
 
-response <- request %>%
-  req_method("HEAD") %>%
-  req_perform()
+test <- geocodebr::geocode(
+  enderecos = df_rp,
+  campos_endereco = campos,
+  resultado_completo = T,
+  verboso = T,
+  resultado_sf = T
+  )
 
-# Check if the "Last-Modified" header is present
-if (!is.null(resp_header(response, "last-modified"))) {
-  last_modified <- resp_header(response, "last-modified")
-  print(paste("Last-Modified Date:", last_modified))
-} else {
-  print("The server did not provide a Last-Modified date.")
-}
-
-
-
-library(censobr)
-library(dplyr)
-library(arrow)
-
-df <- censobr::read_population(year = 2010, add_labels = 'pt') |>
-  group_by(code_muni, V0601) |>
-  summarise(pop = sum(V0010)) |>
-  collect() |>
-  tidyr::pivot_wider(id_cols = code_muni,
-                     names_from = V0601,
-                     values_from = pop)
-head(df)
-#> code_muni  Masculino Feminino
-#>     <chr>      <dbl>    <dbl>
-#> 1 1100015      12656.   11736.
-#> 2 1100023      45543.   44810.
-#> 3 1100031       3266.    3047
-#> 4 1100049      39124.   39450.
-#> 5 1100056       8551.    8478.
-#> 6 1100064       9330.    9261.
-
-
+mapview::mapview(test)
 
 
 

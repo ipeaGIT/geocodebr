@@ -96,9 +96,10 @@ df <- geocodebr::geocode(
 #> o pacote lide com os empates automaticamente. Ver documentação da função.
 ```
 
-Os resultados do **{geocodebr}** são classificados em seis categorias
-gerais de `precisao`, dependendo do nível de exatidão com que cada
-endereço de input foi encontrado nos dados do CNEFE. Para mais
+Os resultados do **{geocodebr}** são classificados em seis categorias gerais de 
+`precisao`, dependendo do nível de exatidão com que cada endereço de input foi 
+encontrado nos dados do CNEFE. Os resultados trazem ainda uma estimativa da 
+incerteza da localização encontrado como um `desvio_metros`. Para mais 
 informações, consulte a documentação da função ou a [**vignette
 “geocode”**](https://ipeagit.github.io/geocodebr/articles/geocode.html).
 

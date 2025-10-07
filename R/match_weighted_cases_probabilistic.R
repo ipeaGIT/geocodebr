@@ -12,6 +12,8 @@ match_weighted_cases_probabilistic <- function( # nocov start
   match_type = match_type,
   resultado_completo){
 
+  # match_type = "pa01"
+
   # get corresponding parquet table
   table_name <- get_reference_table(match_type)
   key_cols <- get_key_cols(match_type)
@@ -37,31 +39,6 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
 
   # 1st step: create small table with unique logradouros -----------------------
-
-  # get_reference_table('pa02')
-  # get_key_cols('pa02')
-  # if (match_type %like% "01") {
-  #
-  #   path_unique_cep_loc <- paste0(listar_pasta_cache(), "/municipio_logradouro_cep_localidade.parquet")
-  #
-  #   unique_logradouros <- arrow_open_dataset( path_unique_cep_loc ) |>
-  #     dplyr::filter(estado %in% input_states) |>
-  #     dplyr::filter(municipio %in% input_municipio) |>
-  #     dplyr::compute()
-  #
-  #   } else {
-  #
-  #     unique_cols <- key_cols[!key_cols %in%  "numero"]
-  #
-  #     unique_logradouros <- filtered_cnefe |>
-  #       dplyr::select( dplyr::all_of(unique_cols)) |>
-  #       dplyr::distinct() |>
-  #       dplyr::compute()
-  #
-  # }
-  # # register to db
-  # duckdb::duckdb_register_arrow(con, "unique_logradouros", unique_logradouros)
-  # # a <- DBI::dbReadTable(con, 'unique_logradouros')
 
   if (match_type %like% "01") {
 
@@ -190,20 +167,20 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # match query
   query_match <- glue::glue(
     "CREATE OR REPLACE TEMPORARY VIEW temp_db AS
-    SELECT {x}.tempidgeocodebr, {x}.numero, {y}.numero AS numero_cnefe,
-    {y}.lat, {y}.lon,
-    REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
-    {x}.similaridade_logradouro,
-    {y}.logradouro AS logradouro_encontrado,
-    {y}.n_casos AS contagem_cnefe {additional_cols}
-    FROM {x}
-    LEFT JOIN {y}
-    ON {join_condition_determ}
-    WHERE lon IS NOT NULL {cols_not_null_match};"
+      SELECT {x}.tempidgeocodebr, {x}.numero, {y}.numero AS numero_cnefe,
+             {y}.lat, {y}.lon,
+             REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
+             {x}.similaridade_logradouro,
+             {y}.logradouro AS logradouro_encontrado,
+             {y}.desvio_metros,
+             {y}.n_casos AS contagem_cnefe {additional_cols}
+        FROM {x}
+        LEFT JOIN {y}
+        ON {join_condition_determ}
+      WHERE lon IS NOT NULL {cols_not_null_match};"
   )
 
   DBI::dbSendQueryArrow(con, query_match)
-  # DBI::dbExecute(con, query_match)
   # c <- DBI::dbReadTable(con, 'temp_db')
 
 
@@ -213,17 +190,16 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # summarize query
   # 66666666666 passar para esse passo a construcao do endereco_encontrado
   query_aggregate <- glue::glue(
-    # "CREATE OR REPLACE TEMPORARY TABLE aaa AS
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, tipo_resultado,
-                            endereco_encontrado, contagem_cnefe)
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
       SELECT tempidgeocodebr,
-      SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-      SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-      '{match_type}' AS tipo_resultado,
-      FIRST(endereco_encontrado) AS endereco_encontrado,
-      FIRST(contagem_cnefe) AS contagem_cnefe
+        SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+        FIRST(endereco_encontrado) AS endereco_encontrado,
+        '{match_type}' AS tipo_resultado,
+        AVG(desvio_metros) AS desvio_metros,
+        FIRST(contagem_cnefe) AS contagem_cnefe
       FROM temp_db
-      GROUP BY tempidgeocodebr, endereco_encontrado;"
+     GROUP BY tempidgeocodebr, endereco_encontrado;"
   )
 
 
@@ -241,28 +217,19 @@ match_weighted_cases_probabilistic <- function( # nocov start
     additional_cols <- paste0(", ", additional_cols)
 
     query_aggregate <- glue::glue(
-      # "CREATE OR REPLACE TEMPORARY TABLE aaa AS
-      "INSERT INTO output_db (tempidgeocodebr, lat, lon, tipo_resultado,
-                              endereco_encontrado, similaridade_logradouro,
-                              contagem_cnefe {colunas_encontradas})
+      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
+                              similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
-       SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-        '{match_type}' AS tipo_resultado,
-        FIRST(endereco_encontrado) AS endereco_encontrado,
-        FIRST(similaridade_logradouro) AS similaridade_logradouro,
-        FIRST(contagem_cnefe) AS contagem_cnefe
-        {additional_cols}
+         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+         FIRST(endereco_encontrado) AS endereco_encontrado,
+         '{match_type}' AS tipo_resultado,
+         AVG(desvio_metros) AS desvio_metros,
+         FIRST(similaridade_logradouro) AS similaridade_logradouro,
+         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
       FROM temp_db
       GROUP BY tempidgeocodebr, endereco_encontrado;"
     )
-    # #  "CREATE OR REPLACE TEMPORARY TABLE aaa AS
-    # "INSERT INTO output_db (tempidgeocodebr, lat, lon, tipo_resultado,
-    #                       endereco_encontrado, similaridade_logradouro,
-    #                       contagem_cnefe {colunas_encontradas})
-    #  SELECT tempidgeocodebr,
-
-
   }
 
   DBI::dbSendQueryArrow(con, query_aggregate)
@@ -273,9 +240,9 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # remove arrow tables from db
   duckdb::duckdb_unregister_arrow(con, "filtered_cnefe")
 
-#  if (match_type %like% "01") {
-    duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-#  }
+  #  if (match_type %like% "01") {
+  duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
+  #  }
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(
@@ -286,47 +253,3 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
   return(temp_n)
 } # nocov end
-
-
-
-# # fazer esse teste aqui com cats Prob Aprox
-# # especiamente o passo de criar passo 1.
-#
-#
-# library(dplyr)
-# dfgeo <- readRDS("dfgeo2.rds")
-#
-#
-# match_type <- 'pa03'
-# idsss <- filter(dfgeo, tipo_resultado %in% match_type)$id
-#
-# input_padrao_temp <- filter(input_padrao, tempidgeocodebr %in% idsss)
-#
-# # Convert input data frame to DuckDB table
-# duckdb::dbWriteTable(con, "input_padrao_db", input_padrao_temp,
-#                      overwrite = TRUE, temporary = TRUE)
-#
-#
-# key_cols <- get_key_cols(match_type)
-#
-# bench::mark(
-#   match_weighted_cases_probabilistic(  # match_cases_probabilistic_old
-#     con = con,
-#     x = 'input_padrao_db',
-#     y = 'filtered_cnefe',
-#     output_tb = "output_db",
-#     key_cols = key_cols,
-#     match_type = match_type,
-#     resultado_completo = TRUE)
-# )
-#
-# c <- DBI::dbReadTable(con, 'output_db')
-#
-# # expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# # atual1      122ms  123ms      8.14    16.9MB     8.14     2     2      246ms <dbl>  <Rprofmem> <bench_tm>
-# # atual2      116ms  121ms      8.31     459KB     2.77     3     1      361ms <dbl>  <Rprofmem> <bench_tm>
-# # atual3      114ms  122ms      8.19     459KB     2.05     4     1      489ms <dbl>  <Rprofmem> <bench_tm>
-#
-# # new1        108ms  112ms      8.93    14.1MB     8.93     2     2      224ms <dbl>  <Rprofmem> <bench_tm>
-# # new2        143ms  147ms      6.52    3.32MB     2.17     3     1      460ms <dbl>  <Rprofmem> <bench_tm>
-# # new3        151ms  156ms      6.39     613KB     3.20     2     1      313ms <dbl>  <Rprofmem> <bench_tm>
