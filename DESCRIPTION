@@ -37,6 +37,7 @@ Imports:
     enderecobr (>= 0.4.1),
     fs,
     glue,
+    h3r,
     httr2 (>= 1.0.0),
     nanoarrow (>= 0.3.0.1),
     parallel,

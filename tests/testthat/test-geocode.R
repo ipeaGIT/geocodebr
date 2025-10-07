@@ -20,6 +20,7 @@ tester <- function(enderecos = input_df,
                    campos_endereco = campos,
                    resultado_completo = FALSE,
                    resolver_empates = FALSE,
+                   h3_res = NULL,
                    resultado_sf = FALSE,
                    verboso = FALSE,
                    cache = TRUE,
@@ -29,6 +30,7 @@ tester <- function(enderecos = input_df,
     campos_endereco,
     resultado_completo,
     resolver_empates,
+    h3_res,
     resultado_sf,
     verboso,
     cache,
@@ -46,6 +48,10 @@ test_that("expected output", {
   # full results
   testthat::expect_warning(full_output <- tester(resultado_completo = TRUE))
   testthat::expect_true('endereco_encontrado' %in% names(full_output))
+
+  # add h3
+  std_output_h3 <- tester(h3_res = 3)
+  testthat::expect_true('h3_03' %in% names(std_output_h3))
 
   # output in sf format
   testthat::expect_warning(sf_output <- tester(resultado_sf = TRUE))
@@ -66,6 +72,9 @@ test_that("test empates", {
   # output ordenado como input
   testthat::expect_true( all(std_output$id == 1:nrow(input_df)) )
 
+  # add h3
+  std_output_h3 <- tester(h3_res = 3)
+  testthat::expect_true('h3_03' %in% names(std_output_h3))
 })
 
 test_that("test no messages", {
@@ -100,6 +109,10 @@ test_that("errors with incorrect input", {
   expect_error(tester(resultado_sf = 1))
   expect_error(tester(resultado_sf = NA))
   expect_error(tester(resultado_sf = c(TRUE, TRUE)))
+
+  expect_error(tester(h3_res = "a"))
+  expect_error(tester(h3_res = 50))
+  expect_error(tester(h3_res = Inf))
 
   expect_error(tester(n_cores = "a"))
   expect_error(tester(n_cores = 0))

@@ -87,6 +87,7 @@ df <- geocodebr::geocode(
   campos_endereco = campos,
   resultado_completo = FALSE,
   resolver_empates = FALSE,
+  h3_res = NULL,
   resultado_sf = FALSE,
   verboso = FALSE,
   cache = TRUE,
@@ -133,7 +134,9 @@ df_enderecos <- geocodebr::geocode_reverso(
 
 ### 3. Busca por CEPs
 
-Por fim, a função `busca_por_cep()` permite fazer consultas de CEPs para encontrar endereços associados a cada CEP. A função recebe um vetor de CEPs e retorna um `data.frame` com os endereços e as coordenadas geográficas de cada CEP.
+Por fim, a função `busca_por_cep()` permite fazer consultas de CEPs para encontrar endereços associados a cada CEP. A função recebe um vetor de CEPs e retorna um `data.frame` com os endereços e as coordenadas geográficas de cada CEP. O parâmetro
+`h3_res` pode ser utilizado para incluir no output o id das células H3 na resolução
+espacial desejada.
 
 ```{r}
 # amostra de CEPs
@@ -141,6 +144,7 @@ ceps <- c("70390-025", "20071-001")
 
 df_ceps <- geocodebr::busca_por_cep(
   cep = ceps,
+  h3_res = 9,
   resultado_sf = FALSE,
   verboso = FALSE
 )

@@ -25,9 +25,8 @@
 #'    automaticamente. Por padrão, é `FALSE`, e a função retorna apenas o caso
 #'    mais provável. Para mais detalhes sobre como é feito o processo de
 #'    desempate, consulte abaixo a seção "Detalhes".
-#' @param resultado_sf Lógico. Indica se o resultado deve ser um objeto espacial
-#'    da classe `sf`. Por padrão, é `FALSE`, e o resultado é um `data.frame` com
-#'    as colunas `lat` e `lon`.
+#' @template h3_res
+#' @template resultado_sf
 #' @template verboso
 #' @template cache
 #' @template n_cores
@@ -70,6 +69,7 @@ geocode <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = FALSE,
+                    h3_res = NULL,
                     resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
@@ -83,6 +83,7 @@ geocode <- function(enderecos,
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
   checkmate::assert_number(n_cores, lower = 1, finite = TRUE)
+  checkmate::assert_number(h3_res, null.ok = TRUE, lower = 0, upper = 15)
   campos_endereco <- assert_and_assign_address_fields(
     campos_endereco,
     enderecos
@@ -279,6 +280,20 @@ geocode <- function(enderecos,
 
   if(isFALSE(resultado_completo)){ output_df[, logradouro_encontrado := NULL]}
 
+  # add H3
+  if( !is.null(h3_res) ) {
+
+    colname <- paste0(
+      'h3_',
+      formatC(h3_res, width = 2, flag = "0")
+    )
+
+    output_df[!is.na(lat),
+              {{colname}} := h3r::latLngToCell(lat = lat,
+                                               lng = lon,
+                                               resolution = h3_res)
+              ]
+    }
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {

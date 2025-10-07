@@ -2,9 +2,12 @@
 
 ## Mudanças grandes (Major changes)
 
+- Novo parâmetro `h3_res` nas funções `geocode()` e `busca_por_cep()`, que permite 
+o usuário inserir uma coluna no output indicando o id da célula H3 na resolução 
+espacial desejada. [Encerra issue #43](https://github.com/ipeaGIT/geocodebr/issues/43).
 - O output da função `geocode()` agora inclui uma nova coluna `desvio_metros` que 
 apresenta uma forma intuitiva o grau de incerteza do resultado encontrado. [Encerra issue #11](https://github.com/ipeaGIT/geocodebr/issues/11).
-- Nova base de dados com release `v0.3.0`. A principal mudança aqui foi a 
+- Nova base de dados (release `v0.3.0`). A principal mudança aqui foi a 
 estratégia de agregação de coordenadas. Na versão anterior, a base consistia numa
 média simples das coordenadas dos pontos que pertenciam ao mesmo grupo de colunas.
 Na atual versão, esse cálculo é feito em duas etapas. Primeiro encontramos o ponto 
@@ -12,16 +15,18 @@ médio e calculamos sua distância até todos os pontos. Em seguida, descartamos
 aqueles pontos que estão  acima do percentil 95% de distância, e calculamos então 
 novo ponto médio. Isso evita eventual distorções quando há poucos pontos muito 
 isolados. 
-- A nova base de dados (com release `v0.3.0`) utiliza arquivos em formato `.parquet`
-compactados, o que acelera o processo de download dos dados e diminuiu pela metada
-o tamanho dos arquivos armazenados locamente, de `2.98` GB para `1.17` GB.
-- os dados de cache agora são armazenados na sub-pasta `"geocodebr_data_release_{data_release}"`, dentro da pasta de cache definida pelo usuário. Os dados de releases antigos passam a ser deletados automaticamente quando há atualização do data release. [Encerra issue #64](https://github.com/ipeaGIT/geocodebr/issues/64).
+- A nova base de dados (release `v0.3.0`) utiliza arquivos em formato `.parquet`
+compactados, o que diminuiu pela metade o tamanho dos arquivos (de `2.98` GB para 
+`1.17` GB) e acelera o processo de download dos dados.
+- Os dados de cache agora são armazenados na sub-pasta `"geocodebr_data_release_{data_release}"`, 
+dentro da pasta de cache definida pelo usuário. Os dados de releases antigos passam a ser deletados automaticamente quando há atualização do data release. [Encerra issue #64](https://github.com/ipeaGIT/geocodebr/issues/64).
 
 # geocodebr 0.2.1
 
 ## Correção de bugs (Bug fixes)
 
-- Resolvido bug que retornava erro se o input to usuario comecava o geocode direto a partir do match case `"pl01"`.
+- Resolvido bug que retornava erro se o input to usuario comecava o geocode direto 
+a partir do match case `"pl01"`. [Encerra issue #56](https://github.com/ipeaGIT/geocodebr/issues/56).
 
 
 # geocodebr 0.2.0

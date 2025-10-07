@@ -9,6 +9,7 @@ geocode(
   campos_endereco = definir_campos(),
   resultado_completo = FALSE,
   resolver_empates = FALSE,
+  h3_res = NULL,
   resultado_sf = FALSE,
   verboso = TRUE,
   cache = TRUE,
@@ -37,6 +38,10 @@ parâmetro \code{resolver_empates} indica se a função deve resolver esses empa
 automaticamente. Por padrão, é \code{FALSE}, e a função retorna apenas o caso
 mais provável. Para mais detalhes sobre como é feito o processo de
 desempate, consulte abaixo a seção "Detalhes".}
+
+\item{h3_res}{Um número que indica a resolução espacial da célula hexagonal
+H3 da localização dos pontos retornados. Por padrão, é NULL. Detalhes sobre
+as resoluções disponíveis em \url{https://h3geo.org/docs/core-library/restable/}}
 
 \item{resultado_sf}{Lógico. Indica se o resultado deve ser um objeto espacial
 da classe \code{sf}. Por padrão, é \code{FALSE}, e o resultado é um \code{data.frame} com

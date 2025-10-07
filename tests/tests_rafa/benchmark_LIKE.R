@@ -89,7 +89,7 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  v3t <- geocodebr::geocode(
+  v2 <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,

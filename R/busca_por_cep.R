@@ -5,8 +5,8 @@
 #' 2000, EPSG 4674.
 #'
 #' @param cep Vetor. Um CEP ou um vetor de CEPs com 8 dígitos.
-#' @param resultado_sf Lógico. Indica se o resultado deve ser um objeto espacial
-#'    da classe `sf`. Por padrão, é `FALSE`, e o resultado é um `data.frame`.
+#' @template h3_res
+#' @template resultado_sf
 #' @template verboso
 #' @template cache
 #'
@@ -29,6 +29,7 @@
 #'
 #' @export
 busca_por_cep <- function(cep,
+                          h3_res = NULL,
                           resultado_sf = FALSE,
                           verboso = TRUE,
                           cache = TRUE){
@@ -38,6 +39,7 @@ busca_por_cep <- function(cep,
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
+  checkmate::assert_number(h3_res, null.ok = TRUE, lower = 0, upper = 15)
 
 
   # normalize input data -------------------------------------------------------
@@ -84,6 +86,21 @@ busca_por_cep <- function(cep,
   if (length(missing_cep)>0) {
     temp_dt <- data.table::data.table(cep= missing_cep)
     output_df <- data.table::rbindlist(list(output_df, temp_dt), fill = TRUE)
+  }
+
+  # add H3
+  if( !is.null(h3_res) ) {
+
+    colname <- paste0(
+      'h3_',
+      formatC(h3_res, width = 2, flag = "0")
+    )
+
+    output_df[!is.na(lat),
+              {{colname}} := h3r::latLngToCell(lat = lat,
+                                               lng = lon,
+                                               resolution = h3_res)
+    ]
   }
 
   # convert df to simple feature

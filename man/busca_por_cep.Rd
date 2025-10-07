@@ -4,13 +4,24 @@
 \alias{busca_por_cep}
 \title{Busca por CEP}
 \usage{
-busca_por_cep(cep, resultado_sf = FALSE, verboso = TRUE, cache = TRUE)
+busca_por_cep(
+  cep,
+  h3_res = NULL,
+  resultado_sf = FALSE,
+  verboso = TRUE,
+  cache = TRUE
+)
 }
 \arguments{
 \item{cep}{Vetor. Um CEP ou um vetor de CEPs com 8 dígitos.}
 
+\item{h3_res}{Um número que indica a resolução espacial da célula hexagonal
+H3 da localização dos pontos retornados. Por padrão, é NULL. Detalhes sobre
+as resoluções disponíveis em \url{https://h3geo.org/docs/core-library/restable/}}
+
 \item{resultado_sf}{Lógico. Indica se o resultado deve ser um objeto espacial
-da classe \code{sf}. Por padrão, é \code{FALSE}, e o resultado é um \code{data.frame}.}
+da classe \code{sf}. Por padrão, é \code{FALSE}, e o resultado é um \code{data.frame} com
+as colunas \code{lat} e \code{lon}.}
 
 \item{verboso}{Um valor lógico. Indica se barras de progresso e mensagens
 devem ser exibidas durante o download dos dados do CNEFE e a geocodificação

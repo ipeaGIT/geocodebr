@@ -75,6 +75,7 @@ ends_geo <- geocode(
   campos_endereco = campos, 
   resultado_completo = FALSE,
   resolver_empates = TRUE,
+  h3_res = 9,
   resultado_sf = FALSE,
   verboso = FALSE
   )
@@ -83,10 +84,13 @@ head(ends_geo)
 ```
 
 
-Por padrão, a tabela de *output* é igual à tabela de input do usuário acrescida de colunas com a latitude e longitude encontradas, bem como de colunas indicando o nível de precisão dos resultados e o endereço encontrado. Quando `resultado_completo = TRUE`, o output é acrescido de algumas colunas extras.
+Por padrão, a tabela de *output* é igual à tabela de input do usuário acrescida de colunas com a latitude e longitude encontradas, bem como de colunas indicando o nível de precisão dos resultados e o endereço encontrado. Quando `resultado_completo = TRUE`, o output é acrescido de algumas colunas extras discriminando separadamente cada componente do endereço que teria sido encontrado.
 
-Cabe também destacar aqui outros dois argumentos da função `geocode()`:
+Cabe também destacar aqui outros três argumentos da função `geocode()`:
 
+- `h3_res` : que permite o usuário inserir uma coluna no output indicando o id 
+da célula H3 na resolução espacial desejada. Detalhes sobre as resoluções 
+disponíveis em \code{\link{https://h3geo.org/docs/core-library/restable/};
 - `resolver_empates`: serve para indicar se o usuário quer que a função resolva automaticamente casos de empate, i.e. casos que o endereço de input do usuário 
 pode se referir a diferentes localidades na cidade (e.g. logradouros diferentes 
 com mesmo nome mas em bairros distintos). Quando `TRUE`, a função resolve os 

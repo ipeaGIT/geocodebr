@@ -9,11 +9,13 @@ ceps_not_valid <- c("99999-999")
 
 
 tester <- function(cep,
+                   h3_res = NULL,
                    resultado_sf = FALSE,
                    verboso = TRUE,
                    cache = TRUE) {
   busca_por_cep(
     cep,
+    h3_res,
     resultado_sf,
     verboso,
     cache
@@ -28,6 +30,10 @@ test_that("expected output", {
 
   # expected class
   testthat::expect_s3_class(output, 'data.frame')
+
+  # add h3
+  h3_output <- tester(cep = ceps_valid, h3_res = 3)
+  testthat::expect_true('h3_03' %in% names(h3_output))
 
   # output in sf format
   sf_output <- tester(cep = ceps_valid, resultado_sf = TRUE)

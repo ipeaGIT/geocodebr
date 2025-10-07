@@ -85,6 +85,7 @@ df <- geocodebr::geocode(
   campos_endereco = campos,
   resultado_completo = FALSE,
   resolver_empates = FALSE,
+  h3_res = NULL,
   resultado_sf = FALSE,
   verboso = FALSE,
   cache = TRUE,
@@ -130,6 +131,7 @@ ceps <- c("70390-025", "20071-001")
 
 df_ceps <- geocodebr::busca_por_cep(
  cep = ceps,
+ h3_res = NULL,
  resultado_sf = FALSE,
  verboso = FALSE
  )
