@@ -42,17 +42,16 @@ test_that("cache usage is controlled by the cache argument", {
     )
 
   # using a mocked binding for perform_requests_in_parallel here just to save us
-  # some time. as long as none of its elements is a failed request, the funtion
+  # some time. as long as none of its elements is a failed request, the function
   # will make download_files return the path to the files that would be
   # downloaded, which is basically what we want to test here
-
   local_mocked_bindings(
     perform_requests_in_parallel = function(...) TRUE
   )
 
   result <- tester(cache = FALSE)
   expect_true(
-    grepl(file.path(fs::path_norm(tempdir()), "standardized_cnefe"), result)
+    grepl(file.path(fs::path_norm(tempdir()), "geocodebr_temp"), result)
   )
 })
 

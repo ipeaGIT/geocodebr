@@ -53,18 +53,24 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
     "download/{data_release}/{all_files}"
   )
 
+  # create dir with data release inside the cache dir / dir is versioned
   if (!cache) {
-    cache_dir <- as.character(fs::path_norm(tempfile("standardized_cnefe")))
-    } else {
+    cache_dir <- as.character(fs::path_norm(tempfile("geocodebr_temp")))
+    data_dir <- glue::glue("{cache_dir}/geocodebr_data_release_{data_release}")
+    if (!dir.exists(data_dir)) {
+      fs::dir_create(data_dir, recurse = TRUE)
+    }
 
-      # apaga release antigo se houver
-      apaga_data_release_antigo()
+  } else {
+    # apaga release antigo se houver
+    apaga_data_release_antigo()
 
-      # create local dir / cache dir is versioned
-      cache_dir <- geocodebr::listar_pasta_cache()
-      data_dir <- glue::glue("{cache_dir}/geocodebr_data_release_{data_release}")
-      if (!dir.exists(data_dir)) { fs::dir_create(data_dir, recurse = TRUE) }
-      }
+    cache_dir <- geocodebr::listar_pasta_cache()
+    data_dir <- glue::glue("{cache_dir}/geocodebr_data_release_{data_release}")
+    if (!dir.exists(data_dir)) {
+      fs::dir_create(data_dir, recurse = TRUE)
+    }
+  }
 
 
   # we only need to download data that hasn't been downloaded yet. note that if
