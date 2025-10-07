@@ -123,5 +123,5 @@
 #' logradouro da base de endereços que apresenta a maior semelhança de Jaro
 #' condicionado a uma semelhança mínima, e desde que também haja match
 #' determinístico em ao menos um dos campos "cep" e "localidade".
-#' O {geocodebr} utiliza uma semelhança mínima de `0.85` nos casos de match
+#' O geocodebr utiliza uma semelhança mínima de `0.85` nos casos de match
 #' probabilistico, e de `0.90` nos demais casos.
