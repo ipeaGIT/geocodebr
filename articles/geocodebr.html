@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Introdução ao geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-09-01</h4>
+            <h4 data-toc-skip class="date">2025-10-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -156,14 +156,16 @@ encontrar as coordenadas geográficas dos endereços de input.</li>
 <p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
 dados do CNEFE estejam armazenados localmente. A primeita vez que a
 função é executada, ela baixa os dados do CNEFE e salva em um cache
-local na sua máquina. No total, esses dados somam cerca de 3 GB, o que
+local na sua máquina. No total, esses dados somam cerca de 1.2 GB, o que
 pode fazer com que a primeira execução da função demore. Esses dados, no
 entanto, são salvos de forma persistente, logo eles são baixados uma
 única vez. Ver abaixo mais informações sobre o cache de dados.</p>
 <p>Os resultados do <strong>{geocodebr}</strong> são classificados em
 seis categorias gerais de <code>precisao</code>, dependendo do nível de
 exatidão com que cada endereço de input foi encontrado nos dados do
-CNEFE. Para mais informações, consulte a documentação da função ou a <a href="https://ipeagit.github.io/geocodebr/articles/geocode.html"><strong>vignette
+CNEFE. s resultados trazem ainda uma estimativa da incerteza da
+localização encontrado como um <code>desvio_metros</code>. Para mais
+informações, consulte a documentação da função ou a <a href="https://ipeagit.github.io/geocodebr/articles/geocode.html"><strong>vignette
 “geocode”</strong></a>.</p>
 </div>
 <div class="section level3">
@@ -237,17 +239,17 @@ dentro dela.</li>
 <em>cache</em> esteja configurado como a seguir:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/listar_pasta_cache.html">listar_pasta_cache</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0"</span></span>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr"</span></span>
 <span></span>
 <span><span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="../reference/listar_dados_cache.html">listar_dados_cache</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_cep_localidade.parquet"                  </span></span>
-<span><span class="co">#&gt; [2] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_cep.parquet"                             </span></span>
-<span><span class="co">#&gt; [3] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_localidade.parquet"                      </span></span>
-<span><span class="co">#&gt; [4] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_cep_localidade.parquet"       </span></span>
-<span><span class="co">#&gt; [5] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_localidade.parquet"           </span></span>
-<span><span class="co">#&gt; [6] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_numero_cep_localidade.parquet"</span></span>
-<span><span class="co">#&gt; [7] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio_logradouro_numero_localidade.parquet"    </span></span>
-<span><span class="co">#&gt; [8] "/home/runner/.cache/R/geocodebr/data_release_v0.2.0/municipio.parquet"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_cep_localidade.parquet"                  </span></span>
+<span><span class="co">#&gt; [2] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_cep.parquet"                             </span></span>
+<span><span class="co">#&gt; [3] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_localidade.parquet"                      </span></span>
+<span><span class="co">#&gt; [4] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_cep_localidade.parquet"       </span></span>
+<span><span class="co">#&gt; [5] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_localidade.parquet"           </span></span>
+<span><span class="co">#&gt; [6] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_numero_cep_localidade.parquet"</span></span>
+<span><span class="co">#&gt; [7] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_numero_localidade.parquet"    </span></span>
+<span><span class="co">#&gt; [8] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio.parquet"</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,16 @@
       <small>Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="geocodebr-030-dev">geocodebr 0.3.0 dev<a class="anchor" aria-label="anchor" href="#geocodebr-030-dev"></a></h2>
+<div class="section level3">
+<h3 id="mudanças-grandes-major-changes-0-3-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-3-0"></a></h3>
+<ul><li>O output da função <code><a href="../reference/geocode.html">geocode()</a></code> agora inclui uma nova coluna <code>desvio_metros</code> que apresenta uma forma intuitiva o grau de incerteza do resultado encontrado. <a href="https://github.com/ipeaGIT/geocodebr/issues/11" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/11" class="external-link">#11</a>.</li>
+<li>Nova base de dados com release <code>v0.3.0</code>. A principal mudança aqui foi a estratégia de agregação de coordenadas. Na versão anterior, a base consistia numa média simples das coordenadas dos pontos que pertenciam ao mesmo grupo de colunas. Na atual versão, esse cálculo é feito em duas etapas. Primeiro encontramos o ponto médio e calculamos sua distância até todos os pontos. Em seguida, descartamos aqueles pontos que estão acima do percentil 95% de distância, e calculamos então novo ponto médio. Isso evita eventual distorções quando há poucos pontos muito isolados.</li>
+<li>A nova base de dados (com release <code>v0.3.0</code>) utiliza arquivos em formato <code>.parquet</code> compactados, o que acelera o processo de download dos dados e diminuiu pela metada o tamanho dos arquivos armazenados locamente, de <code>2.98</code> GB para <code>1.17</code> GB.</li>
+<li>os dados de cache agora são armazenados na sub-pasta <code>"geocodebr_data_release_{data_release}"</code>, dentro da pasta de cache definida pelo usuário. Os dados de releases antigos passam a ser deletados automaticamente quando há atualização do data release. <a href="https://github.com/ipeaGIT/geocodebr/issues/64" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/64" class="external-link">#64</a>.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.1" id="geocodebr-021">geocodebr 0.2.1<a class="anchor" aria-label="anchor" href="#geocodebr-021"></a></h2><p class="text-muted">CRAN release: 2025-07-07</p>
 <div class="section level3">
@@ -84,7 +94,7 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="geocodebr-010">geocodebr 0.1.0<a class="anchor" aria-label="anchor" href="#geocodebr-010"></a></h2><p class="text-muted">CRAN release: 2025-02-12</p>
-<ul><li>Primeira versão estável.</li>
+<ul><li>Primeira versão.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

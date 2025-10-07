@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Geocode</h1>
             
-            <h4 data-toc-skip class="date">2025-09-01</h4>
+            <h4 data-toc-skip class="date">2025-10-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocode.Rmd" class="external-link"><code>vignettes/geocode.Rmd</code></a></small>
       <div class="d-none name"><code>geocode.Rmd</code></div>
@@ -118,7 +118,7 @@ encontrar as coordenadas geográficas dos dados de input.</li>
 <p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
 dados do CNEFE estejam armazenados localmente. A primeita vez que a
 função é executada, ela baixa os dados do CNEFE e salva em um cache
-local na sua máquina. No total, esses dados somam cerca de 3 GB, o que
+local na sua máquina. No total, esses dados somam cerca de 1.2 GB, o que
 pode fazer com que a primeira execução da função demore. Esses dados, no
 entanto, são salvos de forma persistente, logo eles são baixados uma
 única vez. Mais informações sobre o cache de dados <a href="https://ipeagit.github.io/geocodebr/articles/geocodebr.html#cache-de-dados">aqui</a>.</p>
@@ -144,22 +144,22 @@ entanto, são salvos de forma persistente, logo eles são baixados uma
 <span><span class="co">#&gt; 4:     4     Rua Alexandre Amaral      0 23098-120           Santissimo</span></span>
 <span><span class="co">#&gt; 5:     5                Avenida E    300 23860-000         Praia Grande</span></span>
 <span><span class="co">#&gt; 6:     6      Rua Princesa Isabel    263           Estacao Experimental</span></span>
-<span><span class="co">#&gt;       nm_municipio code_muni  nm_uf        lat       lon tipo_resultado</span></span>
-<span><span class="co">#&gt;             &lt;char&gt;     &lt;int&gt; &lt;char&gt;      &lt;num&gt;     &lt;num&gt;         &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     Nova Iguacu   3303500     RJ -22.695496 -43.47118           dn01</span></span>
-<span><span class="co">#&gt; 2: Duque de Caxias   3301702     RJ -22.779173 -43.31134           dn01</span></span>
-<span><span class="co">#&gt; 3:  Angra dos Reis   3300100     RJ -22.978837 -44.20848           dl01</span></span>
-<span><span class="co">#&gt; 4:  Rio de Janeiro   3304557     RJ -22.868992 -43.51150           dl01</span></span>
-<span><span class="co">#&gt; 5:     Mangaratiba   3302601     RJ -22.929864 -43.97214           dn01</span></span>
-<span><span class="co">#&gt; 6:      Rio Branco   1200401     AC  -9.963436 -67.83559           dn03</span></span>
-<span><span class="co">#&gt;      precisao</span></span>
-<span><span class="co">#&gt;        &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:     numero</span></span>
-<span><span class="co">#&gt; 2:     numero</span></span>
-<span><span class="co">#&gt; 3: logradouro</span></span>
-<span><span class="co">#&gt; 4: logradouro</span></span>
-<span><span class="co">#&gt; 5:     numero</span></span>
-<span><span class="co">#&gt; 6:     numero</span></span>
+<span><span class="co">#&gt;       nm_municipio code_muni  nm_uf        lat       lon   precisao</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;     &lt;int&gt; &lt;char&gt;      &lt;num&gt;     &lt;num&gt;     &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:     Nova Iguacu   3303500     RJ -22.695509 -43.47116     numero</span></span>
+<span><span class="co">#&gt; 2: Duque de Caxias   3301702     RJ -22.779175 -43.31132     numero</span></span>
+<span><span class="co">#&gt; 3:  Angra dos Reis   3300100     RJ -22.978800 -44.20847 logradouro</span></span>
+<span><span class="co">#&gt; 4:  Rio de Janeiro   3304557     RJ -22.869117 -43.51140 logradouro</span></span>
+<span><span class="co">#&gt; 5:     Mangaratiba   3302601     RJ -22.929865 -43.97214     numero</span></span>
+<span><span class="co">#&gt; 6:      Rio Branco   1200401     AC  -9.963438 -67.83559     numero</span></span>
+<span><span class="co">#&gt;    tipo_resultado desvio_metros</span></span>
+<span><span class="co">#&gt;            &lt;char&gt;         &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:           dn01             9</span></span>
+<span><span class="co">#&gt; 2:           dn01             6</span></span>
+<span><span class="co">#&gt; 3:           dl01            59</span></span>
+<span><span class="co">#&gt; 4:           dl01           300</span></span>
+<span><span class="co">#&gt; 5:           dn01             6</span></span>
+<span><span class="co">#&gt; 6:           dn03             6</span></span>
 <span><span class="co">#&gt;                                                            endereco_encontrado</span></span>
 <span><span class="co">#&gt;                                                                         &lt;char&gt;</span></span>
 <span><span class="co">#&gt; 1:      RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span></span>
@@ -200,39 +200,51 @@ retornado como um objeto espacial de classe <code>sf</code> simple
 feature.</li>
 </ul>
 <p>As coordendas espaciais do resultado usam o sistema de referência
-SIRGAS2000 (EPSG 4674.), padrão adotado pelo IBGE em todo o Brasil. Cada
-par de coordenadas encontrado pode ser classificado conforme o seu grau
-de precisão (coluna <code>precisao</code>) e os campos do endereço
-utilizados para encontrá-lo (<code>tipo_resultado</code>). A seção a
-seguir apresenta mais informações sobre essas colunas.</p>
-<div class="section level3">
-<h3 id="grau-de-precisão-dos-resultados">Grau de precisão dos resultados<a class="anchor" aria-label="anchor" href="#grau-de-precis%C3%A3o-dos-resultados"></a>
-</h3>
+SIRGAS2000 (EPSG 4674.), padrão adotado pelo IBGE em todo o Brasil.</p>
+</div>
+<div class="section level2">
+<h2 id="processo-de-matching-de-endereços">Processo de matching de endereços<a class="anchor" aria-label="anchor" href="#processo-de-matching-de-endere%C3%A7os"></a>
+</h2>
 <p>As coordenadas incluídas no resultado da <code><a href="../reference/geocode.html">geocode()</a></code> são
 calculadas a partir da média das coordenadas dos endereços do CNEFE que
-correspondem a cada um dos endereços de <em>input</em>. A
-correspondência entre os endereços de entrada e os do CNEFE pode ser
-feita com base em diferentes combinações de campos, impactando, assim,
-na precisão do resultado retornado.</p>
-<p>No caso mais rigoroso, a função encontra uma correspondência
-determinística para cada um dos campos do endereço (estado, município,
-logradouro, número, CEP e localidade). Pense, por exemplo, em um prédio
-com vários apartamentos, cuja única variação no endereço se dá a nível
-de apartamento: o resultado, nesse caso, é a média das coordenadas dos
-apartamentos, que podem diferir ligeiramente.</p>
+correspondem a cada um dos endereços de <em>input</em>. Esse cálculo é
+feito em duas etapas, e retorna o ponto médio dos 95% pontos mais
+próximos entre si, evitando eventual distorção por devido a poucos
+pontos muito isolados.</p>
+<p>A correspondência entre os endereços de entrada e os do CNEFE pode
+ser feita com base em diferentes combinações de campos, impactando,
+assim, na precisão do resultado retornado. No caso mais rigoroso, a
+função encontra uma correspondência determinística para todos os campos
+do endereço (estado, município, logradouro, número, CEP e localidade).
+Pense, por exemplo, em um prédio com vários apartamentos, cuja única
+variação no endereço se dá a nível de apartamento: o resultado, nesse
+caso, é a média das coordenadas dos apartamentos, que podem diferir
+ligeiramente.</p>
 <p>Em um caso menos rigoroso, no qual são encontradas correspondências
 apenas para os campos de estado, município, logradouro e localidade, a
 função calcula as coordenadas médias de todos os endereços do CNEFE que
 se encontram na mesma rua e na mesma localidade. O resultado, portanto,
 é agregado a nível de rua, tendendo para a extremidade do logradouro com
 maior concentração de endereços.</p>
+</div>
+<div class="section level2">
+<h2 id="grau-de-precisão-dos-resultados">Grau de precisão dos resultados<a class="anchor" aria-label="anchor" href="#grau-de-precis%C3%A3o-dos-resultados"></a>
+</h2>
+<p>A precisão dos resultados do <strong>{geocodebr}</strong> são
+apresentadas em 3 colunas, <code>precisao</code>,
+<code>tipo_resultado</code> e <code>desvio_metros</code>, explicadas
+abaixo.</p>
+<div class="section level3">
+<h3 id="precisão">Precisão<a class="anchor" aria-label="anchor" href="#precis%C3%A3o"></a>
+</h3>
 <p>A coluna <code>precisao</code> se refere ao nível de agregação das
-coordenadas do CNEFE utilizadas pela <code><a href="../reference/geocode.html">geocode()</a></code>. A função
-sempre retorna o resultado de maior precisão possível - ou seja, ela só
-vai procurar endereços com precisão <code>"numero_aproximado"</code>
-(ver a seguir) caso não tenha encontrado correspondência de precisão
-<code>"numero"</code>. As coordenadas calculadas podem ser classificadas
-em seis diferentes categorias de precisão:</p>
+coordenadas do CNEFE utilizadas no processo de geolicalização. A função
+<code><a href="../reference/geocode.html">geocode()</a></code> sempre retorna o resultado de maior precisão
+possível - ou seja, ela só vai procurar endereços com precisão
+<code>"numero_aproximado"</code> (ver a seguir) caso não tenha
+encontrado correspondência de precisão <code>"numero"</code>. As
+coordenadas calculadas podem ser classificadas em seis diferentes
+categorias de precisão:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code>"numero"</code> - calculadas a partir de endereços que
@@ -256,6 +268,10 @@ compartilham a mesma localidade;</li>
 <code>"municipio"</code> - calculadas a partir de endereços que
 compartilham o mesmo município.</li>
 </ol>
+</div>
+<div class="section level3">
+<h3 id="tipos-de-resultados">Tipos de resultados<a class="anchor" aria-label="anchor" href="#tipos-de-resultados"></a>
+</h3>
 <p>A coluna <code>tipo_resultado</code> fornece informações mais
 detalhadas sobre os campos de endereço utilizados no cálculo das
 coordenadas de cada endereço de entrada. Cada categoria é nomeada a
@@ -362,6 +378,27 @@ faltando ‘S/N’)
 </ul>
 <p>Endereços não encontrados são retornados com latitude, longitude,
 precisão e tipo de resultado <code>NA</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="desvio-em-metros">Desvio em metros<a class="anchor" aria-label="anchor" href="#desvio-em-metros"></a>
+</h3>
+<p>A coluna <code>desvio_metros</code> apresenta uma forma intuitiva e
+prática de saber o grau de incerteza do resultado encontrado. Essa
+coluna informa que pelo menos 95% de todos os pontos do CNEFE que
+possuem corrêspondência com o endereço de input estão num raio de x
+metros da localização encontrada.</p>
+<p>Um desvio de <code>30</code> metros, por exemplo, tende a representar
+um resultado muito confiável. A depender de como o dado geolocalizado
+será utilizado, até mesmos resultados com um <code>desvio_metros</code>
+de até 500 ou 900 metros podem ser ser aceitáveis.</p>
+<p>A coluna <code>desvio_metros</code> pode ser particularmente útil
+para decidir por exemplo se um resultado encontrado com a
+<code>precisao</code> de CEP deveria ser aceitável. Muitas cidades do
+Brasil possuem um CEP único, o que tende a gerar resultados com
+altíssimo grau de incerteza. Em várias cidades, no entanto, um CEP pode
+ser circunscrito a uma área muito pequena e as vezes até um único
+edifício. Nesses casos, o valor do <code>desvio_metros</code> tende a
+ser bem pequeno.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
