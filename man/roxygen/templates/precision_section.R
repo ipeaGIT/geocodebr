@@ -5,8 +5,7 @@
 #'
 #' # Precisão
 #'
-#' Os resultados do **{geocodebr}** são classificados em seis amplas categorias
-#' de `precisao`:
+#' Os resultados são classificados em seis amplas categorias de `precisao`:
 #'
 #' 1. "numero"
 #' 2. "numero_aproximado"
@@ -101,19 +100,20 @@
 #' A coluna `desvio_metros` apresenta uma forma intuitiva e prática de saber o
 #' grau de incerteza do resultado encontrado. Essa coluna informa que pelo menos
 #' 95% de todos os pontos do CNEFE que possuem corrêspondência com o endereço de
-#' input  estão num raio de x metros da localização encontrada.
+#' input estão num raio de `x` metros da localização encontrada.
 #'
-#' Um desvio de `30` metros, por exemplo, tende a representar um resultado muito
-#' confiável. A depender de como o dado geolocalizado será utilizado, até mesmos
-#' resultados com um `desvio_metros` de até 500 ou 900 metros podem ser ser
+#' Um desvio de até `30` metros, por exemplo, tende a representar um resultado
+#' muito confiável. A depender de como o dado geolocalizado será utilizado, até
+#' mesmos resultados com `desvio_metros` de até 500 ou 900 metros podem ser ser
 #' aceitáveis.
 #'
-#' A coluna `desvio_metros` pode ser particularmente útil para decidir por exemplo
-#' se um resultado encontrado com a `precisao` de CEP deveria ser aceitável.
-#' Muitas cidades do Brasil possuem um CEP único, o que tende a gerar resultados
-#' com altíssimo grau de incerteza. Em várias cidades, no entanto, um CEP pode ser
-#' circunscrito a uma área muito pequena e as vezes até um único edifício. Nesses
-#' casos, o valor do `desvio_metros` tende a ser bem pequeno.
+#' A coluna `desvio_metros` é particularmente útil para decidir por exemplo se
+#' um resultado encontrado com a `precisao` de CEP, localidade ou logradouro
+#' deveria ser aceitável. Por exemplo, muitas cidades do Brasil possuem um CEP
+#' único, o que tende a gerar resultados com alto grau de incerteza. Em várias
+#' cidades, no entanto, um CEP pode ser circunscrito a uma área muito pequena e
+#' as vezes até um único edifício. Nesses casos, o valor do `desvio_metros`
+#' tende a ser bem pequeno.
 #'
 #' # Busca probabilistica
 #'
