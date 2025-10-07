@@ -22,10 +22,11 @@
 #'
 #' df <- geocodebr::busca_por_cep(
 #'   cep = ceps,
+#'   h3_res = 10,
 #'   verboso = FALSE
 #'   )
 #'
-#' df
+#' head(df)
 #'
 #' @export
 busca_por_cep <- function(cep,
@@ -88,8 +89,10 @@ busca_por_cep <- function(cep,
     output_df <- data.table::rbindlist(list(output_df, temp_dt), fill = TRUE)
   }
 
+  data.table::setDT(output_df)
+
   # add H3
-  if( !is.null(h3_res) ) {
+  if (!is.null(h3_res)) {
 
     colname <- paste0(
       'h3_',
