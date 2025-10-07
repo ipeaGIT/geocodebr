@@ -1,3 +1,5 @@
+# gera bbox de estados e municipios
+
 library(sf)
 library(dplyr)
 
