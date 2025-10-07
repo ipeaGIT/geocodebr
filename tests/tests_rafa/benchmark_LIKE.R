@@ -89,19 +89,20 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  temp_dfgeo2 <- geocodebr::geocode(
+  v3f <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
     resultado_completo = T,
     verboso = T,
     resultado_sf = F,
-    resolver_empates = F
+    resolver_empates = T
   )
 )
 # sequencia de matches
 #   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
 #           v3  36.7s  36.7s    0.0272    63.2MB    0.272     1    10      36.7s <dt>
+#           v2  28.4s  28.4s    0.0352    3.06GB    0.246     1     7
 
 
 

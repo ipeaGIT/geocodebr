@@ -38,9 +38,14 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
 
 
-  # 1st step: create small table "unique_logradouros" with unique logradouros -----------------------
+  # 1st step: create small table with unique logradouros -----------------------
 
   if (match_type %like% "01") {
+
+    # unique_logradouros_cep_localidade <- filtered_cnefe |>
+    #   dplyr::select(dplyr::all_of(c("estado", "municipio", "logradouro", "cep", "localidade"))) |>
+    #   dplyr::distinct() |>
+    #   dplyr::compute()
 
     path_unique_cep_loc <- paste0(listar_pasta_cache(), "/municipio_logradouro_cep_localidade.parquet")
     unique_logradouros <- arrow_open_dataset( path_unique_cep_loc ) |>
@@ -162,24 +167,20 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # match query
   query_match <- glue::glue(
     "CREATE OR REPLACE TEMPORARY VIEW temp_db AS
-    SELECT {x}.tempidgeocodebr,
-    {x}.numero,
-    {y}.numero AS numero_cnefe,
-    {y}.lat,
-    {y}.lon,
-    REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
-    {x}.similaridade_logradouro,
-    {y}.logradouro AS logradouro_encontrado,
-    {y}.desvio_metros,
-    {y}.n_casos AS contagem_cnefe {additional_cols}
-    FROM {x}
-    LEFT JOIN {y}
-    ON {join_condition_determ}
-    WHERE lon IS NOT NULL {cols_not_null_match};"
+      SELECT {x}.tempidgeocodebr, {x}.numero, {y}.numero AS numero_cnefe,
+             {y}.lat, {y}.lon,
+             REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
+             {x}.similaridade_logradouro,
+             {y}.logradouro AS logradouro_encontrado,
+             {y}.desvio_metros,
+             {y}.n_casos AS contagem_cnefe {additional_cols}
+        FROM {x}
+        LEFT JOIN {y}
+        ON {join_condition_determ}
+      WHERE lon IS NOT NULL {cols_not_null_match};"
   )
 
   DBI::dbSendQueryArrow(con, query_match)
-  # DBI::dbExecute(con, query_match)
   # c <- DBI::dbReadTable(con, 'temp_db')
 
 
@@ -189,17 +190,16 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # summarize query
   # 66666666666 passar para esse passo a construcao do endereco_encontrado
   query_aggregate <- glue::glue(
-    # "CREATE OR REPLACE TEMPORARY TABLE aaa AS
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
       SELECT tempidgeocodebr,
-      SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-      SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-      FIRST(endereco_encontrado) AS endereco_encontrado,
-      '{match_type}' AS tipo_resultado,
-      AVG(desvio_metros) as desvio_metros,
-      FIRST(contagem_cnefe) AS contagem_cnefe
+        SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+        FIRST(endereco_encontrado) AS endereco_encontrado,
+        '{match_type}' AS tipo_resultado,
+        AVG(desvio_metros) AS desvio_metros,
+        FIRST(contagem_cnefe) AS contagem_cnefe
       FROM temp_db
-      GROUP BY tempidgeocodebr, endereco_encontrado;"
+     GROUP BY tempidgeocodebr, endereco_encontrado;"
   )
 
 
@@ -217,34 +217,32 @@ match_weighted_cases_probabilistic <- function( # nocov start
     additional_cols <- paste0(", ", additional_cols)
 
     query_aggregate <- glue::glue(
-      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe, similaridade_logradouro {colunas_encontradas})
+      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
+                              similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
-       SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-        FIRST(endereco_encontrado) AS endereco_encontrado,
-        '{match_type}' AS tipo_resultado,
-        AVG(desvio_metros) as desvio_metros,
-        FIRST(contagem_cnefe) AS contagem_cnefe,
-        FIRST(similaridade_logradouro) AS similaridade_logradouro
-        {additional_cols}
+         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+         FIRST(endereco_encontrado) AS endereco_encontrado,
+         '{match_type}' AS tipo_resultado,
+         AVG(desvio_metros) AS desvio_metros,
+         FIRST(similaridade_logradouro) AS similaridade_logradouro,
+         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
       FROM temp_db
       GROUP BY tempidgeocodebr, endereco_encontrado;"
     )
-
-    # d <- DBI::dbGetQuery(con, query_aggregate)
-
-
   }
 
   DBI::dbSendQueryArrow(con, query_aggregate)
+  # DBI::dbExecute(con, query_aggregate)
   # d <- DBI::dbReadTable(con, 'output_db')
+  # d <- DBI::dbReadTable(con, 'aaa')
 
   # remove arrow tables from db
   duckdb::duckdb_unregister_arrow(con, "filtered_cnefe")
 
-#  if (match_type %like% "01") {
-    duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-#  }
+  #  if (match_type %like% "01") {
+  duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
+  #  }
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(
@@ -255,4 +253,3 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
   return(temp_n)
 } # nocov end
-

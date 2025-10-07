@@ -1,11 +1,11 @@
 match_cases <- function( # nocov start
-    con = con,
-    x = 'input_padrao_db',
-    y = 'filtered_cnefe',
-    output_tb = "output_db",
-    key_cols = key_cols,
-    match_type = match_type,
-    resultado_completo){
+  con = con,
+  x = 'input_padrao_db',
+  y = 'filtered_cnefe',
+  output_tb = "output_db",
+  key_cols = key_cols,
+  match_type = match_type,
+  resultado_completo){
 
   # match_type = "dn01"
 
@@ -76,12 +76,12 @@ match_cases <- function( # nocov start
   query_match <- glue::glue(
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
       SELECT {x}.tempidgeocodebr,
-             filtered_cnefe.lat,
-             filtered_cnefe.lon,
-             filtered_cnefe.endereco_completo AS endereco_encontrado,
-             '{match_type}' AS tipo_resultado,
-             filtered_cnefe.desvio_metros,
-             filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
+        filtered_cnefe.lat,
+        filtered_cnefe.lon,
+        filtered_cnefe.endereco_completo AS endereco_encontrado,
+        '{match_type}' AS tipo_resultado,
+        filtered_cnefe.desvio_metros,
+        filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
       LEFT JOIN filtered_cnefe
       ON {join_condition}

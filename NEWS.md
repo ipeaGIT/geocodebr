@@ -1,8 +1,9 @@
-# geocodebr 0.3.0
+# geocodebr 0.3.0 dev
 
 ## Mudanças grandes (Major changes)
 
-- O output da função `geocode()` agora inclui uma nova coluna `desvio_metros` que apresenta uma forma intuitiva o grau de incerteza do resultado encontrado. [Encerra issue #1](https://github.com/ipeaGIT/geocodebr/issues/11).
+- O output da função `geocode()` agora inclui uma nova coluna `desvio_metros` que 
+apresenta uma forma intuitiva o grau de incerteza do resultado encontrado. [Encerra issue #11](https://github.com/ipeaGIT/geocodebr/issues/11).
 - Nova base de dados com release `v0.3.0`. A principal mudança aqui foi a 
 estratégia de agregação de coordenadas. Na versão anterior, a base consistia numa
 média simples das coordenadas dos pontos que pertenciam ao mesmo grupo de colunas.

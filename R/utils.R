@@ -132,7 +132,7 @@ merge_results <- function(con,
                           resultado_completo){
 
 
-  select_columns_y <- c('lat', 'lon', 'tipo_resultado', 'precisao', 'desvio_metros',
+  select_columns_y <- c('lat', 'lon', 'precisao', 'tipo_resultado', 'desvio_metros',
                         'endereco_encontrado', 'logradouro_encontrado', 'contagem_cnefe')
 
   if (isTRUE(resultado_completo)) {

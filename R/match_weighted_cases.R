@@ -1,11 +1,11 @@
 match_weighted_cases <- function( # nocov start
-    con = con,
-    x = 'input_padrao_db',
-    y = 'filtered_cnefe',
-    output_tb = "output_db",
-    key_cols = key_cols,
-    match_type = match_type,
-    resultado_completo){
+  con = con,
+  x = 'input_padrao_db',
+  y = 'filtered_cnefe',
+  output_tb = "output_db",
+  key_cols = key_cols,
+  match_type = match_type,
+  resultado_completo){
 
   # match_type = "da01"
 
@@ -74,12 +74,12 @@ match_weighted_cases <- function( # nocov start
   # match query
   query_match <- glue::glue(
     "CREATE OR REPLACE TEMPORARY VIEW temp_db AS
-    SELECT {x}.tempidgeocodebr, {x}.numero,
-    {y}.numero AS numero_cnefe,
-    {y}.lat, {y}.lon,
-    REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
-    {y}.desvio_metros,
-    {y}.n_casos AS contagem_cnefe {additional_cols}
+      SELECT {x}.tempidgeocodebr, {x}.numero,
+        {y}.numero AS numero_cnefe,
+        {y}.lat, {y}.lon,
+        REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
+        {y}.desvio_metros,
+        {y}.n_casos AS contagem_cnefe {additional_cols}
     FROM {x}
     LEFT JOIN {y}
     ON {join_condition}
@@ -88,23 +88,23 @@ match_weighted_cases <- function( # nocov start
 
   DBI::dbSendQueryArrow(con, query_match)
   # a <- DBI::dbReadTable(con, 'temp_db')
-   # summary(a$desvio_metros)
+  # summary(a$desvio_metros)
 
 
   # 2nd step: aggregate --------------------------------------------------------
 
   # summarize query
   query_aggregate <- glue::glue(
-   "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
-    SELECT tempidgeocodebr,
-      SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-      SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-      FIRST(endereco_encontrado) AS endereco_encontrado,
-      '{match_type}' AS tipo_resultado,
-      AVG(desvio_metros) as desvio_metros,
-      FIRST(contagem_cnefe) AS contagem_cnefe
-      FROM temp_db
-      GROUP BY tempidgeocodebr, endereco_encontrado;"
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
+      SELECT tempidgeocodebr,
+        SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+        FIRST(endereco_encontrado) AS endereco_encontrado,
+        '{match_type}' AS tipo_resultado,
+        AVG(desvio_metros) as desvio_metros,
+        FIRST(contagem_cnefe) AS contagem_cnefe
+    FROM temp_db
+    GROUP BY tempidgeocodebr, endereco_encontrado;"
   )
 
   # b <- DBI::dbGetQuery(con, query_aggregate)
@@ -122,12 +122,12 @@ match_weighted_cases <- function( # nocov start
     query_aggregate <- glue::glue(
       "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
         SELECT tempidgeocodebr,
-        SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-        FIRST(endereco_encontrado) AS endereco_encontrado,
-        '{match_type}' AS tipo_resultado,
-        MAX(desvio_metros) as desvio_metros,
-        FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
+          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
+          SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
+          FIRST(endereco_encontrado) AS endereco_encontrado,
+          '{match_type}' AS tipo_resultado,
+          MAX(desvio_metros) as desvio_metros,
+          FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
       FROM temp_db
       GROUP BY tempidgeocodebr, endereco_encontrado;"
     )

@@ -14,7 +14,7 @@ match_cases_probabilistic <- function(
     match_type = match_type,
     resultado_completo){ # nocov start
 
-  # match_type =  "pn01"
+  # match_type = "pn01"
 
   # get corresponding parquet table and key columns
   table_name <- get_reference_table(match_type)
@@ -40,7 +40,7 @@ match_cases_probabilistic <- function(
 
 
 
-  # 1st step: create small table "unique_logradouros" with unique logradouros -----------------------
+  # 1st step: create small table with unique logradouros -----------------------
 
   # check if view 'unique_logradouros_cep_localidade' exists
   temp_check <- duckdb::duckdb_list_arrow(conn = con)
@@ -64,10 +64,10 @@ match_cases_probabilistic <- function(
     unique_cols <- key_cols[!key_cols %in% "numero"]
 
     query_unique_logradouros <- glue::glue(
-          "CREATE OR REPLACE VIEW unique_logradouros AS
+      "CREATE OR REPLACE VIEW unique_logradouros AS
             SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
             FROM unique_logradouros_cep_localidade;"
-          )
+    )
 
     DBI::dbSendQueryArrow(con, query_unique_logradouros)
   }
@@ -91,7 +91,6 @@ match_cases_probabilistic <- function(
 
   # min cutoff for string match
   min_cutoff <- get_prob_match_cutoff(match_type)
-
 
   # query
   query_lookup <- glue::glue(
@@ -140,7 +139,7 @@ match_cases_probabilistic <- function(
   cols_not_null <-  paste(
     glue::glue("{x}.{key_cols} IS NOT NULL"),
     collapse = ' AND '
-    )
+  )
 
   # cols that cannot be null
   cols_not_null <- gsub('.logradouro', '.temp_lograd_determ', cols_not_null)
@@ -166,19 +165,19 @@ match_cases_probabilistic <- function(
 
     additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
     additional_cols <- paste0(", ", additional_cols, ", input_padrao_db.similaridade_logradouro AS similaridade_logradouro")
-    }
+  }
 
 
   # summarize query
   query_update_db <- glue::glue(
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
       SELECT {x}.tempidgeocodebr,
-             filtered_cnefe.lat,
-             filtered_cnefe.lon,
-             filtered_cnefe.endereco_completo AS endereco_encontrado,
-             '{match_type}' AS tipo_resultado,
-             filtered_cnefe.desvio_metros,
-             filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
+        filtered_cnefe.lat,
+        filtered_cnefe.lon,
+        filtered_cnefe.endereco_completo AS endereco_encontrado,
+        '{match_type}' AS tipo_resultado,
+        filtered_cnefe.desvio_metros,
+        filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
       LEFT JOIN filtered_cnefe
       ON {join_condition_match}
@@ -186,9 +185,11 @@ match_cases_probabilistic <- function(
   )
 
 
+
   DBI::dbSendQueryArrow(con, query_update_db)
-  # c <- DBI::dbGetQuery(con, query_update_db)
+  # DBI::dbExecute(con, query_update_db)
   # c <- DBI::dbReadTable(con, 'output_db')
+
 
   # remove arrow tables from db
   duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
