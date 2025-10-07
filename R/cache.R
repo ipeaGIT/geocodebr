@@ -2,8 +2,7 @@ data_release <- "v0.3.0"
 
 listar_pasta_cache_padrao <- function() {
   fs::path(
-    tools::R_user_dir("geocodebr", which = "cache"),
-    glue::glue("geocodebr_data_release_{data_release}")
+    tools::R_user_dir("geocodebr", which = "cache")
   )
 }
 
@@ -168,6 +167,7 @@ message_removed_cache_dir <- function(cache_dir) {
 #'
 #' @return Retorna de forma invisível o caminho do diretório de cache.
 #'
+#' @keywords internal
 apaga_data_release_antigo <- function() {
 
   # list cache local
@@ -177,10 +177,15 @@ apaga_data_release_antigo <- function() {
   local_release_path <- list.dirs(cache_dir, recursive = T)[-1]
   local_release_path <- local_release_path[grep('geocodebr_data_release_', local_release_path)]
 
-  data_release_dir <- fs::path(
+  new_data_release_dir <- fs::path(
     cache_dir,
     glue::glue("geocodebr_data_release_{data_release}")
   )
+
+
+  if (identical(as.character(new_data_release_dir),local_release_path)) {
+    return(cache_dir)
+  }
 
   # versao numerica dos releases local e do pacote
   local_release <- gsub("[^0-9]", "", basename(local_release_path)) |> as.numeric()

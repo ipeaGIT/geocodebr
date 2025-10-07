@@ -33,8 +33,13 @@ test_that("returns the path to the directory where the files were saved", {
 })
 
 test_that("cache usage is controlled by the cache argument", {
+
   result <- tester(cache = TRUE)
-  expect_identical(result, file.path(listar_pasta_cache()))
+
+  expect_identical(
+    result,
+    as.character( fs::path(tools::R_user_dir("geocodebr", which = "cache")))
+    )
 
   # using a mocked binding for perform_requests_in_parallel here just to save us
   # some time. as long as none of its elements is a failed request, the funtion

@@ -54,15 +54,15 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
   )
 
   if (!cache) {
-    data_dir <- as.character(fs::path_norm(tempfile("standardized_cnefe")))
+    cache_dir <- as.character(fs::path_norm(tempfile("standardized_cnefe")))
     } else {
 
       # apaga release antigo se houver
       apaga_data_release_antigo()
 
       # create local dir / cache dir is versioned
-      data_dir <- geocodebr::listar_pasta_cache()
-      data_dir <- glue::glue("{data_dir}/geocodebr_data_release_{data_release}")
+      cache_dir <- geocodebr::listar_pasta_cache()
+      data_dir <- glue::glue("{cache_dir}/geocodebr_data_release_{data_release}")
       if (!dir.exists(data_dir)) { fs::dir_create(data_dir, recurse = TRUE) }
       }
 
@@ -79,7 +79,7 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
 
     if (verboso) { message_usando_cnefe_local() }
 
-    return(invisible(data_dir))
+    return(invisible(cache_dir))
     }
 
   downloaded_files <- download_files(data_dir, files_to_download, verboso)
@@ -91,7 +91,7 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
 
   download_dir <- unique(fs::path_dir(downloaded_files))
 
-  return(invisible(download_dir))
+  return(invisible(cache_dir))
 }
 
 
