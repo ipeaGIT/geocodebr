@@ -1,9 +1,9 @@
-trata_empates_geocode <- function(output_df = parent.frame()$output_df,
-                                  resolver_empates = parent.frame()$resolver_empates,
-                                  verboso = parent.frame()$verboso) { # nocov start
-
-  # encontra possiveis casos de empate
-  data.table::setDT(output_df)[, empate := ifelse(.N > 1, TRUE, FALSE), by = tempidgeocodebr]
+trata_empates_geocode <- function(
+  output_df = parent.frame()$output_df,
+  resolver_empates = parent.frame()$resolver_empates,
+  verboso = parent.frame()$verboso
+) {
+  # nocov start
 
   # # calcula distancias entre casos empatados
   output_df[empate == TRUE,

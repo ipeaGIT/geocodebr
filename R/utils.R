@@ -121,22 +121,27 @@ add_precision_col <- function(con, update_tb = NULL){
 }
 
 
-
-
-
-merge_results <- function(con,
-                          x,
-                          y,
-                          key_column,
-                          select_columns,
-                          resultado_completo){
-
-
-  select_columns_y <- c('lat', 'lon', 'precisao', 'tipo_resultado', 'desvio_metros',
-                        'endereco_encontrado', 'logradouro_encontrado', 'contagem_cnefe')
+merge_results <- function(
+  con,
+  x,
+  y,
+  key_column,
+  select_columns,
+  resultado_completo
+) {
+  select_columns_y <- c(
+    'lat',
+    'lon',
+    'precisao',
+    'tipo_resultado',
+    'desvio_metros',
+    'endereco_encontrado',
+    'logradouro_encontrado',
+    'contagem_cnefe',
+    'empate'
+  )
 
   if (isTRUE(resultado_completo)) {
-
     # select additional columns to output
     select_columns_y <- c(select_columns_y, 'numero_encontrado' , 'cep_encontrado',
                           'localidade_encontrada', 'municipio_encontrado' ,
@@ -167,13 +172,17 @@ merge_results <- function(con,
 
   # Create SQL query
   query <- glue::glue(
-    "SELECT {select_clause}
-      FROM {x}
-      LEFT JOIN (
-        SELECT * FROM {y}
-        ORDER BY tempidgeocodebr, contagem_cnefe DESC, desvio_metros
-      ) AS sorted_output
-      ON {join_condition};"
+    "SELECT * FROM
+      (SELECT {select_clause}
+        FROM {x}
+        LEFT JOIN (
+          SELECT *, (count() OVER (PARTITION BY tempidgeocodebr) > 1) AS empate FROM {y}
+          ORDER BY 
+            CASE WHEN empate = true THEN (tempidgeocodebr, -contagem_cnefe, desvio_metros, endereco_encontrado) END
+        ) AS sorted_output
+        ON {join_condition})
+      ORDER BY
+        tempidgeocodebr;"
   )
 
   # Execute the query and fetch the merged data
