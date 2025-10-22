@@ -104,7 +104,7 @@ match_cases_probabilistic <- function(
       {x}.logradouro AS logradouro,
       unique_logradouros.logradouro AS logradouro_cnefe,
       CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
-      RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC) AS rank
+      RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
     FROM {x}
     JOIN unique_logradouros
       ON {join_condition_lookup}
