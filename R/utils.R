@@ -170,18 +170,17 @@ merge_results <- function(con,
     "SELECT {select_clause}
       FROM {x}
       LEFT JOIN (
-    SELECT * FROM {y}
-      ORDER BY tempidgeocodebr ) AS sorted_output
+        SELECT * FROM {y}
+        ORDER BY tempidgeocodebr, contagem_cnefe DESC, desvio_metros
+      ) AS sorted_output
       ON {join_condition};"
-    )
+  )
 
   # Execute the query and fetch the merged data
   merged_data <- DBI::dbGetQuery(con, query)
 
   return(merged_data)
-  }
-
-
+}
 
 
 #' create index

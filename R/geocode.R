@@ -308,5 +308,5 @@ geocode <- function(enderecos,
     return(output_sf)
   }
 
-  return(output_df)
+  return(output_df[])
 }

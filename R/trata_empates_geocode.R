@@ -188,12 +188,8 @@ trata_empates_geocode <- function(output_df = parent.frame()$output_df,
   # drop geocodebr dist columns
   output_df2[, dist_geocodebr := NULL]
 
-  return(output_df2)
+  return(output_df2[])
 } # nocov end
-
-
-
-
 
 
 # calculate distances between pairs of coodinates
