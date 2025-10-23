@@ -65,7 +65,7 @@ input_df <- arrow::read_parquet(data_path)
 #   municipio = 'municipio',
 #   estado = 'uf')
 # resolver_empates = T
-
+# h3_res = NULL
 
 # benchmark different approaches ------------------------------------------------------------------
 ncores <- 7
@@ -89,7 +89,7 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  v2 <- geocodebr::geocode(
+  v3 <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
@@ -99,6 +99,13 @@ bench::mark( iterations = 1,
     resolver_empates = T
   )
 )
+
+# expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+#         v2         34.4s  34.4s    0.0291    70.5MB    0.145     1     5      34.4s <dt>   <Rprofmem> <bench_tm> <tibble>
+#         v3         57.1s  57.1s    0.0175      79MB   0.0876     1     5      57.1s <dt>   <Rprofmem> <bench_tm> <tibble>
+# v2: 729 empates
+# v3: 744 empates
+
 # sequencia de matches
 #   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
 #           v2  28.4s  28.4s    0.0352    3.06GB    0.246     1     7

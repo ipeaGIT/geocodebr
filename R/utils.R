@@ -177,7 +177,7 @@ merge_results <- function(
         FROM {x}
         LEFT JOIN (
           SELECT *, (count() OVER (PARTITION BY tempidgeocodebr) > 1) AS empate FROM {y}
-          ORDER BY 
+          ORDER BY
             CASE WHEN empate = true THEN (tempidgeocodebr, -contagem_cnefe, desvio_metros, endereco_encontrado) END
         ) AS sorted_output
         ON {join_condition})
@@ -378,18 +378,57 @@ get_reference_table <- function(match_type){
   }
 
 
-# min cutoff for string match
-# min cutoff for probabilistic string match of logradouros
+#' min cutoff for string match
+#' min cutoff for probabilistic string match of logradouros
 get_prob_match_cutoff <- function(match_type){
   min_cutoff <- ifelse(match_type %in% c('pn01', 'pa01', 'pl01'), 0.85,  0.9)
   return(min_cutoff)
   }
 
 
-
-# create a dummy function that uses nanoarrow with no effect
-# nanoarrow is only used internally in DBI::dbWriteTableArrow()
-# however, if we do not put this dummy function here, CRAN check flags an error
+#' create a dummy function that uses nanoarrow with no effect
+#' nanoarrow is only used internally in DBI::dbWriteTableArrow()
+#' however, if we do not put this dummy function here, CRAN check flags an error
 dummy <- function() {
   nanoarrow::as_nanoarrow_schema
   }
+
+
+#' Cria coluna dummy no input padronizado identificando se logradouro é daqueles
+#' que gera confusao (e.g. uma letra (e.g. RUA A, RUA B, RUA C, ....) ou compostos
+#' só por dígitos (RUA 1, RUA 10, RUA 20, ...))
+cria_col_logradouro_confusao <- function(con) {
+
+  # Add the column with default 0 (avoids updating all rows later)
+  DBI::dbExecute(
+    con,
+    "ALTER TABLE input_padrao_db
+      ADD COLUMN log_causa_confusao BOOLEAN DEFAULT false;"
+  )
+
+  # Ambiguos numero por extenso
+  ruas_num_ext <- paste(
+    paste("RUA", c(
+      'UM','DOIS','TRES', 'CINCO','SEIS','SETE','OITO','NOVE','DEZ',
+      'ONZE','DOZE','TREZE'
+    )),
+    collapse = "|"
+  )
+  ruas_num_ext <- paste0("(", ruas_num_ext, ")$")
+
+  # 2) Flip to 1 for rows matching our regex
+  DBI::dbExecute(
+    con,
+    glue::glue(
+    r"{UPDATE input_padrao_db
+    SET log_causa_confusao = true
+    WHERE
+      (REGEXP_MATCHES(logradouro, '^(RUA|TRAVESSA|RAMAL|BECO|BLOCO|AVENIDA|RODOVIA|ESTRADA)\s+([A-Z]{{1,2}}-?|[0-9]{{1,3}}|[A-Z]{{1,2}}-?[0-9]{{1,3}}|[A-Z]{{1,2}}\s+[0-9]{{1,3}}|[0-9]{{1,3}}-?[A-Z]{{1,2}})(\s+KM( \d+)?)?$')
+       OR REGEXP_MATCHES(logradouro, '{ruas_num_ext}')
+       ------- OR REGEXP_MATCHES(logradouro, 'RODOVIA')
+       )
+        -- ainda dah pra salvar enderecos com datas (e.g. 'RUA 15 DE NOVEMBRO')
+        AND NOT REGEXP_MATCHES(logradouro, '\bDE (JANEIRO|FEVEREIRO|MARCO|ABRIL|MAIO|JUNHO|JULHO|AGOSTO|SETEMBRO|OUTUBRO|NOVEMBRO|DEZEMBRO)\b');}"
+    )
+  )
+}

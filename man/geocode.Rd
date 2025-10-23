@@ -239,7 +239,7 @@ probabilistico, e de \code{0.90} nos demais casos.
 }
 
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 library(geocodebr)
 
 # ler amostra de dados
