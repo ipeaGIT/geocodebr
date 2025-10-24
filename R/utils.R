@@ -378,25 +378,25 @@ get_reference_table <- function(match_type){
   }
 
 
-#' min cutoff for string match
-#' min cutoff for probabilistic string match of logradouros
+# min cutoff for string match
+# min cutoff for probabilistic string match of logradouros
 get_prob_match_cutoff <- function(match_type){
   min_cutoff <- ifelse(match_type %in% c('pn01', 'pa01', 'pl01'), 0.85,  0.9)
   return(min_cutoff)
   }
 
 
-#' create a dummy function that uses nanoarrow with no effect
-#' nanoarrow is only used internally in DBI::dbWriteTableArrow()
-#' however, if we do not put this dummy function here, CRAN check flags an error
+# create a dummy function that uses nanoarrow with no effect
+# nanoarrow is only used internally in DBI::dbWriteTableArrow()
+# however, if we do not put this dummy function here, CRAN check flags an error
 dummy <- function() {
   nanoarrow::as_nanoarrow_schema
   }
 
 
-#' Cria coluna dummy no input padronizado identificando se logradouro é daqueles
-#' que gera confusao (e.g. uma letra (e.g. RUA A, RUA B, RUA C, ....) ou compostos
-#' só por dígitos (RUA 1, RUA 10, RUA 20, ...))
+# Cria coluna dummy no input padronizado identificando se logradouro é daqueles
+# que gera confusao (e.g. uma letra (e.g. RUA A, RUA B, RUA C, ....) ou compostos
+# só por dígitos (RUA 1, RUA 10, RUA 20, ...))
 cria_col_logradouro_confusao <- function(con) {
 
   # Add the column with default 0 (avoids updating all rows later)
