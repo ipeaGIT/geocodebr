@@ -13,7 +13,7 @@ Retorna de forma invisível o caminho do diretório de cache.
 Deleta todos arquivos da pasta do cache.
 }
 \examples{
-\dontshow{if (identical(TRUE, FALSE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(TRUE, FALSE)) withAutoprint(\{ # examplesIf}
 deletar_pasta_cache()
 \dontshow{\}) # examplesIf}
 }

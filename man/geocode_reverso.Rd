@@ -43,7 +43,7 @@ Geocode reverso de coordenadas geográficas para endereços. A função recebe u
 distância máxima de busca.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 library(geocodebr)
 library(sf)
 

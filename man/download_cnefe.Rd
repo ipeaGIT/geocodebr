@@ -27,7 +27,7 @@ Nacional de Endereços para Fins Estatísticos) que foi criada para o uso deste
 pacote.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 download_cnefe(verboso = FALSE)
 \dontshow{\}) # examplesIf}
 }

@@ -43,7 +43,7 @@ coordenadas de output utilizam o sistema de coordenadas geográficas SIRGAS
 2000, EPSG 4674.
 }
 \examples{
-\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (identical(tolower(Sys.getenv("NOT_CRAN")), "true")) withAutoprint(\{ # examplesIf}
 library(geocodebr)
 
 # amostra de CEPs
