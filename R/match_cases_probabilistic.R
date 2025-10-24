@@ -108,7 +108,10 @@ match_cases_probabilistic <- function(
     FROM {x}
     JOIN unique_logradouros
       ON {join_condition_lookup}
-    WHERE {cols_not_null} AND {x}.similaridade_logradouro IS NULL AND similarity > {min_cutoff}
+    WHERE {cols_not_null}
+          AND {x}.log_causa_confusao is false
+          AND {x}.similaridade_logradouro IS NULL
+          AND similarity > {min_cutoff}
   )
 
   UPDATE {x}
@@ -116,9 +119,10 @@ match_cases_probabilistic <- function(
         similaridade_logradouro = similarity
     FROM ranked_data
   WHERE {x}.tempidgeocodebr = ranked_data.tempidgeocodebr
-    AND similarity > {min_cutoff}
-    AND rank = 1;"
+        AND similarity > {min_cutoff}
+        AND rank = 1;"
   )
+
 
   DBI::dbSendQueryArrow(con, query_lookup)
   # DBI::dbExecute(con, query_lookup)

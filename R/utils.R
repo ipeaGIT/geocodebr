@@ -425,7 +425,6 @@ cria_col_logradouro_confusao <- function(con) {
     WHERE
       (REGEXP_MATCHES(logradouro, '^(RUA|TRAVESSA|RAMAL|BECO|BLOCO|AVENIDA|RODOVIA|ESTRADA)\s+([A-Z]{{1,2}}-?|[0-9]{{1,3}}|[A-Z]{{1,2}}-?[0-9]{{1,3}}|[A-Z]{{1,2}}\s+[0-9]{{1,3}}|[0-9]{{1,3}}-?[A-Z]{{1,2}})(\s+KM( \d+)?)?$')
        OR REGEXP_MATCHES(logradouro, '{ruas_num_ext}')
-       ------- OR REGEXP_MATCHES(logradouro, 'RODOVIA')
        )
         -- ainda dah pra salvar enderecos com datas (e.g. 'RUA 15 DE NOVEMBRO')
         AND NOT REGEXP_MATCHES(logradouro, '\bDE (JANEIRO|FEVEREIRO|MARCO|ABRIL|MAIO|JUNHO|JULHO|AGOSTO|SETEMBRO|OUTUBRO|NOVEMBRO|DEZEMBRO)\b');}"

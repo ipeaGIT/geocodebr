@@ -1,3 +1,42 @@
+# esperado
+5 - deterministico certinho
+7312 - OTIMO antes rua errada no bairro errada, agora pega rua certa no certo
+
+# action
+4398 - ! "RUA  DO BECO 12" continua com match probabilistico
+1690 - ! v2 parece melhor erro na padronizacao???? enderecobr::padronizar_logradouros('RODOVIA  BR 364') 666666 checar como esta no cnfe e nas tabelas
+9577 - ! v2 parece melhor erro na padronizacao???? enderecobr::padronizar_logradouros('RODOVIA  AC 475')
+9470 - padronizacao???? enderecobr::padronizar_logradouros
+
+
+15294 - ! antes pega rua certa no bairro certo (v2 melhor) ????
+
+**** caso 1 - eh melhor o novo
+
+# to ponder
+463 -  1 antes pega rua errada no bairro certo, agora pega rua certa no bairro errado lol (muitos 7)
+5000 - 1 antes pega rua errada no bairro certo, agora pega rua certa no bairro errado lol
+7290 - 1 antes pega rua errada no bairro certo, agora pega rua certa no bairro errado lol (muitos empates)
+8490 - 1 antes pega rua errada no bairro certo, agora pega rua certa no bairro errado lol
+9808 - 1 antes pega rua errada no bairro certo, agora pega rua certa no bairro errado lol
+423 -  1 antes pega rua errada no bairro certo, agora NAO pega rua mas acerta o bairro (desvio grande)
+13814 - 1 antes pega rua certa no cep errado , agora NAO pega rua mas acerta o bairro (desvio 700)
+
+
+5385 - 2 antes pega rua certa no bairro errado, agora NAO pega rua mas acerta o bairro (desvio grande)
+7230 - 2 antes pega rua certa no bairro errado, agora NAO pega rua mas acerta o bairro (desvio 700)
+
+13135 - v2 antes pega rua certa no bairro certo, agora NAO pega rua mas acerta o bairro (desvio 900)
+14063 - nao tem salvacao, v3 melhor pq eh honesto com desvio grande
+15734 - 3 antes pega rua certa no bairro errado, agora NAO pega rua mas acerta o bairro (desvio pequeno anyway)
+13292 - 4 antes pega rua certa no bairro certo, agora NAO pega rua mas acerta o bairro (desvio pequeno anyway)
+10714 - 4 antes pega rua certa no bairro certo, agora NAO pega rua mas acerta o bairro (desvio pequeno anyway)
+9842 - 5 antes rua errada no bairro certo e cep errado, agora pega rua certa no bairro certo e cep errado (dificil)
+
+
+333 - igual "RUA DOM PEDROII" - probabilistico
+4998 - igual "RUA DOM PEDRO II" - deterministico
+
 #' instalar extensoes do duckdb
 #' - spatial - acho q nao vale a pena por agora
 #'
@@ -89,21 +128,23 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  v3 <- geocodebr::geocode(
+  v2 <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
     resultado_completo = T,
     verboso = T,
     resultado_sf = F,
-    resolver_empates = T
+    resolver_empates = F
   )
 )
 
 # expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#         v2         34.4s  34.4s    0.0291    70.5MB    0.145     1     5      34.4s <dt>   <Rprofmem> <bench_tm> <tibble>
-#         v3         57.1s  57.1s    0.0175      79MB   0.0876     1     5      57.1s <dt>   <Rprofmem> <bench_tm> <tibble>
-# v2: 729 empates
+#         v2_F       25.6s  25.6s    0.0391    64.6MB    0.352     1     9      25.6s <dt>
+#         v3_F       26.2s  26.2s    0.0381      65MB    0.343     1     9      26.2s <dt>
+
+
+    # v2: 729 empates
 # v3: 744 empates
 
 # sequencia de matches

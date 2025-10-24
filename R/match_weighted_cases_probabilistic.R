@@ -113,7 +113,10 @@ match_weighted_cases_probabilistic <- function( # nocov start
     FROM {x}
     JOIN unique_logradouros
       ON {join_condition_string_dist}
-    WHERE {cols_not_null} AND {x}.similaridade_logradouro IS NULL AND similarity > {min_cutoff}
+    WHERE {cols_not_null}
+          AND {x}.log_causa_confusao is false
+          AND {x}.similaridade_logradouro IS NULL
+          AND similarity > {min_cutoff}
   )
 
   UPDATE {x}

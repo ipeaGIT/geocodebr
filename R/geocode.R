@@ -156,8 +156,8 @@ geocode <- function(enderecos,
   # issue https://github.com/ipeaGIT/geocodebr/issues/67
   cria_col_logradouro_confusao(con)
 
-    # b <-   DBI::dbReadTable(con, name = 'input_padrao_db') |>
-    #     filter(log_causa_confusao==0)
+  # b <-   DBI::dbReadTable(con, name = 'input_padrao_db') |>
+  #     filter(log_causa_confusao==0)
 
 
   # create an empty output table that will be populated -----------------------------------------------
