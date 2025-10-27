@@ -121,14 +121,13 @@ add_precision_col <- function(con, update_tb = NULL){
 }
 
 
-merge_results <- function(
-  con,
-  x,
-  y,
-  key_column,
-  select_columns,
-  resultado_completo
-) {
+merge_results_to_input <- function(con,
+                          x,
+                          y,
+                          key_column,
+                          select_columns,
+                          resultado_completo){
+
   select_columns_y <- c(
     'lat',
     'lon',
@@ -190,6 +189,8 @@ merge_results <- function(
 
   return(merged_data)
 }
+
+
 
 
 #' create index

@@ -255,6 +255,19 @@ geocode <- function(enderecos,
   add_precision_col(con, update_tb = 'output_db')
 
 
+  # casos de empate -----------------------------------------------
+
+  empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
+
+      # # checa se teve algum empate
+      # n_row_outputdf <- DBI::dbGetQuery(con, "SELECT COUNT(*) FROM output_db;")[[1]]
+      # teve_empate <- n_row_outputdf > n_rows
+      # if (isTRUE(teve_empate)) {
+      #   empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
+      # }
+
+  # bring original input back -----------------------------------------------
+
   # output with all original columns
   duckdb::dbWriteTable(con, "input_db", enderecos,
                        temporary = TRUE, overwrite=TRUE)
@@ -264,10 +277,10 @@ geocode <- function(enderecos,
 
   x_columns <- names(enderecos)
 
-  output_df <- merge_results(
+  output_df <- merge_results_to_input(
     con,
     x='input_db',
-    y='output_db',
+    y='output_db2',
     key_column='tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
@@ -275,17 +288,14 @@ geocode <- function(enderecos,
 
   data.table::setDT(output_df)
 
+  # drop geocodebr temp id column
+  output_df[, tempidgeocodebr := NULL]
+
+
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
 
-  # casos de empate -----------------------------------------------
-  if (nrow(output_df) > n_rows) {
-    output_df <- trata_empates_geocode(output_df, resolver_empates, verboso)
-  }
-
-  # drop geocodebr temp id column
-  output_df[, tempidgeocodebr := NULL]
 
   if(isFALSE(resultado_completo)){ output_df[, logradouro_encontrado := NULL]}
 
