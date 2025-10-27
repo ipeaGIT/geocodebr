@@ -27,7 +27,6 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
         SELECT *,
           (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate_inicial,
           ROW_NUMBER() OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC, desvio_metros, endereco_encontrado) AS id
-          LEAD(lat) OVER (PARTITION BY tempidgeocodebr ORDER BY id) AS next_lat,
         FROM output_db
         ORDER BY
           CASE WHEN empate_inicial THEN 0 ELSE 1 END,  -- NULL-safe control on `empate_inicial` column
@@ -74,7 +73,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
   # MANTEM apenas casos de empate que estao a mais de 300 metros
   # e atualiza casos de empate
   query_update_empates <- glue::glue(
-     "CREATE OR REPLACE TABLE output_db2 AS
+    "CREATE OR REPLACE TABLE output_db2 AS
       SELECT *,
         (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate,
         MAX(dist_geocodebr) OVER (PARTITION BY tempidgeocodebr) AS max_dist
@@ -82,7 +81,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
       WHERE empate_inicial = FALSE
          OR (empate_inicial = TRUE AND dist_geocodebr IS NULL)
          OR (empate_inicial = TRUE AND dist_geocodebr > 300);"
-     )
+  )
 
   DBI::dbExecute(con, query_update_empates)
   # a <- DBI::dbReadTable(con, 'output_db2')
@@ -105,7 +104,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
 
   if (n_casos_empate==0) {
     return(TRUE)
-    }
+  }
 
 
   # 3) se nao for para resolver empates: ------------------------------------------
@@ -151,7 +150,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
         SELECT * EXCLUDE (empate_inicial, dist_geocodebr, max_dist, id)
         FROM output_db2
         WHERE empate = FALSE;"
-      )
+    )
 
     DBI::dbExecute(con, query_df_sem_empate)
     # head( DBI::dbReadTable(con, "df_sem_empate") )
@@ -159,7 +158,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
     ids_sem_empate <- DBI::dbGetQuery(
       conn = con,
       statement = "SELECT DISTINCT tempidgeocodebr FROM df_sem_empate"
-      )[[1]] |> sort()
+    )[[1]] |> sort()
 
 
 
@@ -173,8 +172,9 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
           'DEZOITO','DEZENOVE','VINTE','TRINTA','QUARENTA','CINQUENTA','SESSENTA',
           'SETENTA','OITENTA','NOVENTA'
         )),
-        collapse = " |"
+        collapse = "|"
       )
+
     ruas_num_ext <- paste0("(", ruas_num_ext, ")")
 
     # cria tabela com casos perdidos
@@ -187,7 +187,6 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
               max_dist > 1000
               OR REGEXP_MATCHES(logradouro_encontrado, '^(RUA|TRAVESSA|RAMAL|BECO|BLOCO|AVENIDA|RODOVIA|ESTRADA)\\\\s+([A-Z]{{1,2}}-?|[0-9]{{1,3}}|[A-Z]{{1,2}}-?[0-9]{{1,3}}|[A-Z]{{1,2}}\\\\s+[0-9]{{1,3}}|[0-9]{{1,3}}-?[A-Z]{{1,2}})(\\\\s+KM( \\\\d+)?)?$')
               OR REGEXP_MATCHES(endereco_encontrado, '{ruas_num_ext}')
-              OR REGEXP_MATCHES(endereco_encontrado, 'ESTRADA|RODOVIA')
             )
             -- ainda dah pra salvar enderecos com datas (e.g. 'RUA 15 DE NOVEMBRO')
             AND NOT REGEXP_MATCHES(logradouro_encontrado, '\\\\bDE (JANEIRO|FEVEREIRO|MARCO|ABRIL|MAIO|JUNHO|JULHO|AGOSTO|SETEMBRO|OUTUBRO|NOVEMBRO|DEZEMBRO)\\\\b')
@@ -236,7 +235,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
         GROUP BY tempidgeocodebr
         ) AS d
       WHERE o.tempidgeocodebr = d.tempidgeocodebr;"
-      )
+    )
 
     DBI::dbExecute(con, query_df_empates_salve)
     # a <- DBI::dbReadTable(con, 'df_empates_salve')
@@ -249,7 +248,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
        QUALIFY ROW_NUMBER()
             OVER (PARTITION BY tempidgeocodebr
                   ORDER BY contagem_cnefe DESC) = 1;"
-       )
+    )
 
     DBI::dbExecute(con, query_update_coords)
     # a <- DBI::dbReadTable(con, 'df_empates_salve')
