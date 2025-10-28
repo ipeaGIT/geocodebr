@@ -160,12 +160,12 @@ merge_results_to_input <- function(con,
 
   select_clause <- paste0(
     select_x, ',',
-    paste0('sorted_output', ".", select_columns_y, collapse = ", ")
+    paste0('output_db2', ".", select_columns_y, collapse = ", ")
     )
 
   # Create the JOIN clause dynamically
   join_condition <- paste(
-    glue::glue("{x}.{key_column} = sorted_output.{key_column}"),
+    glue::glue("{x}.{key_column} = {y}.{key_column}"),
     collapse = ' ON '
   )
 
@@ -174,11 +174,7 @@ merge_results_to_input <- function(con,
     "SELECT * FROM
       (SELECT {select_clause}
         FROM {x}
-        LEFT JOIN (
-          SELECT *, (count() OVER (PARTITION BY tempidgeocodebr) > 1) AS empate FROM {y}
-          ORDER BY
-            CASE WHEN empate = true THEN (tempidgeocodebr, -contagem_cnefe, desvio_metros, endereco_encontrado) END
-        ) AS sorted_output
+        LEFT JOIN {y}
         ON {join_condition})
       ORDER BY
         tempidgeocodebr;"
