@@ -171,8 +171,8 @@ geocode <- function(enderecos,
     logradouro_encontrado = arrow::string(),
     tipo_resultado = arrow::string(),
     contagem_cnefe = arrow::int32(),
-    desvio_metros = arrow::int32()
-
+    desvio_metros = arrow::int32(),
+    log_causa_confusao = arrow::boolean()
   )
 
   if (isTRUE(resultado_completo)) {
@@ -186,6 +186,7 @@ geocode <- function(enderecos,
       tipo_resultado = arrow::string(),
       contagem_cnefe = arrow::int32(),
       desvio_metros = arrow::int32(),
+      log_causa_confusao = arrow::boolean(),
       #
       numero_encontrado = arrow::int32(),
       localidade_encontrada = arrow::string(),

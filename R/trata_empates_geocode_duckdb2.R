@@ -150,8 +150,9 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
 
     ## a) casos sem empate (df_sem_empate) --------------------------------------
 
+    # 66666666666 view
     query_df_sem_empate <- glue::glue(
-      "CREATE OR REPLACE TEMP TABLE df_sem_empate AS
+      "CREATE OR REPLACE TEMP VIEW df_sem_empate AS
         SELECT * EXCLUDE (empate_inicial, dist_geocodebr, max_dist, id)
         FROM output_db2
         WHERE empate = FALSE;"
@@ -170,10 +171,10 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
     # b) empatados perdidos (dis > 1Km e lograoduros ambiguos)  ----------------
 
     # identifica logradouros ambiguos (e.g. RUA A)
+    # inclui aqui somente os valores que AINDA nao foram contabilizados na funcao cria_col_logradouro_confusao()
     ruas_num_ext <- paste(
       paste("RUA", c(
-        'UM','DOIS','TRES','QUATRO','CINCO','SEIS','SETE','OITO','NOVE','DEZ',
-        'ONZE','DOZE','TREZE','QUATORZE','QUINZE','DEZESSEIS','DEZESSETE',
+        'QUATRO','QUATORZE','QUINZE','DEZESSEIS','DEZESSETE',
         'DEZOITO','DEZENOVE','VINTE','TRINTA','QUARENTA','CINQUENTA','SESSENTA',
         'SETENTA','OITENTA','NOVENTA'
       )),
@@ -184,13 +185,13 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
 
     # cria tabela com casos perdidos
     query_df_empates_perdidos <- glue::glue(
-      "CREATE OR REPLACE TEMP TABLE df_empates_perdidos AS
+      "CREATE OR REPLACE TEMP VIEW df_empates_perdidos AS
         SELECT * EXCLUDE (empate_inicial, dist_geocodebr, max_dist, id)
           FROM output_db2
           WHERE empate AND tempidgeocodebr NOT IN ({glue::glue_collapse(ids_sem_empate, sep = ', ')})
             AND (
               max_dist > 1000
-              OR REGEXP_MATCHES(logradouro_encontrado, '^(RUA|TRAVESSA|RAMAL|BECO|BLOCO|AVENIDA|RODOVIA|ESTRADA)\\\\s+([A-Z]{{1,2}}-?|[0-9]{{1,3}}|[A-Z]{{1,2}}-?[0-9]{{1,3}}|[A-Z]{{1,2}}\\\\s+[0-9]{{1,3}}|[0-9]{{1,3}}-?[A-Z]{{1,2}})(\\\\s+KM( \\\\d+)?)?$')
+              OR log_causa_confusao is TRUE
               OR REGEXP_MATCHES(endereco_encontrado, '{ruas_num_ext}')
             )
             -- ainda dah pra salvar enderecos com datas (e.g. 'RUA 15 DE NOVEMBRO')
@@ -262,7 +263,7 @@ trata_empates_geocode_duckdb2 <- function(con = parent.frame()$con,
 
     # junta tudo
     query_junta_tudo <- glue::glue(
-      "CREATE OR REPLACE TABLE output_db2 AS
+      "CREATE OR REPLACE TEMP TABLE output_db2 AS
        SELECT * FROM (
          SELECT * FROM df_sem_empate
          UNION ALL

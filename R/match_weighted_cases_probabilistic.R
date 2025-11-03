@@ -185,6 +185,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
              {x}.similaridade_logradouro,
              {y}.logradouro AS logradouro_encontrado,
              {y}.desvio_metros,
+             {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols}
         FROM {x}
         LEFT JOIN {y}
@@ -202,13 +203,14 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # summarize query
   # 66666666666 passar para esse passo a construcao do endereco_encontrado
   query_aggregate <- glue::glue(
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe)
       SELECT tempidgeocodebr,
         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
         FIRST(endereco_encontrado) AS endereco_encontrado,
         '{match_type}' AS tipo_resultado,
         AVG(desvio_metros) AS desvio_metros,
+        FIRST(log_causa_confusao) AS log_causa_confusao,
         FIRST(contagem_cnefe) AS contagem_cnefe
       FROM temp_db
      GROUP BY tempidgeocodebr, endereco_encontrado;"
@@ -230,13 +232,14 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
     query_aggregate <- glue::glue(
       "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
-                              similaridade_logradouro, contagem_cnefe {colunas_encontradas})
+                              log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
          SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
          FIRST(endereco_encontrado) AS endereco_encontrado,
          '{match_type}' AS tipo_resultado,
          AVG(desvio_metros) AS desvio_metros,
+         FIRST(log_causa_confusao) AS log_causa_confusao,
          FIRST(similaridade_logradouro) AS similaridade_logradouro,
          FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
       FROM temp_db
