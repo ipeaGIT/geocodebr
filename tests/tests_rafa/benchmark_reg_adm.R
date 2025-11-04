@@ -62,7 +62,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  # dplyr::slice_sample(n = sample_size) |> # sample 20K
+   dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 
@@ -107,12 +107,6 @@ fields_cad <- geocodebr::definir_campos(
 # ideal seq 1.21h    2296827  empates
 # determ    46.06m   2204536
 
-# ℹ Geolocalizando endereços
-# Error in `duckdb_result()`:70,985/43,882,017 ■■■■■■■■■■■■■■■■■■■■■■            69% - Procurando pl02
-# ! rapi_execute: Failed to run query
-# Error: Out of Memory Error: Allocation failure
-# Run `rlang::last_trace()` to see where the error occurred.
-#
 
 
 
@@ -124,8 +118,9 @@ fields_cad <- geocodebr::definir_campos(
     resultado_completo = T,
     n_cores = 12, # 7
     verboso = T,
-    resultado_sf = F,
-    resolver_empates = T
+    resultado_sf = T,
+    resolver_empates = T,
+    h3_res = 9
     )
 )
 

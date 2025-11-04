@@ -128,14 +128,15 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  v3 <- geocodebr::geocode(
+  v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
     resultado_completo = T,
     verboso = T,
-    resultado_sf = F,
-    resolver_empates = T
+    resultado_sf = T,
+    resolver_empates = T,
+    h3_res = 9
   )
 )
 
