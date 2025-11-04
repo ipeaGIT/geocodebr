@@ -134,8 +134,8 @@ bench::mark( iterations = 1,
     n_cores = ncores,
     resultado_completo = T,
     verboso = T,
-    resultado_sf = F,
-    resolver_empates = F
+    resultado_sf = T,
+    resolver_empates = T
   )
 )
 

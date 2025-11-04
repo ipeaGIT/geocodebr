@@ -118,14 +118,15 @@ fields_cad <- geocodebr::definir_campos(
 
 # bench::mark( iterations = 1,
  bench::system_time(
-  cadgeo <- geocodebr::geocode(
+  cadgeo <- geocode(
     enderecos  = cad,
     campos_endereco = fields_cad,
     resultado_completo = T,
-    n_cores = 25, # 7
+    n_cores = 7, # 7
     verboso = T,
-    resultado_sf = F,
-    resolver_empates = F
+    resultado_sf = T,
+    resolver_empates = F,
+    h3_res = 9
     )
 )
 
