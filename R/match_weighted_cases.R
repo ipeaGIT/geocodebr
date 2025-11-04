@@ -1,7 +1,6 @@
 match_weighted_cases <- function( # nocov start
   con = con,
   x = 'input_padrao_db',
-  y = 'filtered_cnefe',
   output_tb = "output_db",
   key_cols = key_cols,
   match_type = match_type,
@@ -10,13 +9,14 @@ match_weighted_cases <- function( # nocov start
   # match_type = "da01"
 
   # get corresponding parquet table
-  table_name <- get_reference_table(match_type)
+  cnefe_table_name <- get_reference_table(match_type)
+  y <- cnefe_table_name
 
   # build path to local file
   path_to_parquet <- fs::path(
     listar_pasta_cache(),
     glue::glue("geocodebr_data_release_{data_release}"),
-    paste0(table_name,".parquet")
+    paste0(cnefe_table_name,".parquet")
   )
 
   # determine geographical scope of the search
@@ -32,7 +32,7 @@ match_weighted_cases <- function( # nocov start
     dplyr::compute()
 
   # register filtered_cnefe to db
-  duckdb::duckdb_register_arrow(con, "filtered_cnefe", filtered_cnefe)
+  duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
 
   # cols that cannot be null
   cols_not_null <-  paste(
@@ -64,7 +64,7 @@ match_weighted_cases <- function( # nocov start
     colunas_encontradas <- paste0(", ", colunas_encontradas)
 
     additional_cols <- paste0(
-      glue::glue("filtered_cnefe.{key_cols} AS {key_cols}_encontrado"),
+      glue::glue("{y}.{key_cols} AS {key_cols}_encontrado"),
       collapse = ', ')
 
     additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
@@ -144,7 +144,7 @@ match_weighted_cases <- function( # nocov start
   # b <- DBI::dbGetQuery(con, query_aggregate)
 
 
-  duckdb::duckdb_unregister_arrow(con, "filtered_cnefe")
+  duckdb::duckdb_unregister_arrow(con, cnefe_table_name) # 66666
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(
