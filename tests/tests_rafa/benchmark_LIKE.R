@@ -139,9 +139,8 @@ bench::mark( iterations = 1,
   )
 )
 
-# expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#         v2_F       25.6s  25.6s    0.0391    64.6MB    0.352     1     9      25.6s <dt>
-#         v3_F       26.2s  26.2s    0.0381      65MB    0.343     1     9      26.2s <dt>
+# expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v2 <- geocodeb… 21.9s  21.9s    0.0456    70.7MB    0.456     1    10      21.9s <dt>   <Rprofmem>
 
 
     # v2: 729 empates

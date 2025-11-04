@@ -8,7 +8,6 @@
 match_cases_probabilistic <- function(
     con = con,
     x = 'input_padrao_db',
-    y = 'filtered_cnefe',
     output_tb = "output_db",
     key_cols = key_cols,
     match_type = match_type,
@@ -17,14 +16,15 @@ match_cases_probabilistic <- function(
   # match_type = "pn01"
 
   # get corresponding parquet table and key columns
-  table_name <- get_reference_table(match_type)
+  cnefe_table_name <- get_reference_table(match_type)
+  y <- cnefe_table_name
   key_cols <- get_key_cols(match_type)
 
   # build path to local file
   path_to_parquet <- fs::path(
     listar_pasta_cache(),
     glue::glue("geocodebr_data_release_{data_release}"),
-    paste0(table_name,".parquet")
+    paste0(cnefe_table_name,".parquet")
   )
 
   # determine geographical scope of the search
@@ -40,7 +40,7 @@ match_cases_probabilistic <- function(
     dplyr::compute()
 
   # register filtered_cnefe to db
-  duckdb::duckdb_register_arrow(con, "filtered_cnefe", filtered_cnefe)
+  duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
 
 
 
@@ -168,7 +168,7 @@ match_cases_probabilistic <- function(
     colunas_encontradas <- paste0(colunas_encontradas, ", similaridade_logradouro")
 
     additional_cols <- paste0(
-      glue::glue("filtered_cnefe.{key_cols} AS {key_cols}_encontrado"),
+      glue::glue("{y}.{key_cols} AS {key_cols}_encontrado"),
       collapse = ', ')
 
     additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
@@ -180,16 +180,16 @@ match_cases_probabilistic <- function(
   query_update_db <- glue::glue(
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
       SELECT {x}.tempidgeocodebr,
-        filtered_cnefe.lat,
-        filtered_cnefe.lon,
-        filtered_cnefe.endereco_completo AS endereco_encontrado,
+        {y}.lat,
+        {y}.lon,
+        {y}.endereco_completo AS endereco_encontrado,
         '{match_type}' AS tipo_resultado,
-        filtered_cnefe.desvio_metros,
-        filtered_cnefe.n_casos AS contagem_cnefe {additional_cols}
+        {y}.desvio_metros,
+        {y}.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
-      LEFT JOIN filtered_cnefe
+      LEFT JOIN {y}
       ON {join_condition_match}
-      WHERE {cols_not_null} AND filtered_cnefe.lon IS NOT NULL;"
+      WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
   )
 
 
@@ -201,7 +201,7 @@ match_cases_probabilistic <- function(
 
   # remove arrow tables from db
   duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-  duckdb::duckdb_unregister_arrow(con, "filtered_cnefe")
+  duckdb::duckdb_unregister_arrow(con, cnefe_table_name) # 6666666666666666666
 
 
 
