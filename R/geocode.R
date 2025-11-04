@@ -260,22 +260,6 @@ geocode <- function(enderecos,
 
   empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
 
-  # DBI::dbReadTable(con, "output_db2")
-
-  # newdata <- setdiff(empates_resolvidos2t, empates_resolvidos3t)
-  # DBI::dbRemoveTable(con, "output_db2")
-  #
-  # bench::mark(iterations = 7, check = F, relative = T,
-  #             b2 = trata_empates_geocode_duckdb2(con, resolver_empates, verboso),
-  #             b3 = trata_empates_geocode_duckdb3(con, resolver_empates, verboso)
-  #             )
-
-      # # checa se teve algum empate
-      # n_row_outputdf <- DBI::dbGetQuery(con, "SELECT COUNT(*) FROM output_db;")[[1]]
-      # teve_empate <- n_row_outputdf > n_rows
-      # if (isTRUE(teve_empate)) {
-      #   empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
-      # }
 
   # bring original input back -----------------------------------------------
 
