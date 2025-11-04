@@ -119,7 +119,7 @@ fields_cad <- geocodebr::definir_campos(
     n_cores = 12, # 7
     verboso = T,
     resultado_sf = T,
-    resolver_empates = T,
+    resolver_empates = F,
     h3_res = 9
     )
 )

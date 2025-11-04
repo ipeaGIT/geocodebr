@@ -86,3 +86,17 @@ test()
 #                  Merge results     2.78    484.02
 #                         Add H3     1.98    486.00
 #                  Convert to sf     2.49    488.49
+
+# NAO resolve empate com duckdb2
+#                            step step_sec total_sec
+#                           Start     0.01      0.01
+#                    Padronizacao    18.21     18.22
+#     Register standardized input     2.17     20.39
+#  Cria coluna log_causa_confusao     0.05     20.44
+#                        Matching   100.59    121.03
+#                   Add precision     0.17    121.20
+#                 Resolve empates     6.13    127.33
+#       Write original input back     0.34    127.67
+#                   Merge results     3.81    131.48
+#                          Add H3     1.86    133.34
+#                   Convert to sf     2.99    136.33
