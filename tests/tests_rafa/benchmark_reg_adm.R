@@ -62,7 +62,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  dplyr::slice_sample(n = sample_size) |> # sample 20K
+  # dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 
@@ -117,15 +117,15 @@ fields_cad <- geocodebr::definir_campos(
 
 
 # bench::mark( iterations = 1,
- bench::system_time(
+ bench::mark(
   cadgeo <- geocodebr::geocode(
     enderecos  = cad,
     campos_endereco = fields_cad,
     resultado_completo = T,
-    n_cores = 25, # 7
+    n_cores = 12, # 7
     verboso = T,
     resultado_sf = F,
-    resolver_empates = F
+    resolver_empates = T
     )
 )
 
