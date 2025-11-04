@@ -2,9 +2,9 @@
 # mas com menos chamadas de sql. E a performance nao muda
 
 # expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time
-# DT resolve   744     22s    22s    0.0455    79.4MB    0.455     1    10        22s <dt>   <Rprofmem> <bench_tm>
-# Duck resolve 745     22.6s  22.6s  0.0443    57.5MB    0.443     1    10      22.6s <dt>   <Rprofmem> <bench_tm>
-# Duck3 resolve745     21.5s  21.5s  0.0466    56.4MB    0.373     1     8      21.5s <dt>   <Rprofmem> <bench_tm>
+# DT    resolve 744    22s    22s   0.0455    79.4MB    0.455     1    10        22s <dt>   <Rprofmem> <bench_tm>
+# Duck2 resolve 745  22.6s  22.6s   0.0443    57.5MB    0.443     1    10      22.6s <dt>   <Rprofmem> <bench_tm>
+# Duck3 resolve 745  21.5s  21.5s   0.0466    56.4MB    0.373     1     8      21.5s <dt>   <Rprofmem> <bench_tm>
 
 # expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time
 # Duck N-resolve 745 22.2s  22.2s    0.0449    55.9MB    0.360     1     8      22.2s <dt>   <Rprofmem> <bench_tm>
