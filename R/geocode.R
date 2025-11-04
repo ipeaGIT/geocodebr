@@ -328,7 +328,7 @@ geocode <- function(enderecos,
 
   # casos de empate -----------------------------------------------
 
-  empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
+  empates_resolvidos <- trata_empates_geocode_duckdb3(con, resolver_empates, verboso)
 
 
 
