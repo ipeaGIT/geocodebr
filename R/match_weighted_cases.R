@@ -83,6 +83,7 @@ match_weighted_cases <- function( # nocov start
         {y}.lat, {y}.lon,
         REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
         {y}.desvio_metros,
+        {x}.log_causa_confusao,
         {y}.n_casos AS contagem_cnefe {additional_cols}
     FROM {x}
     LEFT JOIN {y}
@@ -99,13 +100,14 @@ match_weighted_cases <- function( # nocov start
 
   # summarize query
   query_aggregate <- glue::glue(
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe)
       SELECT tempidgeocodebr,
         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
         FIRST(endereco_encontrado) AS endereco_encontrado,
         '{match_type}' AS tipo_resultado,
         AVG(desvio_metros) as desvio_metros,
+        FIRST(log_causa_confusao) AS log_causa_confusao,
         FIRST(contagem_cnefe) AS contagem_cnefe
     FROM temp_db
     GROUP BY tempidgeocodebr, endereco_encontrado;"
@@ -124,13 +126,14 @@ match_weighted_cases <- function( # nocov start
     additional_cols <- paste0(", ", additional_cols)
 
     query_aggregate <- glue::glue(
-      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
+      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas})
         SELECT tempidgeocodebr,
           SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
           SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
           FIRST(endereco_encontrado) AS endereco_encontrado,
           '{match_type}' AS tipo_resultado,
           MAX(desvio_metros) as desvio_metros,
+          FIRST(log_causa_confusao) AS log_causa_confusao,
           FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
       FROM temp_db
       GROUP BY tempidgeocodebr, endereco_encontrado;"
