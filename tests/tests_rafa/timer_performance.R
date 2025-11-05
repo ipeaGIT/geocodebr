@@ -101,7 +101,9 @@ geocode <- function(enderecos,
         step_sec = vapply(.marks, `[[`, 0.0, "step"),
         total_sec = vapply(.marks, `[[`, 0.0, "total"),
         stringsAsFactors = FALSE
-      )
+      ) |>
+        dplyr::mutate(step_relative = round(step_sec / max(total_sec)*100, 1))
+
       if (print_summary) {
         message("— Timing summary —")
         print(df, row.names = FALSE)
@@ -328,7 +330,7 @@ geocode <- function(enderecos,
 
   # casos de empate -----------------------------------------------
 
-  empates_resolvidos <- trata_empates_geocode_duckdb2(con, resolver_empates, verboso)
+  empates_resolvidos <- trata_empates_geocode_duckdb3(con, resolver_empates, verboso)
 
 
 
@@ -418,7 +420,6 @@ geocode <- function(enderecos,
 
   return(output_df[])
 }
-
 
 
 
@@ -515,3 +516,18 @@ geocode <- function(enderecos,
 #                  Merge results   436.00   6446.83
 #                         Add H3   479.51   6926.34
 #                  Convert to sf   297.13   7223.47
+
+
+# resolve empate com data.table 3 (43 milhoes)
+#                           step step_sec total_sec
+#                          Start     0.02      0.02
+#                   Padronizacao   433.21    433.23
+#    Register standardized input    79.50    512.73
+# Cria coluna log_causa_confusao     2.86    515.59
+#                       Matching  2163.66   2679.25
+#                  Add precision    87.53   2766.78
+#      Write original input back    47.19   2813.97
+#                  Merge results  1913.81   4727.78
+#                Resolve empates  1302.81   6030.59
+#                         Add H3    51.11   6081.70
+#                  Convert to sf   422.74   6504.44
