@@ -50,8 +50,8 @@ test_that("expected output", {
   testthat::expect_true('endereco_encontrado' %in% names(full_output))
 
   # add h3
-  std_output_h3 <- tester(h3_res = 3)
-  testthat::expect_true('h3_03' %in% names(std_output_h3))
+  std_output_h3 <- tester(h3_res = c(3,4))
+  testthat::expect_true(all(c('h3_03', 'h3_04') %in% names(std_output_h3)))
 
   # output in sf format
   testthat::expect_warning(sf_output <- tester(resultado_sf = TRUE))

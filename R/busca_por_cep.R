@@ -40,7 +40,7 @@ busca_por_cep <- function(cep,
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
-  checkmate::assert_number(h3_res, null.ok = TRUE, lower = 0, upper = 15)
+  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
 
 
   # normalize input data -------------------------------------------------------
@@ -94,17 +94,19 @@ busca_por_cep <- function(cep,
   # add H3
   if (!is.null(h3_res)) {
 
-    colname <- paste0(
-      'h3_',
-      formatC(h3_res, width = 2, flag = "0")
-    )
+    for (i in h3_res){
+      colname <- paste0(
+        'h3_',
+        formatC(h3_res, width = 2, flag = "0")
+      )
 
-    output_df[!is.na(lat),
-              {{colname}} := h3r::latLngToCell(lat = lat,
-                                               lng = lon,
-                                               resolution = h3_res)
-    ]
-  }
+      output_df[!is.na(lat),
+                {{colname}} := h3r::latLngToCell(lat = lat,
+                                                 lng = lon,
+                                                 resolution = i)]
+      }
+    }
+
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {

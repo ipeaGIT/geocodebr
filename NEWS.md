@@ -1,12 +1,19 @@
 # geocodebr 0.3.0.9000 dev
 
 
-## Mudanças pequenas (Minor changes)
+
+## Mudanças grandes (Major changes)
 
 - A função `geocode()` agora não aplica match probabilístico em lograouros cujo 
 nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos 
 (RUA 1, RUA 10, RUA 20). [Encerra issue #7](https://github.com/ipeaGIT/geocodebr/issues/67) 
+- O parâmetro `h3_res` utilizado nas funções `geocode()` e `busca_por_cep()` 
+agora aceita um vetor de números indicando diferentes resoluções de H3. [Encerra issue #72](https://github.com/ipeaGIT/geocodebr/issues/72).
+
+## Mudanças pequenas (Minor changes)
+
 - Definição de número de `n_cores` para paralelização mais segura usando `{parallelly}`.
+
 
 
 

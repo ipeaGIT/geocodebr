@@ -130,7 +130,7 @@ geocode <- function(enderecos,
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
   checkmate::assert_number(n_cores, lower = 1, finite = TRUE)
-  checkmate::assert_number(h3_res, null.ok = TRUE, lower = 0, upper = 15)
+  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
   campos_endereco <- assert_and_assign_address_fields(
     campos_endereco,
     enderecos
@@ -368,23 +368,26 @@ geocode <- function(enderecos,
   if(isFALSE(resultado_completo)){ output_df[, logradouro_encontrado := NULL]}
 
   # add H3
-  if( !is.null(h3_res) ) {
 
-    colname <- paste0(
-      'h3_',
-      formatC(h3_res, width = 2, flag = "0")
-    )
+  # add H3
+  if (!is.null(h3_res)) {
 
-    output_df[!is.na(lat),
-              {{colname}} := h3r::latLngToCell(lat = lat,
-                                               lng = lon,
-                                               resolution = h3_res)
-              ]
+    for (i in h3_res){
+      colname <- paste0(
+        'h3_',
+        formatC(h3_res, width = 2, flag = "0")
+      )
+
+      output_df[!is.na(lat),
+                {{colname}} := h3r::latLngToCell(lat = lat,
+                                                 lng = lon,
+                                                 resolution = i)]
+    }
 
     # systime add h3 66666 ----------------
     timer$mark("Add H3")
+  }
 
-    }
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {
