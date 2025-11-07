@@ -6,6 +6,7 @@
 - A função `geocode()` agora não aplica match probabilístico em lograouros cujo 
 nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos 
 (RUA 1, RUA 10, RUA 20). [Encerra issue #7](https://github.com/ipeaGIT/geocodebr/issues/67) 
+- Definição de número de `n_cores` para paralelização mais segura usando `{parallelly}`.
 
 
 

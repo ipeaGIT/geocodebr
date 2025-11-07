@@ -25,9 +25,10 @@ create_geocodebr_db <- function( # nocov start
 
   # Set Number of cores for parallel operation
   if (is.null(n_cores)) {
-    n_cores <- parallel::detectCores()
-    n_cores <- n_cores - 1
-    if (n_cores<1) {n_cores <- 1}
+    n_cores <- min(
+      parallelly::availableCores(),
+      parallelly::freeConnections()
+    )
   }
 
   DBI::dbExecute(con, sprintf("SET threads = %s;", n_cores))

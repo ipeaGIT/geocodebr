@@ -40,7 +40,7 @@ Imports:
     h3r,
     httr2 (>= 1.0.0),
     nanoarrow (>= 0.3.0.1),
-    parallel,
+    parallelly,
     purrr,
     Rcpp,
     rlang,
