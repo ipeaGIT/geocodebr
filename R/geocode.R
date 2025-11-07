@@ -103,7 +103,7 @@ geocode <- function(enderecos,
         stringsAsFactors = FALSE
       )
       if (print_summary) {
-        message("— Timing summary —")
+        message("Timing summary")
         print(df, row.names = FALSE)
       }
       df
