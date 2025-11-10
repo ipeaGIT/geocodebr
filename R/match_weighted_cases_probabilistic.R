@@ -104,28 +104,28 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # query update input table with probable logradouro
   query_lookup <- glue::glue(
     "WITH ranked_data AS (
-    SELECT
-      {x}.tempidgeocodebr,
-      {x}.logradouro AS logradouro,
-      unique_logradouros.logradouro AS logradouro_cnefe,
-      CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
-      RANK() OVER ( PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC ) AS rank
-    FROM {x}
-    JOIN unique_logradouros
-      ON {join_condition_string_dist}
-    WHERE {cols_not_null}
-          AND {x}.log_causa_confusao is false
-          AND {x}.similaridade_logradouro IS NULL
-          AND similarity > {min_cutoff}
-  )
+        SELECT
+          {x}.tempidgeocodebr,
+          unique_logradouros.logradouro AS logradouro_cnefe,
+          CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
+          RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
+        FROM {x}
+        JOIN unique_logradouros
+          ON {join_condition_string_dist}
+        WHERE {cols_not_null}
+              AND {x}.log_causa_confusao is false
+              AND {x}.similaridade_logradouro IS NULL
+              AND similarity > {min_cutoff}
+      )
 
-  UPDATE {x}
-    SET temp_lograd_determ = ranked_data.logradouro_cnefe,
-        similaridade_logradouro = similarity
-    FROM ranked_data
-  WHERE {x}.tempidgeocodebr = ranked_data.tempidgeocodebr
-    AND similarity > {min_cutoff}
-    AND rank = 1;"
+      UPDATE {x}
+         SET temp_lograd_determ = ranked_data.logradouro_cnefe,
+             similaridade_logradouro = similarity
+       FROM ranked_data
+      WHERE {x}.tempidgeocodebr = ranked_data.tempidgeocodebr
+            AND ranked_data.rank = 1
+            AND ranked_data.similarity > {min_cutoff}
+            AND ranked_data.similarity > {x}.similaridade_logradouro;"
   )
 
   DBI::dbSendQueryArrow(con, query_lookup)
