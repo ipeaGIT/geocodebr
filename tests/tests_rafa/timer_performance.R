@@ -552,3 +552,20 @@ geocode <- function(enderecos,
 
 
 
+# resolve empate com duckdb 3 NEW (43 milhoes) precisao pra depois
+#                           step step_sec total_sec step_relative
+#                          Start     0.03      0.03           0.0
+#                   Padronizacao   431.75    431.78           7.1
+#    Register standardized input    79.56    511.34           1.3
+# Cria coluna log_causa_confusao     2.68    514.02           0.0
+#                       Matching  2077.87   2591.89          34.0
+#                Resolve empates  2176.24   4768.13          35.6
+#      Write original input back    57.73   4825.86           0.9
+#                  Add precision    64.05   4889.91           1.0
+#                  Merge results   413.50   5303.41           6.8
+#                         Add H3   449.43   5752.84           7.4
+#                  Convert to sf   352.99   6105.83           5.8
+
+
+
+

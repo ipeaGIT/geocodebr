@@ -320,12 +320,6 @@ geocode <- function(enderecos,
 
   if (verboso) message_preparando_output()
 
-  # add precision column
-  add_precision_col(con, update_tb = 'output_db')
-
-
-  # systime add precision 66666 ----------------
-  timer$mark("Add precision")
 
 
   # casos de empate -----------------------------------------------
@@ -352,9 +346,17 @@ geocode <- function(enderecos,
   timer$mark("Write original input back")
 
 
-  x_columns <- names(enderecos)
 
+  # add precision column ----------------
   oupub_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
+  add_precision_col(con, update_tb = oupub_table_to_use)
+
+  # systime add precision 66666 ----------------
+  timer$mark("Add precision")
+
+
+
+  x_columns <- names(enderecos)
 
   output_df <- merge_results_to_input(
     con,

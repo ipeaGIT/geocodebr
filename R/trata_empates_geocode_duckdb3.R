@@ -133,7 +133,6 @@ trata_empates_geocode_duckdb3 <- function(
             municipio_encontrado,
             estado_encontrado,
             similaridade_logradouro,
-            precisao,
             empate
           FROM filtered
           WHERE empate = FALSE
@@ -157,7 +156,6 @@ trata_empates_geocode_duckdb3 <- function(
             municipio_encontrado,
             estado_encontrado,
             similaridade_logradouro,
-            precisao,
             TRUE AS empate
           FROM filtered
           WHERE empate = TRUE
@@ -207,7 +205,6 @@ trata_empates_geocode_duckdb3 <- function(
             municipio_encontrado,
             estado_encontrado,
             similaridade_logradouro,
-            precisao,
             TRUE AS empate
           FROM empates_wavg
           QUALIFY ROW_NUMBER()
@@ -220,7 +217,7 @@ trata_empates_geocode_duckdb3 <- function(
         tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
         numero_encontrado, localidade_encontrada, cep_encontrado,
         municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        precisao, empate
+        empate
       FROM df_sem_empate
       UNION ALL
       SELECT
@@ -228,7 +225,7 @@ trata_empates_geocode_duckdb3 <- function(
         tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
         numero_encontrado, localidade_encontrada, cep_encontrado,
         municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        precisao, empate
+        empate
       FROM df_empates_perdidos
       UNION ALL
       SELECT
@@ -236,7 +233,7 @@ trata_empates_geocode_duckdb3 <- function(
         tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
         numero_encontrado, localidade_encontrada, cep_encontrado,
         municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        precisao, empate
+        empate
       FROM df_empates_salve;
       "
 
