@@ -45,7 +45,7 @@ match_cases <- function( # nocov start
 
   # cols from x that cannot be null
   # isso serve como filtro pre-join, pra fazer o join soh em quem nao foi encontrado ainda
-  cols_not_null <-  paste(
+  cols_not_null <- paste(
     glue::glue("{x}.{key_cols} IS NOT NULL"),
     collapse = ' AND '
   )
@@ -74,7 +74,8 @@ match_cases <- function( # nocov start
 
   # summarize query
   query_match <- glue::glue(
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado,
+                            desvio_metros, contagem_cnefe {colunas_encontradas})
       SELECT {x}.tempidgeocodebr,
         {y}.lat,
         {y}.lon,
