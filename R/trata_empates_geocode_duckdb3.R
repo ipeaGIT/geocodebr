@@ -15,7 +15,41 @@ trata_empates_geocode_duckdb3 <- function(
     con = parent.frame()$con,
     resolver_empates = parent.frame()$resolver_empates,
     verboso = parent.frame()$verboso
-) {
+    ){
+
+
+  # 1) checa se tem empates --------------------------------------
+
+  n_casos_empate <- DBI::dbGetQuery(
+    conn = con,
+    statement = "SELECT COUNT(*) AS n_casos_empate
+                    FROM (
+                      SELECT tempidgeocodebr
+                      FROM output_db
+                      GROUP BY tempidgeocodebr
+                      HAVING COUNT(*) > 1
+                    ) AS repeated;")[[1]]
+
+
+
+  # 2) se nao tiver mais empates, termina aqui --------------------------------------
+  if (n_casos_empate == 0) { return(n_casos_empate) }
+
+  # 3) se nao for para resolver empates: ------------------------------------------
+  # - gera warning
+  # - retorna resultado assim mesmo
+  if (isFALSE(resolver_empates)) {
+
+    cli::cli_warn(
+      "Foram encontrados {n_casos_empate} casos de empate. Estes casos foram
+      marcados com valor `TRUE` na coluna 'empate', e podem ser inspecionados na
+      coluna 'endereco_encontrado'. Alternativamente, use `resolver_empates = TRUE`
+      para que o pacote lide com os empates automaticamente. Ver
+      documenta\u00e7\u00e3o da fun\u00e7\u00e3o."
+    )
+
+    return(0)
+  }
 
   # Haversine macro (kept for speed; consider spatial extension later)
   DBI::dbExecute(con, "
@@ -30,75 +64,33 @@ trata_empates_geocode_duckdb3 <- function(
     );
   ")
 
-  # One-shot pipeline
-  sql <- "
-  -- 0) Base w/ tie-flags + deterministic id inside partition
-  WITH base AS (
-    SELECT
-      *,
-      (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate_inicial,
-      ROW_NUMBER()
-        OVER (PARTITION BY tempidgeocodebr
-              ORDER BY contagem_cnefe DESC, desvio_metros, endereco_encontrado) AS id
-    FROM output_db
-  ),
 
-  -- 1) Distance between consecutive candidates within each tie group
-  distd AS (
-    SELECT
-      b.*,
-      CASE WHEN empate_inicial THEN
-        haversine(
-          lat, lon,
-          LEAD(lat) OVER (PARTITION BY tempidgeocodebr ORDER BY id),
-          LEAD(lon) OVER (PARTITION BY tempidgeocodebr ORDER BY id)
-        )
-      END AS dist_geocodebr
-    FROM base b
-  ),
 
-  -- 2) Keep non-ties and ties where neighbor distance is NULL or > 300m
-  filtered AS (
-    SELECT
-      d.*,
-      (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate,
-      MAX(dist_geocodebr) OVER (PARTITION BY tempidgeocodebr) AS max_dist
-    FROM distd d
-    WHERE (empate_inicial IS FALSE)
-       OR (empate_inicial AND dist_geocodebr IS NULL)
-       OR (empate_inicial AND dist_geocodebr > 300)
-  ),
+  # 3 se for para resolver empates, trata de 3 casos separados -----------------
+  # D) nao empatados
+  # E) empatados perdidos (dist > 1Km e lograoduros ambiguos)
+  #    solucao: usa caso com maior contagem_cnefe
+  # F) empatados mas que da pra salvar (dist < 1km e logradouros nao ambiguos)
+  #    solucao: agrega casos provaveis de serem na mesma rua com media ponderada
+  #    das coordenadas, mas retorna  endereco_encontrado do caso com maior
+  #    contagem_cnefe
+  # questao documentada no issue 37
 
-  -- early count used for the fast-return branch
-  tie_count AS (
-    SELECT COUNT(DISTINCT tempidgeocodebr) AS n FROM filtered WHERE empate
-  )
-
-  SELECT * FROM tie_count;
-  "
-
-  n_casos_empate <- DBI::dbGetQuery(con, sql)$n[[1]]
-
-  # 2) If no ties left, we’re done
-  if (n_casos_empate == 0L) return(TRUE)
-
-  # 3) If not resolving, mark & finish (materialize filtered table once)
-  if (isFALSE(resolver_empates)) {
-    DBI::dbExecute(con, "
+  sql_resolve <- "
       CREATE OR REPLACE TEMP TABLE output_db2 AS
-      SELECT * EXCLUDE (empate_inicial)
-      FROM (
-        WITH base AS (
+
+      -- A) tabela *base* calculate empates iniciais (inclui mesmo aqueles a menos de 300 metros)
+      WITH
+        base AS (
           SELECT
             *,
             (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate_inicial,
-            ROW_NUMBER() OVER (
-              PARTITION BY tempidgeocodebr
-              ORDER BY contagem_cnefe DESC, desvio_metros, endereco_encontrado
-            ) AS id
+            ROW_NUMBER() OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC, desvio_metros, endereco_encontrado) AS id
           FROM output_db
         ),
-        distd AS (
+
+      -- B) tabela *distd* calculate distancia entre os casos empatados
+      distd AS (
           SELECT
             b.*,
             CASE WHEN empate_inicial THEN
@@ -107,182 +99,146 @@ trata_empates_geocode_duckdb3 <- function(
                 LEAD(lat) OVER (PARTITION BY tempidgeocodebr ORDER BY id),
                 LEAD(lon) OVER (PARTITION BY tempidgeocodebr ORDER BY id)
               )
-            END AS dist_geocodebr
+            END AS dist_geocodebr_metros
           FROM base b
+        ),
+
+      -- C) tabela *filtered* pra manter apenas casos de empate que estao a mais de 300 metros e atualiza coluna de empate
+      filtered AS (
+          SELECT
+            d.*,
+            (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate,
+            MAX(dist_geocodebr_metros) OVER (PARTITION BY tempidgeocodebr) AS max_dist
+          FROM distd d
+          WHERE (empate_inicial IS FALSE)
+             OR (empate_inicial AND dist_geocodebr_metros IS NULL)
+             OR (empate_inicial AND dist_geocodebr_metros > 300)
+        ),
+
+      -- D) tabela *df_sem_empate* com os casos sem empate
+      df_sem_empate AS (
+          SELECT
+            tempidgeocodebr,
+            lat,
+            lon,
+            endereco_encontrado,
+            logradouro_encontrado,
+            tipo_resultado,
+            contagem_cnefe,
+            desvio_metros,
+            log_causa_confusao,
+            numero_encontrado,
+            localidade_encontrada,
+            cep_encontrado,
+            municipio_encontrado,
+            estado_encontrado,
+            similaridade_logradouro,
+            precisao,
+            empate
+          FROM filtered
+          WHERE empate = FALSE
+        ),
+
+        -- E) empatados perdidos (exemplo: max_dist > 1000; acrescente demais regras aqui)
+        df_empates_perdidos AS (
+          SELECT
+            tempidgeocodebr,
+            lat,
+            lon,
+            endereco_encontrado,
+            logradouro_encontrado,
+            tipo_resultado,
+            contagem_cnefe,
+            desvio_metros,
+            log_causa_confusao,
+            numero_encontrado,
+            localidade_encontrada,
+            cep_encontrado,
+            municipio_encontrado,
+            estado_encontrado,
+            similaridade_logradouro,
+            precisao,
+            TRUE AS empate
+          FROM filtered
+          WHERE empate = TRUE
+            AND (
+              max_dist > 1000
+              OR log_causa_confusao
+              OR REGEXP_MATCHES(endereco_encontrado,
+                  '(RUA (QUATRO|QUATORZE|QUINZE|DEZESSEIS|DEZESSETE|DEZOITO|DEZENOVE|VINTE|TRINTA|QUARENTA|CINQUENTA|SESSENTA|SETENTA|OITENTA|NOVENTA))'
+              )
+            )
+            AND NOT REGEXP_MATCHES(logradouro_encontrado, '\\\\bDE (JANEIRO|FEVEREIRO|MARCO|ABRIL|MAIO|JUNHO|JULHO|AGOSTO|SETEMBRO|OUTUBRO|NOVEMBRO|DEZEMBRO)\\\\b')
+          QUALIFY ROW_NUMBER()
+            OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
+        ),
+
+        -- F) empatados salvaveis = restantes (não em a) nem b))
+        empates_restantes AS (
+          SELECT f.*
+          FROM filtered f
+          WHERE f.empate = TRUE
+            AND NOT EXISTS (SELECT 1 FROM df_sem_empate s WHERE s.tempidgeocodebr = f.tempidgeocodebr)
+            AND NOT EXISTS (SELECT 1 FROM df_empates_perdidos p WHERE p.tempidgeocodebr = f.tempidgeocodebr)
+        ),
+        empates_wavg AS (
+          SELECT
+            e.*,
+            (SUM(lat * contagem_cnefe) OVER (PARTITION BY tempidgeocodebr)
+              / NULLIF(SUM(contagem_cnefe) OVER (PARTITION BY tempidgeocodebr), 0)) AS lat_wavg,
+            (SUM(lon * contagem_cnefe) OVER (PARTITION BY tempidgeocodebr)
+              / NULLIF(SUM(contagem_cnefe) OVER (PARTITION BY tempidgeocodebr), 0)) AS lon_wavg
+          FROM empates_restantes e
+        ),
+        df_empates_salve AS (
+          SELECT
+            tempidgeocodebr,
+            lat_wavg AS lat,
+            lon_wavg AS lon,
+            endereco_encontrado,
+            logradouro_encontrado,
+            tipo_resultado,
+            contagem_cnefe,
+            desvio_metros,
+            log_causa_confusao,
+            numero_encontrado,
+            localidade_encontrada,
+            cep_encontrado,
+            municipio_encontrado,
+            estado_encontrado,
+            similaridade_logradouro,
+            precisao,
+            TRUE AS empate
+          FROM empates_wavg
+          QUALIFY ROW_NUMBER()
+            OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
         )
-        SELECT
-          d.*,
-          (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate,
-          MAX(dist_geocodebr) OVER (PARTITION BY tempidgeocodebr) AS max_dist
-        FROM distd d
-        WHERE (empate_inicial IS FALSE)
-           OR (empate_inicial AND dist_geocodebr IS NULL)
-           OR (empate_inicial AND dist_geocodebr > 300)
-      );
-    ")
-    return(TRUE)
-  }
 
-  # 4) Resolve ties fully, all in SQL (no R-side id lists)
-  sql_resolve <- "
-CREATE OR REPLACE TEMP TABLE output_db2 AS
-WITH
-  base AS (
-    SELECT
-      *,
-      (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate_inicial,
-      ROW_NUMBER() OVER (
-        PARTITION BY tempidgeocodebr
-        ORDER BY contagem_cnefe DESC, desvio_metros, endereco_encontrado
-      ) AS id
-    FROM output_db
-  ),
-  distd AS (
-    SELECT
-      b.*,
-      CASE WHEN empate_inicial THEN
-        haversine(
-          lat, lon,
-          LEAD(lat) OVER (PARTITION BY tempidgeocodebr ORDER BY id),
-          LEAD(lon) OVER (PARTITION BY tempidgeocodebr ORDER BY id)
-        )
-      END AS dist_geocodebr
-    FROM base b
-  ),
-  filtered AS (
-    SELECT
-      d.*,
-      (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate,
-      MAX(dist_geocodebr) OVER (PARTITION BY tempidgeocodebr) AS max_dist
-    FROM distd d
-    WHERE (empate_inicial IS FALSE)
-       OR (empate_inicial AND dist_geocodebr IS NULL)
-       OR (empate_inicial AND dist_geocodebr > 300)
-  ),
-
-  -- a) sem empate
-  df_sem_empate AS (
-    SELECT
-      tempidgeocodebr,
-      lat,
-      lon,
-      endereco_encontrado,
-      logradouro_encontrado,
-      tipo_resultado,
-      contagem_cnefe,
-      desvio_metros,
-      log_causa_confusao,
-      numero_encontrado,
-      localidade_encontrada,
-      cep_encontrado,
-      municipio_encontrado,
-      estado_encontrado,
-      similaridade_logradouro,
-      precisao,
-      empate
-    FROM filtered
-    WHERE empate = FALSE
-  ),
-
-  -- b) empatados perdidos (exemplo: max_dist > 1000; acrescente suas demais regras aqui)
-  df_empates_perdidos AS (
-    SELECT
-      tempidgeocodebr,
-      lat,
-      lon,
-      endereco_encontrado,
-      logradouro_encontrado,
-      tipo_resultado,
-      contagem_cnefe,
-      desvio_metros,
-      log_causa_confusao,
-      numero_encontrado,
-      localidade_encontrada,
-      cep_encontrado,
-      municipio_encontrado,
-      estado_encontrado,
-      similaridade_logradouro,
-      precisao,
-      TRUE AS empate
-    FROM filtered
-    WHERE empate = TRUE
-      AND (
-        max_dist > 1000
-        OR log_causa_confusao
-        OR REGEXP_MATCHES(endereco_encontrado,
-            '(RUA (QUATRO|QUATORZE|QUINZE|DEZESSEIS|DEZESSETE|DEZOITO|DEZENOVE|VINTE|TRINTA|QUARENTA|CINQUENTA|SESSENTA|SETENTA|OITENTA|NOVENTA))'
-        )
-      )
-      AND NOT REGEXP_MATCHES(logradouro_encontrado, '\\\\bDE (JANEIRO|FEVEREIRO|MARCO|ABRIL|MAIO|JUNHO|JULHO|AGOSTO|SETEMBRO|OUTUBRO|NOVEMBRO|DEZEMBRO)\\\\b')
-    QUALIFY ROW_NUMBER()
-      OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
-  ),
-
-  -- c) empatados salváveis = restantes (não em a) nem b))
-  empates_restantes AS (
-    SELECT f.*
-    FROM filtered f
-    WHERE f.empate = TRUE
-      AND NOT EXISTS (SELECT 1 FROM df_sem_empate s WHERE s.tempidgeocodebr = f.tempidgeocodebr)
-      AND NOT EXISTS (SELECT 1 FROM df_empates_perdidos p WHERE p.tempidgeocodebr = f.tempidgeocodebr)
-  ),
-  empates_wavg AS (
-    SELECT
-      e.*,
-      (SUM(lat * contagem_cnefe) OVER (PARTITION BY tempidgeocodebr)
-        / NULLIF(SUM(contagem_cnefe) OVER (PARTITION BY tempidgeocodebr), 0)) AS lat_wavg,
-      (SUM(lon * contagem_cnefe) OVER (PARTITION BY tempidgeocodebr)
-        / NULLIF(SUM(contagem_cnefe) OVER (PARTITION BY tempidgeocodebr), 0)) AS lon_wavg
-    FROM empates_restantes e
-  ),
-  df_empates_salve AS (
-    SELECT
-      tempidgeocodebr,
-      lat_wavg AS lat,
-      lon_wavg AS lon,
-      endereco_encontrado,
-      logradouro_encontrado,
-      tipo_resultado,
-      contagem_cnefe,
-      desvio_metros,
-      log_causa_confusao,
-      numero_encontrado,
-      localidade_encontrada,
-      cep_encontrado,
-      municipio_encontrado,
-      estado_encontrado,
-      similaridade_logradouro,
-      precisao,
-      TRUE AS empate
-    FROM empates_wavg
-    QUALIFY ROW_NUMBER()
-      OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
-  )
-
-SELECT
-  tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-  tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-  numero_encontrado, localidade_encontrada, cep_encontrado,
-  municipio_encontrado, estado_encontrado, similaridade_logradouro,
-  precisao, empate
-FROM df_sem_empate
-UNION ALL
-SELECT
-  tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-  tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-  numero_encontrado, localidade_encontrada, cep_encontrado,
-  municipio_encontrado, estado_encontrado, similaridade_logradouro,
-  precisao, empate
-FROM df_empates_perdidos
-UNION ALL
-SELECT
-  tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-  tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-  numero_encontrado, localidade_encontrada, cep_encontrado,
-  municipio_encontrado, estado_encontrado, similaridade_logradouro,
-  precisao, empate
-FROM df_empates_salve;
-"
+      -- junta as 3 tabelas numa soh (df_sem_empate, df_empates_perdidos, df_empates_salve)
+      SELECT
+        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
+        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
+        numero_encontrado, localidade_encontrada, cep_encontrado,
+        municipio_encontrado, estado_encontrado, similaridade_logradouro,
+        precisao, empate
+      FROM df_sem_empate
+      UNION ALL
+      SELECT
+        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
+        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
+        numero_encontrado, localidade_encontrada, cep_encontrado,
+        municipio_encontrado, estado_encontrado, similaridade_logradouro,
+        precisao, empate
+      FROM df_empates_perdidos
+      UNION ALL
+      SELECT
+        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
+        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
+        numero_encontrado, localidade_encontrada, cep_encontrado,
+        municipio_encontrado, estado_encontrado, similaridade_logradouro,
+        precisao, empate
+      FROM df_empates_salve;
+      "
 
 
 
@@ -306,5 +262,5 @@ FROM df_empates_salve;
     ))
   }
 
-  return(TRUE)
+  return(n_casos_empate)
 }

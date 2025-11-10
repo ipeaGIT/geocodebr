@@ -352,17 +352,22 @@ geocode <- function(enderecos,
   timer$mark("Write original input back")
 
 
-
   x_columns <- names(enderecos)
+
+  oupub_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
 
   output_df <- merge_results_to_input(
     con,
     x='input_db',
-    y='output_db2',
+    y= oupub_table_to_use,
     key_column='tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
   )
+
+
+
+
 
   # systime merge results 66666 ----------------
   timer$mark("Merge results")

@@ -502,20 +502,6 @@ geocode <- function(enderecos,
 #                  Convert to sf     2.19    135.14
 
 
-# resolve empate com duckdb 3 (43 milhoes)
-#
-#                           step step_sec total_sec
-#                          Start     0.00      0.00
-#                   Padronizacao   432.72    432.72
-#    Register standardized input    81.80    514.52
-# Cria coluna log_causa_confusao     2.86    517.38
-#                       Matching  2293.57   2810.95
-#                  Add precision    88.21   2899.16
-#                Resolve empates  3043.82   5942.98
-#      Write original input back    67.85   6010.83
-#                  Merge results   436.00   6446.83
-#                         Add H3   479.51   6926.34
-#                  Convert to sf   297.13   7223.47
 
 
 # resolve empate com data.table 3 (43 milhoes)
@@ -531,3 +517,38 @@ geocode <- function(enderecos,
 #                Resolve empates  1302.81   6030.59
 #                         Add H3    51.11   6081.70
 #                  Convert to sf   422.74   6504.44
+
+
+# resolve empate com duckdb 3 OLD (43 milhoes)
+#
+#                           step step_sec total_sec
+#                          Start     0.00      0.00
+#                   Padronizacao   432.72    432.72
+#    Register standardized input    81.80    514.52
+# Cria coluna log_causa_confusao     2.86    517.38
+#                       Matching  2293.57   2810.95
+#                  Add precision    88.21   2899.16
+#                Resolve empates  3043.82   5942.98
+#      Write original input back    67.85   6010.83
+#                  Merge results   436.00   6446.83
+#                         Add H3   479.51   6926.34
+#                  Convert to sf   297.13   7223.47
+
+
+
+# resolve empate com duckdb 3 NEW (43 milhoes)
+#                           step step_sec total_sec step_relative
+#                          Start     0.03      0.03           0.0
+#                   Padronizacao   445.64    445.67           6.2
+#    Register standardized input    80.77    526.44           1.1
+# Cria coluna log_causa_confusao     2.56    529.00           0.0
+#                       Matching  2402.55   2931.55          33.3
+#                  Add precision   107.81   3039.36           1.5
+#                Resolve empates  2677.19   5716.55          37.1
+#      Write original input back    67.67   5784.22           0.9
+#                  Merge results   526.64   6310.86           7.3
+#                         Add H3   545.69   6856.55           7.6
+#                  Convert to sf   362.96   7219.51           5.0
+
+
+
