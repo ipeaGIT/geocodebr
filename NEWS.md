@@ -13,6 +13,7 @@ agora aceita um vetor de números indicando diferentes resoluções de H3. [Ence
 ## Mudanças pequenas (Minor changes)
 
 - Definição de número de `n_cores` para paralelização mais segura usando `{parallelly}`.
+- Ganhios de performance em algumas funções de match (issues [#73](https://github.com/ipeaGIT/geocodebr/issues/73) e [#75](https://github.com/ipeaGIT/geocodebr/issues/75)).
 
 
 
