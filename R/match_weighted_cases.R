@@ -89,12 +89,13 @@ match_weighted_cases <- function( # nocov start
     -- PART 1) left join to get all cases that match
 
     WITH temp_db AS (
-      SELECT {x}.tempidgeocodebr, {x}.numero,
-        {y}.numero AS numero_cnefe,
-        {y}.lat, {y}.lon,
-        REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
-        {y}.desvio_metros,
-        {y}.n_casos AS contagem_cnefe {additional_cols_first}
+      SELECT {x}.tempidgeocodebr,
+             {x}.numero,
+             {y}.numero AS numero_cnefe,
+             {y}.lat, {y}.lon,
+             REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
+             {y}.desvio_metros,
+             {y}.n_casos AS contagem_cnefe {additional_cols_first}
       FROM {x}
       LEFT JOIN {y}
       ON {join_condition}

@@ -191,7 +191,9 @@ match_weighted_cases_probabilistic <- function( # nocov start
     "
   -- PART 1) left join to get all cases that match
   WITH temp_db AS (
-      SELECT {x}.tempidgeocodebr, {x}.numero, {y}.numero AS numero_cnefe,
+      SELECT {x}.tempidgeocodebr,
+             {x}.numero,
+             {y}.numero AS numero_cnefe,
              {y}.lat, {y}.lon,
              REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
              {x}.similaridade_logradouro,
