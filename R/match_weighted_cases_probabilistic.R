@@ -157,7 +157,8 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
   # whether to keep all columns in the result
   colunas_encontradas <- ""
-  additional_cols <- ""
+  additional_cols_first <- ""
+  additional_cols_second <- ""
 
   if (isTRUE(resultado_completo)) {
 
@@ -168,68 +169,44 @@ match_weighted_cases_probabilistic <- function( # nocov start
     colunas_encontradas <- gsub('localidade_encontrado', 'localidade_encontrada', colunas_encontradas)
     colunas_encontradas <- paste0(", ", colunas_encontradas)
 
-    additional_cols <- paste0(
+    # additonal cols for the first part of the query
+    additional_cols_first <- paste0(
       glue::glue("{y}.{key_cols} AS {key_cols}_encontrado"),
       collapse = ', ')
+    additional_cols_first <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols_first)
+    additional_cols_first <- paste0(", ", additional_cols_first)
 
-    additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
-    additional_cols <- paste0(", ", additional_cols)
+    # additonal cols for the second part of the query
+    additional_cols_second <- paste0(
+      glue::glue("FIRST({key_cols}_encontrado) AS {key_cols}_encontrado"),
+      collapse = ', ')
+    additional_cols_second <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols_second)
+    additional_cols_second <- paste0(", ", additional_cols_second)
+
   }
 
-  # match query
+  # Match query  --------------------------------------------------------
+
   query_match <- glue::glue(
-    "CREATE OR REPLACE TEMPORARY VIEW temp_db AS
+    "
+  -- PART 1) left join to get all cases that match
+  WITH temp_db AS (
       SELECT {x}.tempidgeocodebr, {x}.numero, {y}.numero AS numero_cnefe,
              {y}.lat, {y}.lon,
              REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
              {x}.similaridade_logradouro,
              {y}.logradouro AS logradouro_encontrado,
              {y}.desvio_metros,
-             {y}.n_casos AS contagem_cnefe {additional_cols}
-        FROM {x}
-        LEFT JOIN {y}
-        ON {join_condition_determ}
-      WHERE lon IS NOT NULL {cols_not_null_match};"
-  )
+             {y}.n_casos AS contagem_cnefe {additional_cols_first}
+          FROM {x}
+          LEFT JOIN {y}
+          ON {join_condition_determ}
+          WHERE lon IS NOT NULL {cols_not_null_match}
+          )
 
-  DBI::dbSendQueryArrow(con, query_match)
-  # c <- DBI::dbReadTable(con, 'temp_db')
+  -- PART 2: aggregate and interpolate get aprox location
 
-
-
-  # 4th step: aggregate --------------------------------------------------------
-
-  # summarize query
-  # 66666666666 passar para esse passo a construcao do endereco_encontrado
-  query_aggregate <- glue::glue(
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe)
-      SELECT tempidgeocodebr,
-        SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
-        SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
-        FIRST(endereco_encontrado) AS endereco_encontrado,
-        '{match_type}' AS tipo_resultado,
-        AVG(desvio_metros) AS desvio_metros,
-        FIRST(contagem_cnefe) AS contagem_cnefe
-      FROM temp_db
-     GROUP BY tempidgeocodebr, endereco_encontrado;"
-  )
-
-
-
-  if (isTRUE(resultado_completo)) {
-
-    key_cols <- get_key_cols(match_type)
-    key_cols <- key_cols[key_cols != 'numero']
-
-    additional_cols <- paste0(
-      glue::glue("FIRST({key_cols}_encontrado) AS {key_cols}_encontrado"),
-      collapse = ', ')
-
-    additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
-    additional_cols <- paste0(", ", additional_cols)
-
-    query_aggregate <- glue::glue(
-      "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
+  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
                               similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
@@ -238,13 +215,13 @@ match_weighted_cases_probabilistic <- function( # nocov start
          '{match_type}' AS tipo_resultado,
          AVG(desvio_metros) AS desvio_metros,
          FIRST(similaridade_logradouro) AS similaridade_logradouro,
-         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols}
+         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols_second}
       FROM temp_db
       GROUP BY tempidgeocodebr, endereco_encontrado;"
-    )
-  }
+  )
 
-  DBI::dbSendQueryArrow(con, query_aggregate)
+
+  DBI::dbSendQueryArrow(con, query_match)
   # DBI::dbExecute(con, query_aggregate)
   # d <- DBI::dbReadTable(con, 'output_db')
   # d <- DBI::dbReadTable(con, 'aaa')
