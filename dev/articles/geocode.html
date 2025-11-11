@@ -68,7 +68,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Geocode</h1>
             
-            <h4 data-toc-skip class="date">2025-11-07</h4>
+            <h4 data-toc-skip class="date">2025-11-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocode.Rmd" class="external-link"><code>vignettes/geocode.Rmd</code></a></small>
       <div class="d-none name"><code>geocode.Rmd</code></div>
@@ -134,8 +134,6 @@ entanto, são salvos de forma persistente, logo eles são baixados uma
 <span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in max(contagem_cnefe, na.rm = TRUE): no non-missing arguments to max;</span></span>
-<span><span class="co">#&gt; returning -Inf</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ends_geo</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       id            nm_logradouro Numero       Cep               Bairro</span></span>
@@ -170,14 +168,14 @@ entanto, são salvos de forma persistente, logo eles são baixados uma
 <span><span class="co">#&gt; 4:           RUA ALEXANDRE AMARAL - SANTISSIMO, RIO DE JANEIRO - RJ, 23098-120</span></span>
 <span><span class="co">#&gt; 5:                  AVENIDA E, 300 - PRAIA GRANDE, MANGARATIBA - RJ, 23860-000</span></span>
 <span><span class="co">#&gt; 6: RUA PRINCESA ISABEL, 263 - ESTACAO EXPERIMENTAL, RIO BRANCO - AC, 69921-026</span></span>
-<span><span class="co">#&gt;    empate           h3_09</span></span>
-<span><span class="co">#&gt;    &lt;lgcl&gt;          &lt;char&gt;</span></span>
-<span><span class="co">#&gt; 1:  FALSE 89a8a39850fffff</span></span>
-<span><span class="co">#&gt; 2:  FALSE 89a8a06c55bffff</span></span>
-<span><span class="co">#&gt; 3:  FALSE 89a8a1c190fffff</span></span>
-<span><span class="co">#&gt; 4:  FALSE 89a8a066c47ffff</span></span>
-<span><span class="co">#&gt; 5:  FALSE 89a8a026c77ffff</span></span>
-<span><span class="co">#&gt; 6:  FALSE 898b5131e0fffff</span></span></code></pre></div>
+<span><span class="co">#&gt;              h3_09</span></span>
+<span><span class="co">#&gt;             &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1: 89a8a39850fffff</span></span>
+<span><span class="co">#&gt; 2: 89a8a06c55bffff</span></span>
+<span><span class="co">#&gt; 3: 89a8a1c190fffff</span></span>
+<span><span class="co">#&gt; 4: 89a8a066c47ffff</span></span>
+<span><span class="co">#&gt; 5: 89a8a026c77ffff</span></span>
+<span><span class="co">#&gt; 6: 898b5131e0fffff</span></span></code></pre></div>
 <p>Por padrão, a tabela de <em>output</em> é igual à tabela de input do
 usuário acrescida de colunas com a latitude e longitude encontradas, bem
 como de colunas indicando o nível de precisão dos resultados e o
@@ -419,7 +417,7 @@ ser bem pequeno.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
