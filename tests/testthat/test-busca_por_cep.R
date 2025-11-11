@@ -32,8 +32,9 @@ test_that("expected output", {
   testthat::expect_s3_class(output, 'data.frame')
 
   # add h3
-  h3_output <- tester(cep = ceps_valid, h3_res = 3)
+  h3_output <- tester(cep = ceps_valid, h3_res = c(3,4))
   testthat::expect_true('h3_03' %in% names(h3_output))
+  testthat::expect_true('h3_04' %in% names(h3_output))
 
   # output in sf format
   sf_output <- tester(cep = ceps_valid, resultado_sf = TRUE)

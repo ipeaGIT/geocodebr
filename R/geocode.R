@@ -324,7 +324,12 @@ geocode <- function(enderecos,
 
   # casos de empate -----------------------------------------------
 
-  empates_resolvidos <- trata_empates_geocode_duckdb3(con, resolver_empates, verboso)
+  empates_resolvidos <- trata_empates_geocode_duckdb3(
+    con,
+    resultado_completo,
+    resolver_empates,
+    verboso
+    )
 
 
 
@@ -348,8 +353,8 @@ geocode <- function(enderecos,
 
 
   # add precision column ----------------
-  oupub_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
-  add_precision_col(con, update_tb = oupub_table_to_use)
+  output_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
+  add_precision_col(con, update_tb = output_table_to_use)
 
   # systime add precision 66666 ----------------
   timer$mark("Add precision")
@@ -361,7 +366,7 @@ geocode <- function(enderecos,
   output_df <- merge_results_to_input(
     con,
     x='input_db',
-    y= oupub_table_to_use,
+    y= output_table_to_use,
     key_column='tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
@@ -384,9 +389,6 @@ geocode <- function(enderecos,
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
-
-
-  if(isFALSE(resultado_completo)){ output_df[, logradouro_encontrado := NULL]}
 
   # add H3
   if( !is.null(h3_res) ) {

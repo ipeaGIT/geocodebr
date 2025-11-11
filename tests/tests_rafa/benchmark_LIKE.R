@@ -132,7 +132,7 @@ bench::mark( iterations = 1,
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
-    resultado_completo = T,
+    resultado_completo = F,
     verboso = T,
     resultado_sf = T,
     resolver_empates = T,
@@ -281,16 +281,17 @@ campos <- geocodebr::definir_campos(
 # n_cores = 7
 # verboso = T
 # cache=T
-# resultado_completo=T
-# resolver_empates = FALSE
+# resultado_completo = F
+# resolver_empates = T
 # resultado_sf = FALSE
+# h3_res =9
 
 dfgeo <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = 7,
     resultado_completo = T,
-    resolver_empates = T,
+    resolver_empates = F,
     verboso = T
   )
 

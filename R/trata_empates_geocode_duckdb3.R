@@ -13,6 +13,7 @@
 
 trata_empates_geocode_duckdb3 <- function(
     con = parent.frame()$con,
+    resultado_completo = parent.frame()$resultado_completo,
     resolver_empates = parent.frame()$resolver_empates,
     verboso = parent.frame()$verboso
     ){
@@ -39,6 +40,17 @@ trata_empates_geocode_duckdb3 <- function(
   # - gera warning
   # - retorna resultado assim mesmo
   if (isFALSE(resolver_empates)) {
+
+    # adicionar coluna de empate
+    DBI::dbExecute(
+      conn = con,
+      statement = "CREATE OR REPLACE TEMP TABLE output_db AS
+                    SELECT *,
+                    (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate
+                    FROM output_db;"
+      )
+
+    a <- DBI::dbReadTable(con, "output_db")
 
     cli::cli_warn(
       "Foram encontrados {n_casos_empate} casos de empate. Estes casos foram
@@ -76,8 +88,28 @@ trata_empates_geocode_duckdb3 <- function(
   #    contagem_cnefe
   # questao documentada no issue 37
 
-  sql_resolve <- "
-      CREATE OR REPLACE TEMP TABLE output_db2 AS
+
+  additional_cols_final <- ""
+  cols_encontradas <- ""
+
+  if(isTRUE(resultado_completo)){
+
+    additional_cols_final <- glue::glue(
+        ", logradouro_encontrado, numero_encontrado, cep_encontrado,
+        localidade_encontrada, municipio_encontrado, estado_encontrado,
+        similaridade_logradouro, contagem_cnefe, empate"
+        )
+
+    cols_encontradas <- glue::glue(
+        ", logradouro_encontrado, numero_encontrado, cep_encontrado,
+        localidade_encontrada, municipio_encontrado, estado_encontrado,
+        similaridade_logradouro"
+        )
+
+    }
+
+  sql_resolve <- glue::glue(
+    "CREATE OR REPLACE TEMP TABLE output_db2 AS
 
       -- A) tabela *base* calculate empates iniciais (inclui mesmo aqueles a menos de 300 metros)
       WITH
@@ -122,18 +154,11 @@ trata_empates_geocode_duckdb3 <- function(
             lat,
             lon,
             endereco_encontrado,
-            logradouro_encontrado,
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
             log_causa_confusao,
-            numero_encontrado,
-            localidade_encontrada,
-            cep_encontrado,
-            municipio_encontrado,
-            estado_encontrado,
-            similaridade_logradouro,
-            empate
+            empate {cols_encontradas}
           FROM filtered
           WHERE empate = FALSE
         ),
@@ -145,18 +170,11 @@ trata_empates_geocode_duckdb3 <- function(
             lat,
             lon,
             endereco_encontrado,
-            logradouro_encontrado,
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
             log_causa_confusao,
-            numero_encontrado,
-            localidade_encontrada,
-            cep_encontrado,
-            municipio_encontrado,
-            estado_encontrado,
-            similaridade_logradouro,
-            TRUE AS empate
+            TRUE AS empate {cols_encontradas}
           FROM filtered
           WHERE empate = TRUE
             AND (
@@ -194,18 +212,11 @@ trata_empates_geocode_duckdb3 <- function(
             lat_wavg AS lat,
             lon_wavg AS lon,
             endereco_encontrado,
-            logradouro_encontrado,
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
             log_causa_confusao,
-            numero_encontrado,
-            localidade_encontrada,
-            cep_encontrado,
-            municipio_encontrado,
-            estado_encontrado,
-            similaridade_logradouro,
-            TRUE AS empate
+            TRUE AS empate {cols_encontradas}
           FROM empates_wavg
           QUALIFY ROW_NUMBER()
             OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
@@ -213,45 +224,26 @@ trata_empates_geocode_duckdb3 <- function(
 
       -- junta as 3 tabelas numa soh (df_sem_empate, df_empates_perdidos, df_empates_salve)
       SELECT
-        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-        numero_encontrado, localidade_encontrada, cep_encontrado,
-        municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        empate
+        tempidgeocodebr, lat, lon, tipo_resultado, desvio_metros,
+        endereco_encontrado {additional_cols_final}
       FROM df_sem_empate
       UNION ALL
       SELECT
-        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-        numero_encontrado, localidade_encontrada, cep_encontrado,
-        municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        empate
+        tempidgeocodebr, lat, lon, tipo_resultado, desvio_metros,
+        endereco_encontrado {additional_cols_final}
       FROM df_empates_perdidos
       UNION ALL
       SELECT
-        tempidgeocodebr, lat, lon, endereco_encontrado, logradouro_encontrado,
-        tipo_resultado, contagem_cnefe, desvio_metros, log_causa_confusao,
-        numero_encontrado, localidade_encontrada, cep_encontrado,
-        municipio_encontrado, estado_encontrado, similaridade_logradouro,
-        empate
-      FROM df_empates_salve;
-      "
-
-
-
+        tempidgeocodebr, lat, lon, tipo_resultado, desvio_metros,
+        endereco_encontrado {additional_cols_final}
+      FROM df_empates_salve;"
+    )
 
   DBI::dbExecute(con, sql_resolve)
 
 
 
   if (verboso) {
-
-  # conta numero de casos empatados
-  n_casos_empate <- DBI::dbGetQuery(
-    conn = con,
-    statement = "SELECT COUNT(DISTINCT tempidgeocodebr)
-                 FROM output_db2
-                 WHERE empate = TRUE")[[1]]
 
     plural <- ifelse(n_casos_empate==1, 'caso', 'casos')
     message(glue::glue(

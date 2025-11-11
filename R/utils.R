@@ -134,23 +134,25 @@ merge_results_to_input <- function(con,
     'precisao',
     'tipo_resultado',
     'desvio_metros',
-    'endereco_encontrado',
-    'logradouro_encontrado',
-    'contagem_cnefe',
-    'empate'
+    'endereco_encontrado'
+
   )
 
   if (isTRUE(resultado_completo)) {
     # select additional columns to output
-    select_columns_y <- c(select_columns_y, 'numero_encontrado' , 'cep_encontrado',
-                          'localidade_encontrada', 'municipio_encontrado' ,
-                          'estado_encontrado', 'similaridade_logradouro')
+    select_columns_y <- c(select_columns_y, 'logradouro_encontrado',
+                          'numero_encontrado' , 'cep_encontrado',
+                          'localidade_encontrada', 'municipio_encontrado',
+                          'estado_encontrado', 'similaridade_logradouro',
+                          'contagem_cnefe', 'empate')
 
     # relace NULL similaridade_logradouro as 1 because they were found deterministically
     DBI::dbSendQueryArrow(
       con,
-      "UPDATE output_db
+      glue::glue(
+      "UPDATE {y}
       SET similaridade_logradouro = COALESCE(similaridade_logradouro, 1);"
+      )
     )
 
   }
@@ -160,7 +162,7 @@ merge_results_to_input <- function(con,
 
   select_clause <- paste0(
     select_x, ',',
-    paste0('output_db2', ".", select_columns_y, collapse = ", ")
+    paste0(glue::glue('{y}'), ".", select_columns_y, collapse = ", ")
     )
 
   # Create the JOIN clause dynamically
