@@ -199,6 +199,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
              {x}.similaridade_logradouro,
              {y}.logradouro AS logradouro_encontrado,
              {y}.desvio_metros,
+             {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
           FROM {x}
           LEFT JOIN {y}
@@ -209,6 +210,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   -- PART 2: aggregate and interpolate get aprox location
 
   INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
+                              log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
                               similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
@@ -216,6 +218,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
          FIRST(endereco_encontrado) AS endereco_encontrado,
          '{match_type}' AS tipo_resultado,
          AVG(desvio_metros) AS desvio_metros,
+         FIRST(log_causa_confusao) AS log_causa_confusao,
          FIRST(similaridade_logradouro) AS similaridade_logradouro,
          FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols_second}
       FROM temp_db

@@ -82,6 +82,7 @@ match_cases <- function( # nocov start
         {y}.endereco_completo AS endereco_encontrado,
         '{match_type}' AS tipo_resultado,
         {y}.desvio_metros,
+        {x}.log_causa_confusao,
         {y}.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
       LEFT JOIN {y}

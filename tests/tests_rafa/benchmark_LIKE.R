@@ -128,19 +128,22 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark( iterations = 1,
-  v2 <- geocodebr::geocode(
+  v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = ncores,
-    resultado_completo = T,
+    resultado_completo = F,
     verboso = T,
     resultado_sf = T,
-    resolver_empates = T
+    resolver_empates = T,
+    h3_res = 9
   )
 )
 
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# v2 <- geocodeb… 21.9s  21.9s    0.0456    70.7MB    0.456     1    10      21.9s <dt>   <Rprofmem>
+#       orig         33.5s  33.5s    0.0299    77.1MB    0.239     1     8      33.5s <dt>   <Rprofmem> <bench_tm>
+#       duckrafa     50.2s    0.0199    56.5MB    0.160     1     8      50.2s <dt>   <Rprofmem> <bench_tm>
+
 
 
     # v2: 729 empates
@@ -276,16 +279,17 @@ campos <- geocodebr::definir_campos(
 # n_cores = 7
 # verboso = T
 # cache=T
-# resultado_completo=T
-# resolver_empates = FALSE
+# resultado_completo = F
+# resolver_empates = T
 # resultado_sf = FALSE
+# h3_res =9
 
 dfgeo <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = 7,
     resultado_completo = T,
-    resolver_empates = T,
+    resolver_empates = F,
     verboso = T
   )
 

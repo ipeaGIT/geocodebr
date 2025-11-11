@@ -121,37 +121,38 @@ add_precision_col <- function(con, update_tb = NULL){
 }
 
 
-merge_results <- function(
-  con,
-  x,
-  y,
-  key_column,
-  select_columns,
-  resultado_completo
-) {
+merge_results_to_input <- function(con,
+                          x,
+                          y,
+                          key_column,
+                          select_columns,
+                          resultado_completo){
+
   select_columns_y <- c(
     'lat',
     'lon',
     'precisao',
     'tipo_resultado',
     'desvio_metros',
-    'endereco_encontrado',
-    'logradouro_encontrado',
-    'contagem_cnefe',
-    'empate'
+    'endereco_encontrado'
+
   )
 
   if (isTRUE(resultado_completo)) {
     # select additional columns to output
-    select_columns_y <- c(select_columns_y, 'numero_encontrado' , 'cep_encontrado',
-                          'localidade_encontrada', 'municipio_encontrado' ,
-                          'estado_encontrado', 'similaridade_logradouro')
+    select_columns_y <- c(select_columns_y, 'logradouro_encontrado',
+                          'numero_encontrado' , 'cep_encontrado',
+                          'localidade_encontrada', 'municipio_encontrado',
+                          'estado_encontrado', 'similaridade_logradouro',
+                          'contagem_cnefe', 'empate')
 
     # relace NULL similaridade_logradouro as 1 because they were found deterministically
     DBI::dbSendQueryArrow(
       con,
-      "UPDATE output_db
+      glue::glue(
+      "UPDATE {y}
       SET similaridade_logradouro = COALESCE(similaridade_logradouro, 1);"
+      )
     )
 
   }
@@ -161,12 +162,12 @@ merge_results <- function(
 
   select_clause <- paste0(
     select_x, ',',
-    paste0('sorted_output', ".", select_columns_y, collapse = ", ")
+    paste0(glue::glue('{y}'), ".", select_columns_y, collapse = ", ")
     )
 
   # Create the JOIN clause dynamically
   join_condition <- paste(
-    glue::glue("{x}.{key_column} = sorted_output.{key_column}"),
+    glue::glue("{x}.{key_column} = {y}.{key_column}"),
     collapse = ' ON '
   )
 
@@ -175,11 +176,7 @@ merge_results <- function(
     "SELECT * FROM
       (SELECT {select_clause}
         FROM {x}
-        LEFT JOIN (
-          SELECT *, (count() OVER (PARTITION BY tempidgeocodebr) > 1) AS empate FROM {y}
-          ORDER BY
-            CASE WHEN empate = true THEN (tempidgeocodebr, -contagem_cnefe, desvio_metros, endereco_encontrado) END
-        ) AS sorted_output
+        LEFT JOIN {y}
         ON {join_condition})
       ORDER BY
         tempidgeocodebr;"
@@ -190,6 +187,8 @@ merge_results <- function(
 
   return(merged_data)
 }
+
+
 
 
 #' create index

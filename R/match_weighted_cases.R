@@ -95,6 +95,7 @@ match_weighted_cases <- function( # nocov start
              {y}.lat, {y}.lon,
              REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
              {y}.desvio_metros,
+        {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
       FROM {x}
       LEFT JOIN {y}
@@ -103,14 +104,22 @@ match_weighted_cases <- function( # nocov start
     )
 
     -- PART 2: aggregate and interpolate get aprox location
+  DBI::dbSendQueryArrow(con, query_match)
+  # a <- DBI::dbReadTable(con, 'temp_db')
+  # summary(a$desvio_metros)
+
+
+  # 2nd step: aggregate --------------------------------------------------------
 
     INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
+    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe)
       SELECT tempidgeocodebr,
         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
         FIRST(endereco_encontrado) AS endereco_encontrado,
         '{match_type}' AS tipo_resultado,
         AVG(desvio_metros) as desvio_metros,
+        FIRST(log_causa_confusao) AS log_causa_confusao,
         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols_second}
     FROM temp_db
     GROUP BY tempidgeocodebr, endereco_encontrado;"

@@ -62,7 +62,7 @@ Uma que você possui uma tabela de dados (`data.frame`) com endereços no Brasil
 2. O segundo passo é usar a função `geocode()` para encontrar as coordenadas geográficas dos endereços de input.
 
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
 library(geocodebr)
 library(sf)
 

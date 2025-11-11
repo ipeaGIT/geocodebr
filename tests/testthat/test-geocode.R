@@ -39,6 +39,7 @@ tester <- function(enderecos = input_df,
 }
 
 test_that("expected output", {
+
   testthat::expect_warning(std_output <- tester())
 
   # find expected match cases
@@ -47,7 +48,14 @@ test_that("expected output", {
 
   # full results
   testthat::expect_warning(full_output <- tester(resultado_completo = TRUE))
-  testthat::expect_true('endereco_encontrado' %in% names(full_output))
+
+  all_cols_completas <- c("lat", "lon", "precisao", "tipo_resultado",
+    "desvio_metros", "endereco_encontrado", "logradouro_encontrado",
+    "numero_encontrado", "cep_encontrado", "localidade_encontrada",
+    "municipio_encontrado", "estado_encontrado", "similaridade_logradouro",
+    "contagem_cnefe", "empate")
+
+  testthat::expect_true(all(all_cols_completas %in% names(full_output)))
 
   # add h3
   std_output_h3 <- tester(h3_res = c(3,4))

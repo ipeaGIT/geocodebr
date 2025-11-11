@@ -133,7 +133,7 @@ geocode <- function(enderecos,
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
   checkmate::assert_number(n_cores, lower = 1, finite = TRUE)
-  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
+  checkmate::assert_number(h3_res, null.ok = TRUE, lower = 0, upper = 15)
   campos_endereco <- assert_and_assign_address_fields(
     campos_endereco,
     enderecos
@@ -148,7 +148,6 @@ geocode <- function(enderecos,
 
   # systime start 66666 ----------------
   timer$mark("Start")
-
 
   input_padrao <- enderecobr::padronizar_enderecos(
     enderecos,
@@ -219,9 +218,9 @@ geocode <- function(enderecos,
   # issue https://github.com/ipeaGIT/geocodebr/issues/67
   cria_col_logradouro_confusao(con)
 
+
   # systime cria coluna "log_causa_confusao 66666 ----------------
   timer$mark("Cria coluna log_causa_confusao")
-
 
 
 
@@ -321,16 +320,17 @@ geocode <- function(enderecos,
 
   if (verboso) message_preparando_output()
 
+  # add precision column
+  add_precision_col(con, update_tb = 'output_db')
+
+
+  # systime add precision 66666 ----------------
+  timer$mark("Add precision")
 
 
   # casos de empate -----------------------------------------------
 
-  empates_resolvidos <- trata_empates_geocode_duckdb3(
-    con,
-    resultado_completo,
-    resolver_empates,
-    verboso
-    )
+  empates_resolvidos <- trata_empates_geocode_duckdb3(con, resolver_empates, verboso)
 
 
 
@@ -353,21 +353,12 @@ geocode <- function(enderecos,
 
 
 
-  # add precision column ----------------
-  output_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
-  add_precision_col(con, update_tb = output_table_to_use)
-
-  # systime add precision 66666 ----------------
-  timer$mark("Add precision")
-
-
-
   x_columns <- names(enderecos)
 
   output_df <- merge_results_to_input(
     con,
     x='input_db',
-    y= output_table_to_use,
+    y='output_db2',
     key_column='tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
@@ -377,19 +368,7 @@ geocode <- function(enderecos,
   timer$mark("Merge results")
 
 
-
-
-
-
-  # systime merge results 66666 ----------------
-  timer$mark("Merge results")
-
-
   data.table::setDT(output_df)
-
-  # systime resolve empates 66666 ----------------
-  timer$mark("Resolve empates")
-
 
   # drop geocodebr temp id column
   output_df[, tempidgeocodebr := NULL]
@@ -399,22 +378,22 @@ geocode <- function(enderecos,
   duckdb::dbDisconnect(con)
 
 
-  # add H3
+
+  if(isFALSE(resultado_completo)){ output_df[, logradouro_encontrado := NULL]}
 
   # add H3
-  if (!is.null(h3_res)) {
+  if( !is.null(h3_res) ) {
 
-    for (i in h3_res){
-      colname <- paste0(
-        'h3_',
-        formatC(h3_res, width = 2, flag = "0")
-      )
+    colname <- paste0(
+      'h3_',
+      formatC(h3_res, width = 2, flag = "0")
+    )
 
-      output_df[!is.na(lat),
-                {{colname}} := h3r::latLngToCell(lat = lat,
-                                                 lng = lon,
-                                                 resolution = i)]
-    }
+    output_df[!is.na(lat),
+              {{colname}} := h3r::latLngToCell(lat = lat,
+                                               lng = lon,
+                                               resolution = h3_res)
+    ]
 
     # systime add h3 66666 ----------------
     timer$mark("Add H3")
@@ -441,3 +420,152 @@ geocode <- function(enderecos,
 
   return(output_df[])
 }
+
+
+
+
+
+# cad unico 1 milhao de casos
+
+# resolve empate com duckdb2
+#                           step step_sec total_sec
+#                          Start     0.01      0.01
+#                   Padronizacao    17.11     17.12
+#    Register standardized input     2.19     19.31
+# Cria coluna log_causa_confusao     0.05     19.36
+#                       Matching    90.73    110.09
+#                  Add precision     0.19    110.28
+#                Resolve empates   338.43    448.71
+#      Write original input back     0.40    449.11
+#                  Merge results     2.57    451.68
+#                         Add H3     1.91    453.59
+#                  Convert to sf     2.28    455.87
+
+# resolve empate com duckdb 3
+#                           step step_sec total_sec
+#                          Start     0.02      0.02
+#                   Padronizacao    17.28     17.30
+#    Register standardized input     2.13     19.43
+# Cria coluna log_causa_confusao     0.04     19.47
+#                       Matching    95.38    114.85
+#                  Add precision     0.20    115.05
+#                Resolve empates    10.33    125.38
+#      Write original input back     0.39    125.77
+#                  Merge results     3.11    128.88
+#                         Add H3     1.64    130.52
+#                  Convert to sf     2.30    132.82
+
+
+# resolve empate com data.table
+#                            step step_sec total_sec
+#                           Start     0.04      0.04
+#                    Padronizacao    19.32     19.36
+#     Register standardized input     2.82     22.18
+#  Cria coluna log_causa_confusao     0.08     22.26
+#                        Matching   112.00    134.26
+#                   Add precision     0.17    134.43
+#       Write original input back     0.41    134.84
+#                   Merge results     5.77    140.61
+#                 Resolve empates    23.28    163.89
+#                          Add H3     1.47    165.36
+#                   Convert to sf     3.09    168.45
+
+# ----------------------------------------------------------------------------
+
+# NAO resolve empate com duckdb2
+#                            step step_sec total_sec
+#                           Start     0.01      0.01
+#                    Padronizacao    18.21     18.22
+#     Register standardized input     2.17     20.39
+#  Cria coluna log_causa_confusao     0.05     20.44
+#                        Matching   100.59    121.03
+#                   Add precision     0.17    121.20
+#                 Resolve empates     6.13    127.33
+#       Write original input back     0.34    127.67
+#                   Merge results     3.81    131.48
+#                          Add H3     1.86    133.34
+#                   Convert to sf     2.99    136.33
+
+
+# NAO resolve empate com data.table
+#                           step step_sec total_sec
+#                          Start     0.02      0.02
+#                   Padronizacao    18.03     18.05
+#    Register standardized input     2.61     20.66
+# Cria coluna log_causa_confusao     0.06     20.72
+#                       Matching    98.80    119.52
+#                  Add precision     0.17    119.69
+#      Write original input back     0.36    120.05
+#                  Merge results     4.73    124.78
+#                Resolve empates     6.72    131.50
+#                         Add H3     1.45    132.95
+#                  Convert to sf     2.19    135.14
+
+
+
+
+# resolve empate com data.table 3 (43 milhoes)
+#                           step step_sec total_sec
+#                          Start     0.02      0.02
+#                   Padronizacao   433.21    433.23
+#    Register standardized input    79.50    512.73
+# Cria coluna log_causa_confusao     2.86    515.59
+#                       Matching  2163.66   2679.25
+#                  Add precision    87.53   2766.78
+#      Write original input back    47.19   2813.97
+#                  Merge results  1913.81   4727.78
+#                Resolve empates  1302.81   6030.59
+#                         Add H3    51.11   6081.70
+#                  Convert to sf   422.74   6504.44
+
+
+# resolve empate com duckdb 3 OLD (43 milhoes)
+#
+#                           step step_sec total_sec
+#                          Start     0.00      0.00
+#                   Padronizacao   432.72    432.72
+#    Register standardized input    81.80    514.52
+# Cria coluna log_causa_confusao     2.86    517.38
+#                       Matching  2293.57   2810.95
+#                  Add precision    88.21   2899.16
+#                Resolve empates  3043.82   5942.98
+#      Write original input back    67.85   6010.83
+#                  Merge results   436.00   6446.83
+#                         Add H3   479.51   6926.34
+#                  Convert to sf   297.13   7223.47
+
+
+
+# resolve empate com duckdb 3 NEW (43 milhoes)
+#                           step step_sec total_sec step_relative
+#                          Start     0.03      0.03           0.0
+#                   Padronizacao   445.64    445.67           6.2
+#    Register standardized input    80.77    526.44           1.1
+# Cria coluna log_causa_confusao     2.56    529.00           0.0
+#                       Matching  2402.55   2931.55          33.3
+#                  Add precision   107.81   3039.36           1.5
+#                Resolve empates  2677.19   5716.55          37.1
+#      Write original input back    67.67   5784.22           0.9
+#                  Merge results   526.64   6310.86           7.3
+#                         Add H3   545.69   6856.55           7.6
+#                  Convert to sf   362.96   7219.51           5.0
+
+
+
+# resolve empate com duckdb 3 NEW (43 milhoes) precisao pra depois
+#                           step step_sec total_sec step_relative
+#                          Start     0.03      0.03           0.0
+#                   Padronizacao   431.75    431.78           7.1
+#    Register standardized input    79.56    511.34           1.3
+# Cria coluna log_causa_confusao     2.68    514.02           0.0
+#                       Matching  2077.87   2591.89          34.0
+#                Resolve empates  2176.24   4768.13          35.6
+#      Write original input back    57.73   4825.86           0.9
+#                  Add precision    64.05   4889.91           1.0
+#                  Merge results   413.50   5303.41           6.8
+#                         Add H3   449.43   5752.84           7.4
+#                  Convert to sf   352.99   6105.83           5.8
+
+
+
+
