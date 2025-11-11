@@ -179,7 +179,7 @@ match_cases_probabilistic <- function(
   # summarize query
   query_update_db <- glue::glue(
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado,
-                            desvio_metros, contagem_cnefe {colunas_encontradas} )
+                            desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas} )
       SELECT {x}.tempidgeocodebr,
         {y}.lat,
         {y}.lon,

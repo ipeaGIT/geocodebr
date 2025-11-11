@@ -237,7 +237,9 @@ geocode <- function(enderecos,
     tipo_resultado = arrow::string(),
     contagem_cnefe = arrow::int32(),
     desvio_metros = arrow::int32(),
-    log_causa_confusao = arrow::boolean()
+    log_causa_confusao = arrow::boolean(),
+    similaridade_logradouro = arrow::float16()
+
   )
 
   if (isTRUE(resultado_completo)) {

@@ -259,7 +259,7 @@ d <- cnf |>
 
 # small sample data ------------------------------------------------------------------
 devtools::load_all('.')
-library(dplyr)
+# library(dplyr)
 
 # open input data
 data_path <- system.file("extdata/small_sample.csv", package = "geocodebr")
@@ -289,7 +289,7 @@ dfgeo <- geocodebr::geocode(
     campos_endereco = campos,
     n_cores = 7,
     resultado_completo = T,
-    resolver_empates = F,
+    resolver_empates = T,
     verboso = T
   )
 

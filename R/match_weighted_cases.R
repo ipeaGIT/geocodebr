@@ -104,15 +104,7 @@ match_weighted_cases <- function( # nocov start
     )
 
     -- PART 2: aggregate and interpolate get aprox location
-  DBI::dbSendQueryArrow(con, query_match)
-  # a <- DBI::dbReadTable(con, 'temp_db')
-  # summary(a$desvio_metros)
-
-
-  # 2nd step: aggregate --------------------------------------------------------
-
-    INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, contagem_cnefe {colunas_encontradas})
-    "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe)
+  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas})
       SELECT tempidgeocodebr,
         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,

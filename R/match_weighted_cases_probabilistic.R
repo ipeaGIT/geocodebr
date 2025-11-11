@@ -131,7 +131,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   DBI::dbSendQueryArrow(con, query_lookup)
   # DBI::dbExecute(con, query_lookup)
   # b <- DBI::dbReadTable(con, 'input_padrao_db')
-
+  # summary(b$similaridade_logradouro)
 
 
   # 3rd step: match deterministico --------------------------------------------------------
@@ -187,6 +187,11 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
   # Match query  --------------------------------------------------------
 
+  # 66666666  NAO ESTA
+  # Error: Table "output_db" does not have a column with name "similaridade_logradouro"
+  # 6666666666
+
+
   query_match <- glue::glue(
     "
   -- PART 1) left join to get all cases that match
@@ -210,8 +215,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   -- PART 2: aggregate and interpolate get aprox location
 
   INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
-                              log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
-                              similaridade_logradouro, contagem_cnefe {colunas_encontradas})
+                         log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
        SELECT tempidgeocodebr,
          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
          SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,

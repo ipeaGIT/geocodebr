@@ -75,7 +75,7 @@ match_cases <- function( # nocov start
   # summarize query
   query_match <- glue::glue(
     "INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado,
-                            desvio_metros, contagem_cnefe {colunas_encontradas})
+                            desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas})
       SELECT {x}.tempidgeocodebr,
         {y}.lat,
         {y}.lon,
