@@ -76,53 +76,53 @@ geocode <- function(enderecos,
                     n_cores = 1 ){
 
 
-  ## ---- tiny timing toolkit (self-contained) ------------------------------
-  .make_timer <- function(verbose = TRUE) {
-    .marks <- list()
-    .t0_rt  <- proc.time()[["elapsed"]]     # monotonic wall clock
-    .t_prev <- .t0_rt
-
-    fmt <- function(secs) sprintf("%.3f s", secs)
-
-    mark <- function(label) {
-      now <- proc.time()[["elapsed"]]
-      step  <- now - .t_prev
-      total <- now - .t0_rt
-      .marks <<- append(.marks, list(list(label = label, step = step, total = total)))
-      .t_prev <<- now
-      if (verbose) message(sprintf("[%s] +%s (total %s)", label, fmt(step), fmt(total)))
-      invisible(now)
-    }
-
-    summary <- function(print_summary = verbose) {
-      if (length(.marks) == 0) return(invisible(data.frame()))
-      df <- data.frame(
-        step = vapply(.marks, `[[`, "", "label"),
-        step_sec = vapply(.marks, `[[`, 0.0, "step"),
-        total_sec = vapply(.marks, `[[`, 0.0, "total"),
-        stringsAsFactors = FALSE
-      ) |>
-        dplyr::mutate(step_relative = round(step_sec / max(total_sec)*100, 1))
-
-      if (print_summary) {
-        message("— Timing summary —")
-        print(df, row.names = FALSE)
-      }
-      df
-    }
-
-    time_it <- function(label, expr) {
-      force(label)
-      res <- eval.parent(substitute(expr))
-      mark(label)
-      invisible(res)
-    }
-
-    list(mark = mark, summary = summary, time_it = time_it)
-  }
-  timer <- .make_timer(verbose = isTRUE(verboso))
-  on.exit(timer$summary(), add = TRUE)
-  ## -----------------------------------------------------------------------
+  # ## ---- tiny timing toolkit (self-contained) ------------------------------
+  # .make_timer <- function(verbose = TRUE) {
+  #   .marks <- list()
+  #   .t0_rt  <- proc.time()[["elapsed"]]     # monotonic wall clock
+  #   .t_prev <- .t0_rt
+  #
+  #   fmt <- function(secs) sprintf("%.3f s", secs)
+  #
+  #   mark <- function(label) {
+  #     now <- proc.time()[["elapsed"]]
+  #     step  <- now - .t_prev
+  #     total <- now - .t0_rt
+  #     .marks <<- append(.marks, list(list(label = label, step = step, total = total)))
+  #     .t_prev <<- now
+  #     if (verbose) message(sprintf("[%s] +%s (total %s)", label, fmt(step), fmt(total)))
+  #     invisible(now)
+  #   }
+  #
+  #   summary <- function(print_summary = verbose) {
+  #     if (length(.marks) == 0) return(invisible(data.frame()))
+  #     df <- data.frame(
+  #       step = vapply(.marks, `[[`, "", "label"),
+  #       step_sec = vapply(.marks, `[[`, 0.0, "step"),
+  #       total_sec = vapply(.marks, `[[`, 0.0, "total"),
+  #       stringsAsFactors = FALSE
+  #     ) |>
+  #       dplyr::mutate(step_relative = round(step_sec / max(total_sec)*100, 1))
+  #
+  #     if (print_summary) {
+  #       message("— Timing summary —")
+  #       print(df, row.names = FALSE)
+  #     }
+  #     df
+  #   }
+  #
+  #   time_it <- function(label, expr) {
+  #     force(label)
+  #     res <- eval.parent(substitute(expr))
+  #     mark(label)
+  #     invisible(res)
+  #   }
+  #
+  #   list(mark = mark, summary = summary, time_it = time_it)
+  # }
+  # timer <- .make_timer(verbose = isTRUE(verboso))
+  # on.exit(timer$summary(), add = TRUE)
+  # ## -----------------------------------------------------------------------
 
 
   # check input
@@ -147,7 +147,7 @@ geocode <- function(enderecos,
   if (verboso) message_standardizing_addresses()
 
   # systime start 66666 ----------------
-  timer$mark("Start")
+  # timer$mark("Start")
 
 
   input_padrao <- enderecobr::padronizar_enderecos(
@@ -179,7 +179,7 @@ geocode <- function(enderecos,
   }
 
   # systime padronizacao 66666 ----------------
-  timer$mark("Padronizacao")
+  # timer$mark("Padronizacao")
 
 
   # create temp id
@@ -212,7 +212,7 @@ geocode <- function(enderecos,
 
 
   # systime register standardized 66666 ----------------
-  timer$mark("Register standardized input")
+  # timer$mark("Register standardized input")
 
 
   # cria coluna "log_causa_confusao" identificando logradouros que geram confusao
@@ -220,7 +220,7 @@ geocode <- function(enderecos,
   cria_col_logradouro_confusao(con)
 
   # systime cria coluna "log_causa_confusao 66666 ----------------
-  timer$mark("Cria coluna log_causa_confusao")
+  # timer$mark("Cria coluna log_causa_confusao")
 
 
 
@@ -318,7 +318,7 @@ geocode <- function(enderecos,
   if (verboso) finish_progress_bar(matched_rows)
 
   # systime matching 66666 ----------------
-  timer$mark("Matching")
+  # timer$mark("Matching")
 
 
   if (verboso) message_preparando_output()
@@ -337,7 +337,7 @@ geocode <- function(enderecos,
 
 
   # systime resolve empates 66666 ----------------
-  timer$mark("Resolve empates")
+  # timer$mark("Resolve empates")
 
 
   # bring original input back -----------------------------------------------
@@ -351,7 +351,7 @@ geocode <- function(enderecos,
 
 
   # systime write original input back 66666 ----------------
-  timer$mark("Write original input back")
+  # timer$mark("Write original input back")
 
 
 
@@ -360,7 +360,7 @@ geocode <- function(enderecos,
   add_precision_col(con, update_tb = output_table_to_use)
 
   # systime add precision 66666 ----------------
-  timer$mark("Add precision")
+  # timer$mark("Add precision")
 
 
 
@@ -376,7 +376,7 @@ geocode <- function(enderecos,
   )
 
   # systime merge results 66666 ----------------
-  timer$mark("Merge results")
+  # timer$mark("Merge results")
 
 
 
@@ -384,13 +384,13 @@ geocode <- function(enderecos,
 
 
   # systime merge results 66666 ----------------
-  timer$mark("Merge results")
+  # timer$mark("Merge results")
 
 
   data.table::setDT(output_df)
 
   # systime resolve empates 66666 ----------------
-  timer$mark("Resolve empates")
+  # timer$mark("Resolve empates")
 
 
   # drop geocodebr temp id column
@@ -419,7 +419,7 @@ geocode <- function(enderecos,
     }
 
     # systime add h3 66666 ----------------
-    timer$mark("Add H3")
+    # timer$mark("Add H3")
 
   }
 
@@ -436,7 +436,7 @@ geocode <- function(enderecos,
     sf::st_crs(output_sf) <- 4674
 
     # systime convert to sf 66666 ----------------
-    timer$mark("Convert to sf")
+    # timer$mark("Convert to sf")
 
     return(output_sf)
   }
