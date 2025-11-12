@@ -186,7 +186,7 @@ trata_empates_geocode_duckdb3 <- function(
             OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
         ),
 
-        -- F) empatados salvaveis = restantes (não em a nem b)
+        -- F) empatados salvaveis = restantes (nao em a nem b)
         empates_restantes AS (
           SELECT f.*
           FROM filtered f
