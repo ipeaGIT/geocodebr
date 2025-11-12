@@ -118,10 +118,10 @@ match_cases_probabilistic <- function(
              similaridade_logradouro = similarity
        FROM ranked_data
       WHERE {x}.tempidgeocodebr = ranked_data.tempidgeocodebr
-            AND ranked_data.rank = 1
             AND ranked_data.similarity > {min_cutoff}
-            AND ranked_data.similarity > {x}.similaridade_logradouro;"
+            AND ranked_data.rank = 1;"
       )
+
 
 
   DBI::dbSendQueryArrow(con, query_lookup)

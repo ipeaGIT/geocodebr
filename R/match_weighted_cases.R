@@ -95,7 +95,7 @@ match_weighted_cases <- function( # nocov start
              {y}.lat, {y}.lon,
              REGEXP_REPLACE( {y}.endereco_completo, ', \\d+ -', CONCAT(', ', {x}.numero, ' (aprox) -')) AS endereco_encontrado,
              {y}.desvio_metros,
-        {x}.log_causa_confusao,
+             {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
       FROM {x}
       LEFT JOIN {y}
