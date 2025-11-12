@@ -37,6 +37,7 @@ trata_empates_geocode_duckdb3 <- function(
   if (n_casos_empate == 0) { return(n_casos_empate) }
 
   # 3) se nao for para resolver empates: ------------------------------------------
+  # - calcula / identifica casos de empate
   # - gera warning
   # - retorna resultado assim mesmo
   if (isFALSE(resolver_empates)) {
@@ -44,13 +45,11 @@ trata_empates_geocode_duckdb3 <- function(
     # adicionar coluna de empate
     DBI::dbExecute(
       conn = con,
-      statement = "CREATE OR REPLACE TEMP TABLE output_db AS
+      statement = "CREATE OR REPLACE TEMP TABLE output_db2 AS
                     SELECT *,
                     (COUNT(*) OVER (PARTITION BY tempidgeocodebr) > 1) AS empate
                     FROM output_db;"
       )
-
-    a <- DBI::dbReadTable(con, "output_db")
 
     cli::cli_warn(
       "Foram encontrados {n_casos_empate} casos de empate. Estes casos foram
@@ -60,7 +59,7 @@ trata_empates_geocode_duckdb3 <- function(
       documenta\u00e7\u00e3o da fun\u00e7\u00e3o."
     )
 
-    return(0)
+    return(n_casos_empate)
   }
 
   # Haversine macro (kept for speed; consider spatial extension later)
@@ -157,7 +156,6 @@ trata_empates_geocode_duckdb3 <- function(
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
-            log_causa_confusao,
             empate {cols_encontradas}
           FROM filtered
           WHERE empate = FALSE
@@ -173,7 +171,6 @@ trata_empates_geocode_duckdb3 <- function(
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
-            log_causa_confusao,
             TRUE AS empate {cols_encontradas}
           FROM filtered
           WHERE empate = TRUE
@@ -189,7 +186,7 @@ trata_empates_geocode_duckdb3 <- function(
             OVER (PARTITION BY tempidgeocodebr ORDER BY contagem_cnefe DESC) = 1
         ),
 
-        -- F) empatados salvaveis = restantes (não em a) nem b))
+        -- F) empatados salvaveis = restantes (não em a nem b)
         empates_restantes AS (
           SELECT f.*
           FROM filtered f
@@ -215,7 +212,6 @@ trata_empates_geocode_duckdb3 <- function(
             tipo_resultado,
             contagem_cnefe,
             desvio_metros,
-            log_causa_confusao,
             TRUE AS empate {cols_encontradas}
           FROM empates_wavg
           QUALIFY ROW_NUMBER()
