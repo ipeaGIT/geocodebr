@@ -6,7 +6,7 @@
 
 - A função `geocode()` agora não aplica match probabilístico em lograouros cujo 
 nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos 
-(RUA 1, RUA 10, RUA 20). [Encerra issue #7](https://github.com/ipeaGIT/geocodebr/issues/67) 
+(RUA 1, RUA 10, RUA 20). [Encerra issue #67](https://github.com/ipeaGIT/geocodebr/issues/67) 
 - O parâmetro `h3_res` utilizado nas funções `geocode()` e `busca_por_cep()` 
 agora aceita um vetor de números indicando diferentes resoluções de H3. [Encerra issue #72](https://github.com/ipeaGIT/geocodebr/issues/72).
 
@@ -15,6 +15,7 @@ agora aceita um vetor de números indicando diferentes resoluções de H3. [Ence
 - Definição de número de `n_cores` para paralelização mais segura usando `{parallelly}`.
 - Ganhos de performance em algumas funções de match (issues [#73](https://github.com/ipeaGIT/geocodebr/issues/73), 
 [#74](https://github.com/ipeaGIT/geocodebr/issues/74) e [#75](https://github.com/ipeaGIT/geocodebr/issues/75)).
+- Tratamento de casos de empate agora é feito interamente dentro do DuckDB. [Encerra issue #57](https://github.com/ipeaGIT/geocodebr/issues/57) 
 
 
 
