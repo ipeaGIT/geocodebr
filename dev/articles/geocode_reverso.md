@@ -37,7 +37,7 @@ df_enderecos <- geocodebr::geocode_reverso(
 )
 
 head(df_enderecos)
-#> Simple feature collection with 3 features and 11 fields
+#> Simple feature collection with 3 features and 9 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -51.49634 ymin: -19.29416 xmax: -39.92601 ymax: 0.3649148
@@ -50,10 +50,10 @@ head(df_enderecos)
 #> 1     ES     PANCAS               CORREGO BOA VISTA     32 29750-000    LAJINHA
 #> 2     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13
 #> 3     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA
-#>    lat_cnefe lon_cnefe distancia_metros                    geometry
-#> 1 -19.291122 -40.73766         560.6426  POINT (-40.7334 -19.29416)
-#> 2 -18.693834 -39.92420         373.7936 POINT (-39.92601 -18.69095)
-#> 3   0.361638 -51.49637         364.7792 POINT (-51.49634 0.3649148)
+#>   distancia_metros                    geometry
+#> 1         560.6426  POINT (-40.7334 -19.29416)
+#> 2         373.7936 POINT (-39.92601 -18.69095)
+#> 3         364.7792 POINT (-51.49634 0.3649148)
 ```
 
 Por padrão, a função busca pelo endereço mais próximo num raio
