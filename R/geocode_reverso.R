@@ -106,7 +106,10 @@ geocode_reverso <- function(pontos,
   if(bbox_lon_min < bbox_brazil$xmin |
      bbox_lon_max > bbox_brazil$xmax |
      bbox_lat_min < bbox_brazil$ymin |
-     bbox_lat_max > bbox_brazil$ymax) { stop(error_msg) }
+     bbox_lat_max > bbox_brazil$ymax
+     ) {
+    cli::cli_abort(error_msg)
+    }
 
 
   # download cnefe  -------------------------------------------------------
@@ -165,29 +168,44 @@ geocode_reverso <- function(pontos,
                        temporary = TRUE)
 
 
+  # Haversine macro (kept for speed; consider spatial extension later)
+  DBI::dbExecute(con, "
+    CREATE MACRO IF NOT EXISTS haversine(lat1, lon1, lat2, lon2) AS (
+      6378137 * 2 * ASIN(
+        SQRT(
+          POWER(SIN(RADIANS(lat2 - lat1) / 2), 2) +
+          COS(RADIANS(lat1)) * COS(RADIANS(lat2)) *
+          POWER(SIN(RADIANS(lon2 - lon1) / 2), 2)
+        )
+      )
+    );
+  ")
+
 
 
   # Find cases nearby -------------------------------------------------------
 
   query_filter_cases_nearby <- glue::glue(
-    "SELECT
-        input_table_db.*,
-        filtered_cnefe.endereco_completo,
-        filtered_cnefe.estado,
-        filtered_cnefe.municipio,
-        filtered_cnefe.logradouro,
-        filtered_cnefe.numero,
-        filtered_cnefe.cep,
-        filtered_cnefe.localidade,
-        filtered_cnefe.lat AS lat_cnefe,
-        filtered_cnefe.lon AS lon_cnefe
-      FROM
-        input_table_db, filtered_cnefe
-      WHERE
-        input_table_db.lat_min < filtered_cnefe.lat
-        AND input_table_db.lat_max > filtered_cnefe.lat
-        AND input_table_db.lon_min < filtered_cnefe.lon
-        AND input_table_db.lon_max > filtered_cnefe.lon;"
+      "SELECT
+          input_table_db.* EXCLUDE (lon_min, lon_max, lat_min, lat_max),
+          filtered_cnefe.endereco_completo,
+          filtered_cnefe.estado,
+          filtered_cnefe.municipio,
+          filtered_cnefe.logradouro,
+          filtered_cnefe.numero,
+          filtered_cnefe.cep,
+          filtered_cnefe.localidade,
+          haversine(
+                input_table_db.lat, input_table_db.lon,
+                filtered_cnefe.lat, filtered_cnefe.lon
+                ) AS distancia_metros
+        FROM
+          input_table_db, filtered_cnefe
+        WHERE
+          input_table_db.lat_min < filtered_cnefe.lat
+          AND input_table_db.lat_max > filtered_cnefe.lat
+          AND input_table_db.lon_min < filtered_cnefe.lon
+          AND input_table_db.lon_max > filtered_cnefe.lon;"
   )
 
   output <- DBI::dbGetQuery(con, query_filter_cases_nearby)
@@ -196,13 +214,6 @@ geocode_reverso <- function(pontos,
   # organize output -------------------------------------------------
 
   data.table::setDT(output)
-  output[, c('lon_min', 'lon_max', 'lat_min', 'lat_max') := NULL]
-
-  # calculate distances between pairs of coodinates
-  # 66666666make it faster with rcpp_distance_haversine
-  # output[, distancia_metros2 := rcpp_distance_haversine(
-  #             lat, lon, lat_cnefe, lon_cnefe, tolerance = 1e10)]
-  output[, distancia_metros := dt_haversine(lat, lon, lat_cnefe, lon_cnefe)]
 
   # find the closest point
   output <- output[output[, .I[distancia_metros == min(distancia_metros)], by = tempidgeocodebr]$V1]
@@ -226,4 +237,19 @@ geocode_reverso <- function(pontos,
 
   return(output_sf)
 }
+
+
+# calculate distances between pairs of coodinates
+dt_haversine <- function(lat_from, lon_from, lat_to, lon_to, r = 6378137){ # nocov start
+  radians <- pi/180
+  lat_to <- lat_to * radians
+  lat_from <- lat_from * radians
+  lon_to <- lon_to * radians
+  lon_from <- lon_from * radians
+  dLat <- (lat_to - lat_from)
+  dLon <- (lon_to - lon_from)
+  a <- (sin(dLat/2)^2) + (cos(lat_from) * cos(lat_to)) * (sin(dLon/2)^2)
+  dist <- 2 * atan2(sqrt(a), sqrt(1 - a)) * r
+  return(dist)
+} # nocov end
 
