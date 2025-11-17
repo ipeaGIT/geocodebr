@@ -4,7 +4,7 @@ testthat::skip_on_cran()
 testthat::skip_if_not_installed("arrow")
 
 
-tester <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
+tester <- function(tabela = "municipio_localidade", verboso = TRUE, cache = TRUE) {
   download_cnefe(tabela, verboso, cache)
 }
 
