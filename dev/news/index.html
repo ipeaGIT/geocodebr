@@ -47,7 +47,7 @@
 <h2 class="pkg-version" data-toc-text="0.3.0.9000" id="geocodebr-0309000-dev">geocodebr 0.3.0.9000 dev<a class="anchor" aria-label="anchor" href="#geocodebr-0309000-dev"></a></h2>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-3-0-9000">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-3-0-9000"></a></h3>
-<ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora não aplica match probabilístico em lograouros cujo nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos (RUA 1, RUA 10, RUA 20). <a href="https://github.com/ipeaGIT/geocodebr/issues/67" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/7" class="external-link">#7</a>
+<ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora não aplica match probabilístico em lograouros cujo nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos (RUA 1, RUA 10, RUA 20). <a href="https://github.com/ipeaGIT/geocodebr/issues/67" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/67" class="external-link">#67</a>
 </li>
 <li>O parâmetro <code>h3_res</code> utilizado nas funções <code><a href="../reference/geocode.html">geocode()</a></code> e <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> agora aceita um vetor de números indicando diferentes resoluções de H3. <a href="https://github.com/ipeaGIT/geocodebr/issues/72" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/72" class="external-link">#72</a>.</li>
 </ul></div>
@@ -55,6 +55,8 @@
 <h3 id="mudanças-pequenas-minor-changes-0-3-0-9000">Mudanças pequenas (Minor changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-pequenas-minor-changes-0-3-0-9000"></a></h3>
 <ul><li>Definição de número de <code>n_cores</code> para paralelização mais segura usando <a href="https://parallelly.futureverse.org" class="external-link">parallelly</a>.</li>
 <li>Ganhos de performance em algumas funções de match (issues <a href="https://github.com/ipeaGIT/geocodebr/issues/73" class="external-link">#73</a>, <a href="https://github.com/ipeaGIT/geocodebr/issues/74" class="external-link">#74</a> e <a href="https://github.com/ipeaGIT/geocodebr/issues/75" class="external-link">#75</a>).</li>
+<li>Tratamento de casos de empate agora é feito interamente dentro do DuckDB. <a href="https://github.com/ipeaGIT/geocodebr/issues/57" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/57" class="external-link">#57</a>
+</li>
 </ul></div>
 </div>
     <div class="section level2">

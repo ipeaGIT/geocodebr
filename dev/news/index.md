@@ -10,7 +10,7 @@
   uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos (RUA
   1, RUA 10, RUA 20). [Encerra
   issue](https://github.com/ipeaGIT/geocodebr/issues/67)
-  [\#7](https://github.com/ipeaGIT/geocodebr/issues/7)
+  [\#67](https://github.com/ipeaGIT/geocodebr/issues/67)
 - O parâmetro `h3_res` utilizado nas funções
   [`geocode()`](https://ipeagit.github.io/geocodebr/dev/reference/geocode.md)
   e
@@ -27,6 +27,10 @@
   [\#73](https://github.com/ipeaGIT/geocodebr/issues/73),
   [\#74](https://github.com/ipeaGIT/geocodebr/issues/74) e
   [\#75](https://github.com/ipeaGIT/geocodebr/issues/75)).
+- Tratamento de casos de empate agora é feito interamente dentro do
+  DuckDB. [Encerra
+  issue](https://github.com/ipeaGIT/geocodebr/issues/57)
+  [\#57](https://github.com/ipeaGIT/geocodebr/issues/57)
 
 ## geocodebr 0.3.0
 
