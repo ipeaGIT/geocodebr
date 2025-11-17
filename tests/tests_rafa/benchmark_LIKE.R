@@ -140,10 +140,12 @@ bench::mark( iterations = 1,
   )
 )
 
-# expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
 #       orig         33.5s  33.5s    0.0299    77.1MB    0.239     1     8      33.5s <dt>   <Rprofmem> <bench_tm>
 #       duckrafa     50.2s    0.0199    56.5MB    0.160     1     8      50.2s <dt>   <Rprofmem> <bench_tm>
 
+#         v2_F       25.6s  25.6s    0.0391    64.6MB    0.352     1     9      25.6s <dt>
+#         v3_F       26.2s  26.2s    0.0381      65MB    0.343     1     9      26.2s <dt>
 
 
     # v2: 729 empates
@@ -259,7 +261,7 @@ d <- cnf |>
 
 # small sample data ------------------------------------------------------------------
 devtools::load_all('.')
-# library(dplyr)
+library(dplyr)
 
 # open input data
 data_path <- system.file("extdata/small_sample.csv", package = "geocodebr")
@@ -289,7 +291,7 @@ dfgeo <- geocodebr::geocode(
     campos_endereco = campos,
     n_cores = 7,
     resultado_completo = T,
-    resolver_empates = T,
+    resolver_empates = F,
     verboso = T
   )
 

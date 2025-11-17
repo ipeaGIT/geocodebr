@@ -25,7 +25,7 @@ set.seed(42)
 
 
 # cad unico --------------------------------------------------------------------
-sample_size <- 1000000
+sample_size <- 10000000
 
 cad_con <- ipeadatalake::ler_cadunico(
   data = 202312,
@@ -62,7 +62,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-   # dplyr::slice_sample(n = sample_size) |> # sample 20K
+    # dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 
@@ -110,19 +110,47 @@ fields_cad <- geocodebr::definir_campos(
 
 
 
-# bench::mark( iterations = 1,
- bench::mark(
+bench::mark( iterations = 1, check = F,
+# bench::system_time(
   cadgeo <- geocode(
     enderecos  = cad,
     campos_endereco = fields_cad,
-    resultado_completo = T,
     n_cores = 7, # 7
     verboso = T,
-    resultado_sf = T,
-    resolver_empates = T,
-    h3_res = 9
+    resultado_completo = T,
+    resolver_empates = T
+    #resultado_sf = F
+    #, h3_res = 9
     )
 )
+
+# 43 milhoes:
+# dev
+# resultado_sf = T, resultado_completo =T resolver_empates = T,   h3_res = 9, 1.64h
+# resultado_sf = F, resultado_completo =F resolver_empates = T,h3_res = NULL, 1.28h
+# resultado_sf = F, resultado_completo =F resolver_empates = F,h3_res = NULL, 1.02h
+
+# v0.3.0
+# resultado_sf = F, resultado_completo =F resolver_empates = T,h3_res = NULL, 1.16h
+
+# 43 milhoes, resultado_completo =T resolver_empates = T
+# expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v0.4.0 dev
+# v0.3.0 CRAN
+
+
+# 10 milhoes, resultado_completo =F resolver_empates = T
+# expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v0.4.0 dev      33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
+# v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
+
+# 10 milhoes, resultado_completo =T resolver_empates = T
+# expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v0.4.0 dev      36.8m  36.8m  0.000453    8.62GB  0.00498     1    11      36.8m <NULL> <Rprofmem>
+# v0.3.0 CRAN     30.3m  30.3m  0.000550    20.9GB   0.0484     1    88      30.3m <NULL> <Rprofmem>
+
+
+
 
 # 1 milhao
 # seque best 2.15m // 69723 empates
@@ -455,10 +483,6 @@ subset(t , logradouro_no_numbers %like% "DESEMBARGADOR SOUTO MAIOR")
 
 
 # censo escolar ---------------------------------
-
-
-
-# cad unico --------------------------------------------------------------------
 
 censo_escolar <- ipeadatalake::ler_censo_escolar(
   ano = 2022,
