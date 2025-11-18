@@ -430,3 +430,20 @@ cria_col_logradouro_confusao <- function(con) {
     )
   )
 }
+
+
+# register all geocodebr-cnefe tables
+register_geocodebr_tables <- function(con){
+
+  all_tables <- geocodebr::listar_dados_cache()
+
+  for(i in all_tables){
+
+    tb_name <- basename(i)
+    tb_name <- fs::path_ext_remove(tb_name)
+
+    temp_arrow <- arrow::open_dataset(i)
+
+    duckdb::duckdb_register_arrow(con, tb_name, temp_arrow)
+  }
+}
