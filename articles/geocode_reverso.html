@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Geocode reverso</h1>
             
-            <h4 data-toc-skip class="date">2025-10-22</h4>
+            <h4 data-toc-skip class="date">2025-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocode_reverso.Rmd" class="external-link"><code>vignettes/geocode_reverso.Rmd</code></a></small>
       <div class="d-none name"><code>geocode_reverso.Rmd</code></div>
@@ -110,7 +110,7 @@ encontrados.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df_enderecos</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Simple feature collection with 3 features and 11 fields</span></span>
+<span><span class="co">#&gt; Simple feature collection with 3 features and 9 fields</span></span>
 <span><span class="co">#&gt; Geometry type: POINT</span></span>
 <span><span class="co">#&gt; Dimension:     XY</span></span>
 <span><span class="co">#&gt; Bounding box:  xmin: -51.49634 ymin: -19.29416 xmax: -39.92601 ymax: 0.3649148</span></span>
@@ -123,10 +123,10 @@ encontrados.</p>
 <span><span class="co">#&gt; 1     ES     PANCAS               CORREGO BOA VISTA     32 29750-000    LAJINHA</span></span>
 <span><span class="co">#&gt; 2     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13</span></span>
 <span><span class="co">#&gt; 3     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA</span></span>
-<span><span class="co">#&gt;    lat_cnefe lon_cnefe distancia_metros                    geometry</span></span>
-<span><span class="co">#&gt; 1 -19.291122 -40.73766         560.6426  POINT (-40.7334 -19.29416)</span></span>
-<span><span class="co">#&gt; 2 -18.693834 -39.92420         373.7936 POINT (-39.92601 -18.69095)</span></span>
-<span><span class="co">#&gt; 3   0.361638 -51.49637         364.7792 POINT (-51.49634 0.3649148)</span></span></code></pre></div>
+<span><span class="co">#&gt;   distancia_metros                    geometry</span></span>
+<span><span class="co">#&gt; 1         560.6426  POINT (-40.7334 -19.29416)</span></span>
+<span><span class="co">#&gt; 2         373.7936 POINT (-39.92601 -18.69095)</span></span>
+<span><span class="co">#&gt; 3         364.7792 POINT (-51.49634 0.3649148)</span></span></code></pre></div>
 <p>Por padrão, a função busca pelo endereço mais próximo num raio
 aproximado de 1000 metros. No entanto, o usuário pode ajustar esse valor
 usando o parâmetro <code>dist_max</code> para definir a distância máxima
@@ -152,7 +152,7 @@ entanto, são salvos de forma persistente, logo eles são baixados uma
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
