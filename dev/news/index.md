@@ -31,6 +31,9 @@
   DuckDB. [Encerra
   issue](https://github.com/ipeaGIT/geocodebr/issues/57)
   [\#57](https://github.com/ipeaGIT/geocodebr/issues/57)
+- O geocodebr não depende mais do pacote Rcpp, que antes era utilizado
+  para calcular distâncias entre coordendas. Esses cálculo agora é feito
+  inteiramente dentro do DuckDB.
 
 ## geocodebr 0.3.0
 
