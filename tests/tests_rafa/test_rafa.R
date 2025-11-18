@@ -159,7 +159,7 @@ extrachecks::extrachecks()
 
 
 # submit to CRAN -----------------
-usethis::use_cran_comments()
+# usethis::use_cran_comments()
 
 
 devtools::submit_cran()
