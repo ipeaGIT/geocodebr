@@ -1,7 +1,5 @@
 # geocodebr 0.3.0.9000 dev
 
-
-
 ## Mudanças grandes (Major changes)
 
 - A função `geocode()` agora não aplica match probabilístico em lograouros cujo 
@@ -16,6 +14,9 @@ agora aceita um vetor de números indicando diferentes resoluções de H3. [Ence
 - Ganhos de performance em algumas funções de match (issues [#73](https://github.com/ipeaGIT/geocodebr/issues/73), 
 [#74](https://github.com/ipeaGIT/geocodebr/issues/74) e [#75](https://github.com/ipeaGIT/geocodebr/issues/75)).
 - Tratamento de casos de empate agora é feito interamente dentro do DuckDB. [Encerra issue #57](https://github.com/ipeaGIT/geocodebr/issues/57) 
+- O geocodebr não depende mais do pacote Rcpp, que antes era utilizado para 
+calcular distâncias entre coordendas. Esses cálculo agora é feito inteiramente
+dentro do DuckDB.
 
 
 

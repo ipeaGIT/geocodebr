@@ -3,12 +3,10 @@
 #'
 #' @name geocodebr
 #' @aliases geocodebr-package
-#' @useDynLib geocodebr, .registration = TRUE
 #'
 #' @importFrom dplyr mutate select across case_when all_of
 #' @importFrom data.table := .I .SD %chin% .GRP .N %like%
 #' @importFrom stats weighted.mean
-#' @importFrom Rcpp sourceCpp
 #'
 #' @keywords internal
 "_PACKAGE"
