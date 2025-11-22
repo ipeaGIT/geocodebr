@@ -20,61 +20,60 @@ match_cases_probabilistic <- function(
   y <- cnefe_table_name
   key_cols <- get_key_cols(match_type)
 
-  # build path to local file
-  path_to_parquet <- fs::path(
-    listar_pasta_cache(),
-    glue::glue("geocodebr_data_release_{data_release}"),
-    paste0(cnefe_table_name,".parquet")
-  )
+  # # build path to local file
+  # path_to_parquet <- fs::path(
+  #   listar_pasta_cache(),
+  #   glue::glue("geocodebr_data_release_{data_release}"),
+  #   paste0(cnefe_table_name,".parquet")
+  # )
+  #
+  # # determine geographical scope of the search
+  # input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado
+  # input_municipio <- DBI::dbGetQuery(con, "SELECT DISTINCT municipio FROM input_padrao_db;")$municipio
+  #
+  # # Load CNEFE data and write to DuckDB
+  # # filter cnefe to include only states and municipalities
+  # # present in the input table, reducing the search scope
+  # filtered_cnefe <- arrow_open_dataset( path_to_parquet ) |>
+  #   dplyr::filter(estado %in% input_states) |>
+  #   dplyr::filter(municipio %in% input_municipio) |>
+  #   dplyr::compute()
+  #
+  # # register filtered_cnefe to db
+  # duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
+  #
+  #
+  #
+  # # 1st step: create small table with unique logradouros -----------------------
 
-  # determine geographical scope of the search
-  input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado
-  input_municipio <- DBI::dbGetQuery(con, "SELECT DISTINCT municipio FROM input_padrao_db;")$municipio
-
-  # Load CNEFE data and write to DuckDB
-  # filter cnefe to include only states and municipalities
-  # present in the input table, reducing the search scope
-  filtered_cnefe <- arrow_open_dataset( path_to_parquet ) |>
-    dplyr::filter(estado %in% input_states) |>
-    dplyr::filter(municipio %in% input_municipio) |>
-    dplyr::compute()
-
-  # register filtered_cnefe to db
-  duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
-
-
-
-  # 1st step: create small table with unique logradouros -----------------------
-
-  # check if view 'unique_logradouros_cep_localidade' exists
-  temp_check <- duckdb::duckdb_list_arrow(conn = con)
-  temp_check <- 'unique_logradouros_cep_localidade' %in% temp_check
-
-  if (match_type == 'pn01' | isFALSE(temp_check)) {
-
-    unique_logradouros_cep_localidade <- filtered_cnefe |>
-      dplyr::select(dplyr::all_of(c("estado", "municipio", "logradouro", "cep", "localidade"))) |>
-      dplyr::distinct() |>
-      dplyr::compute()
-
-    # register to db
-    duckdb::duckdb_register_arrow(con, "unique_logradouros", unique_logradouros_cep_localidade)
-    duckdb::duckdb_register_arrow(con, "unique_logradouros_cep_localidade", unique_logradouros_cep_localidade)
-    # a <- DBI::dbReadTable(con, 'unique_logradouros')
-
-  } else {
 
     # 666 esse passo poderia tmb filtar estados e municipios presentes
     unique_cols <- key_cols[!key_cols %in% "numero"]
+    aprox_tbl_name <- paste0("aprox_", paste0(unique_cols,collapse = "_" ))
 
     query_unique_logradouros <- glue::glue(
-      "CREATE OR REPLACE VIEW unique_logradouros AS
-            SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
-            FROM unique_logradouros_cep_localidade;"
-    )
+      # "CREATE TABLE IF NOT EXISTS {aprox_tbl_name} AS
+      #       SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
+      #       FROM municipio_logradouro_cep_localidade;"
 
+      "CREATE TABLE IF NOT EXISTS {aprox_tbl_name} AS
+          WITH unique_munis AS (
+              SELECT DISTINCT municipio
+              FROM input_padrao_db
+          )
+          SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
+          FROM municipio_logradouro_cep_localidade m
+          WHERE m.municipio IN (SELECT municipio FROM unique_munis);"
+
+      )
+
+
+
+
+    # DBI::dbExecute(con, query_unique_logradouros)
+    #
     DBI::dbSendQueryArrow(con, query_unique_logradouros)
-  }
+  # }
 
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
@@ -89,7 +88,7 @@ match_cases_probabilistic <- function(
   key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
 
   join_condition_lookup <- paste(
-    glue::glue("unique_logradouros.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
+    glue::glue("{aprox_tbl_name}.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
     collapse = ' AND '
   )
 
@@ -101,11 +100,11 @@ match_cases_probabilistic <- function(
     "WITH ranked_data AS (
         SELECT
           {x}.tempidgeocodebr,
-          unique_logradouros.logradouro AS logradouro_cnefe,
-          CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
+          {aprox_tbl_name}.logradouro AS logradouro_cnefe,
+          CAST(jaro_similarity({x}.logradouro, {aprox_tbl_name}.logradouro) AS NUMERIC(5,3)) AS similarity,
           RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
         FROM {x}
-        JOIN unique_logradouros
+        JOIN {aprox_tbl_name}
           ON {join_condition_lookup}
        WHERE {cols_not_null}
              AND {x}.log_causa_confusao is false
@@ -201,9 +200,9 @@ match_cases_probabilistic <- function(
   # c <- DBI::dbReadTable(con, 'output_db')
 
 
-  # remove arrow tables from db
-  duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-  duckdb::duckdb_unregister_arrow(con, cnefe_table_name) # 6666666666666666666
+  # # remove arrow tables from db
+  # duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
+  # duckdb::duckdb_unregister_arrow(con, cnefe_table_name) # 6666666666666666666
 
 
 

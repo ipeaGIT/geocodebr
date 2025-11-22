@@ -201,7 +201,8 @@ geocode <- function(enderecos,
   )
 
   # creating a temporary db and register the input table data
-  con <- create_geocodebr_db(n_cores = n_cores)
+  # con <- create_geocodebr_db(n_cores = n_cores)
+  con <- create_geocodebr_db2(data_release = data_release, n_cores = n_cores)
 
   # register standardized input data
   input_padrao_arrw <- arrow::as_arrow_table(input_padrao)
