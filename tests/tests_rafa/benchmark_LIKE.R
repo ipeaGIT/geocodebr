@@ -127,7 +127,7 @@ campos <- geocodebr::definir_campos(
 # temp_df <- filter(input_df,id %in% c(1371)  )
 
 
-bench::mark( iterations = 1,
+bench::bench_time( # iterations = 1,
   v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,

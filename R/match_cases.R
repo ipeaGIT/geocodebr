@@ -11,31 +11,23 @@ match_cases <- function( # nocov start
   # get corresponding parquet table
   cnefe_table_name <- get_reference_table(match_type)
   y <- cnefe_table_name
+  key_cols <- get_key_cols(match_type)
 
-  # build path to local file
-  path_to_parquet <- fs::path(
-    listar_pasta_cache(),
-    glue::glue("geocodebr_data_release_{data_release}"),
-    paste0(cnefe_table_name,".parquet")
+  files <- geocodebr::listar_dados_cache()
+  path_to_parquet <- files[grepl( paste0(cnefe_table_name,".parquet"), files)]
+
+  query_unique_logradouros <- glue::glue(
+    "CREATE TABLE IF NOT EXISTS {cnefe_table_name} AS
+          WITH unique_munis AS (
+              SELECT DISTINCT municipio
+              FROM input_padrao_db
+          )
+          SELECT *
+          FROM read_parquet('{path_to_parquet}') m
+          WHERE m.municipio IN (SELECT municipio FROM unique_munis);"
+
   )
-
-  # determine geographical scope of the search
-  input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado
-  input_municipio <- DBI::dbGetQuery(con, "SELECT DISTINCT municipio FROM input_padrao_db;")$municipio
-
-  # Load CNEFE data and write to DuckDB
-  # filter cnefe to include only states and municipalities
-  # present in the input table, reducing the search scope
-  filtered_cnefe <- arrow_open_dataset( path_to_parquet ) |>
-    dplyr::filter(estado %in% input_states) |>
-    dplyr::filter(municipio %in% input_municipio) |>
-    dplyr::compute()
-
-  # c <- collect(filtered_cnefe)
-  # summary(c$desvio_metros)
-
-  # register filtered_cnefe to db
-  duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
+  DBI::dbSendQueryArrow(con, query_unique_logradouros)
 
   # Create the JOIN condition by concatenating the key columns
   join_condition <- paste(
@@ -96,7 +88,7 @@ match_cases <- function( # nocov start
   # summary(a$lat)
 
   #### 66666 remover
-  duckdb::duckdb_unregister_arrow(con, cnefe_table_name)
+  # duckdb::duckdb_unregister_arrow(con, cnefe_table_name)
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(

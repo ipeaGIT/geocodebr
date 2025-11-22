@@ -437,6 +437,8 @@ register_geocodebr_tables <- function(con){
 
   all_tables <- geocodebr::listar_dados_cache()
 
+  all_tables <- all_tables[grepl("\\.parquet", all_tables)]
+
   for(i in all_tables){
 
     tb_name <- basename(i)
