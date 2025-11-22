@@ -330,9 +330,7 @@ geocode <- function(enderecos,
     resultado_completo,
     resolver_empates,
     verboso
-    )
-
-
+  )
 
   # systime resolve empates 66666 ----------------
   # timer$mark("Resolve empates")
@@ -376,20 +374,7 @@ geocode <- function(enderecos,
   # systime merge results 66666 ----------------
   # timer$mark("Merge results")
 
-
-
-
-
-
-  # systime merge results 66666 ----------------
-  # timer$mark("Merge results")
-
-
   data.table::setDT(output_df)
-
-  # systime resolve empates 66666 ----------------
-  # timer$mark("Resolve empates")
-
 
   # drop geocodebr temp id column
   output_df[, tempidgeocodebr := NULL]

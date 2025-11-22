@@ -38,27 +38,27 @@ cache_message <- function(local_file = parent.frame()$local_file,
   dir_name <- dirname(local_file[1])
 
   ## if file already exists
-    # YES cache
-    if (file.exists(local_file) & isTRUE(cache)) {
-       message('Reading data cached locally.')
-       }
+  # YES cache
+  if (file.exists(local_file) & isTRUE(cache)) {
+    message('Reading data cached locally.')
+  }
 
-    # NO cache
-    if (file.exists(local_file) & isFALSE(cache)) {
-       message('Overwriting data cached locally.')
-       }
+  # NO cache
+  if (file.exists(local_file) & isFALSE(cache)) {
+    message('Overwriting data cached locally.')
+  }
 
   ## if file does not exist yet
   # YES cache
   if (!file.exists(local_file) & isTRUE(cache)) {
-     message(paste("Downloading data and storing it locally for future use."))
-     }
+    message(paste("Downloading data and storing it locally for future use."))
+  }
 
   # NO cache
   if (!file.exists(local_file) & isFALSE(cache)) {
-     message(paste("Downloading data. Setting 'cache = TRUE' is strongly recommended to speed up future use. File will be stored locally at:", dir_name))
-     }
+    message(paste("Downloading data. Setting 'cache = TRUE' is strongly recommended to speed up future use. File will be stored locally at:", dir_name))
   }
+}
 
 
 #' Update input_padrao_db to remove observations previously matched
@@ -122,11 +122,11 @@ add_precision_col <- function(con, update_tb = NULL){
 
 
 merge_results_to_input <- function(con,
-                          x,
-                          y,
-                          key_column,
-                          select_columns,
-                          resultado_completo){
+                                   x,
+                                   y,
+                                   key_column,
+                                   select_columns,
+                                   resultado_completo){
 
   select_columns_y <- c(
     'lat',
@@ -150,7 +150,7 @@ merge_results_to_input <- function(con,
     DBI::dbSendQueryArrow(
       con,
       glue::glue(
-      "UPDATE {y}
+        "UPDATE {y}
       SET similaridade_logradouro = COALESCE(similaridade_logradouro, 1);"
       )
     )
@@ -163,7 +163,7 @@ merge_results_to_input <- function(con,
   select_clause <- paste0(
     select_x, ',',
     paste0(glue::glue('{y}'), ".", select_columns_y, collapse = ", ")
-    )
+  )
 
   # Create the JOIN clause dynamically
   join_condition <- paste(
@@ -171,19 +171,30 @@ merge_results_to_input <- function(con,
     collapse = ' ON '
   )
 
+  tmp_file <- file.path(tempdir(), "output_geocodebr.parquet")
+
+
   # Create SQL query
   query <- glue::glue(
-    "SELECT * FROM
-      (SELECT {select_clause}
-        FROM {x}
-        LEFT JOIN {y}
-        ON {join_condition})
-      ORDER BY
-        tempidgeocodebr;"
+    "COPY (
+          SELECT * FROM
+            (SELECT {select_clause}
+               FROM {x}
+               LEFT JOIN {y}
+                 ON {join_condition})
+          ORDER BY tempidgeocodebr
+      )
+      TO '{tmp_file}' (FORMAT PARQUET);"
   )
 
   # Execute the query and fetch the merged data
-  merged_data <- DBI::dbGetQuery(con, query)
+  DBI::dbExecute(con, query)
+
+  # fetch the merged data
+  merged_data <- arrow::read_parquet(tmp_file)
+
+  # Delete temp output file
+  unlink(tmp_file)
 
   return(merged_data)
 }
@@ -281,29 +292,29 @@ all_possible_match_types <- c(
 
 number_exact_types <- c(
   "dn01", "dn02", "dn03", "dn04"
-  )
+)
 
 number_interpolation_types <- c(
   "da01", "da02", "da03", "da04"
-  )
+)
 
 probabilistic_exact_types <- c(
   "pn01", "pn02", "pn03", "pn04"
 
-  )
+)
 
 probabilistic_interpolation_types <- c(
   "pa01", "pa02", "pa03", "pa04"
-  )
+)
 
 exact_types_no_number <- c(
   "dl01", "dl02", "dl03", "dl04",
   "dc01", "dc02", "db01", "dm01"
-  )
+)
 
 probabilistic_types_no_number <- c(
   "pl01", "pl02", "pl03", "pl04"
-  )
+)
 
 exact_types__no_logradouro <- c(
   "dc01", "dc02", "db01", "dm01"
@@ -374,7 +385,7 @@ get_reference_table <- function(match_type){
   }
 
   return(table_name)
-  }
+}
 
 
 # min cutoff for string match
@@ -382,7 +393,7 @@ get_reference_table <- function(match_type){
 get_prob_match_cutoff <- function(match_type){
   min_cutoff <- ifelse(match_type %in% c('pn01', 'pa01', 'pl01'), 0.85,  0.9)
   return(min_cutoff)
-  }
+}
 
 
 # create a dummy function that uses nanoarrow with no effect
@@ -390,7 +401,7 @@ get_prob_match_cutoff <- function(match_type){
 # however, if we do not put this dummy function here, CRAN check flags an error
 dummy <- function() {
   nanoarrow::as_nanoarrow_schema
-  }
+}
 
 
 # Cria coluna dummy no input padronizado identificando se logradouro é daqueles
@@ -419,7 +430,7 @@ cria_col_logradouro_confusao <- function(con) {
   DBI::dbExecute(
     con,
     glue::glue(
-    r"{UPDATE input_padrao_db
+      r"{UPDATE input_padrao_db
     SET log_causa_confusao = true
     WHERE
       (REGEXP_MATCHES(logradouro, '^(RUA|TRAVESSA|RAMAL|BECO|BLOCO|AVENIDA|RODOVIA|ESTRADA)\s+([A-Z]{{1,2}}-?|[0-9]{{1,3}}|[A-Z]{{1,2}}-?[0-9]{{1,3}}|[A-Z]{{1,2}}\s+[0-9]{{1,3}}|[0-9]{{1,3}}-?[A-Z]{{1,2}})(\s+KM( \d+)?)?$')
