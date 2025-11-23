@@ -1,3 +1,4 @@
+# criar funcao
 devtools::load_all('.')
 library(ipeadatalake)
 library(dplyr)
@@ -25,7 +26,8 @@ set.seed(42)
 
 
 # cad unico --------------------------------------------------------------------
-sample_size <- 10000000
+# sample_size <- 10000000
+sample_size <- 1000000
 
 cad_con <- ipeadatalake::ler_cadunico(
   data = 202312,
@@ -62,18 +64,8 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-    # dplyr::slice_sample(n = sample_size) |> # sample 20K
+  # dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
-
-
-# setDT(cad)
-#
-# cad[, logradouro := enderecobr::padronizar_logradouros(logradouro) ]
-# cad[, numero := enderecobr::padronizar_numeros(numero,formato = 'integer') ]
-# cad[, cep := enderecobr::padronizar_ceps(cep) ]
-# cad[, bairro := enderecobr::padronizar_bairros(bairro) ]
-# cad[, code_muni := enderecobr::padronizar_municipios(code_muni) ]
-# cad[, abbrev_state := enderecobr::padronizar_estados(abbrev_state, formato = 'sigla') ]
 
 
 cad$id <- 1:nrow(cad)
@@ -86,29 +78,6 @@ fields_cad <- geocodebr::definir_campos(
   municipio = 'code_muni',
   estado = 'abbrev_state'
 )
-
-
-
-#' Cad completo 43 milhoes
-#'
-#' > rafa_drop
-#' process    real
-#' 23.9m     17m
-#' expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time
-#' determ_wth_matches 2.15h  2.15h  0.000129    73.7GB   0.0107     1    83      2.15h / 2,204,315 empates
-#' prob after all det 2.64h  2.64h  0.000105    67.4GB   0.0110     1   104      2.64h / 2,444,248 empates
-#' ideal seq          2.89h  2.89h 0.0000962    66.6GB   0.0123     1   128      2.89h / 2,296,752 empates
-#' 2nd best seq       2.98h  2.98h 0.0000934    67.1GB   0.0114     1   122      2.98h / 2,409,066 empates
-
-
-
-# sequencia de matches
-# 2nd best  1.18h    2296759
-# ideal seq 1.21h    2296827  empates
-# determ    46.06m   2204536
-
-
-
 
 bench::mark( iterations = 1, check = F,
 # bench::system_time(
@@ -130,8 +99,6 @@ bench::mark( iterations = 1, check = F,
 # resultado_sf = F, resultado_completo =F resolver_empates = T,h3_res = NULL, 1.28h
 # resultado_sf = F, resultado_completo =F resolver_empates = F,h3_res = NULL, 1.02h
 
-# v0.3.0
-# resultado_sf = F, resultado_completo =F resolver_empates = T,h3_res = NULL, 1.16h
 
 # 43 milhoes, resultado_completo =T resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
@@ -139,123 +106,14 @@ bench::mark( iterations = 1, check = F,
 # v0.3.0 CRAN
 
 
-# 10 milhoes, resultado_completo =F resolver_empates = T
+# 10 milhoes, resultado_completo =T resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# v0.4.0 dev      33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
-# v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
+# v0.4.0 CRAN     30.4m  30.4m  0.000548    8.63GB  0.00767     1    14      30.4m <NULL> <Rprofmem>
+# v0.3.0 CRAN     30.3m  30.3m  0.000550    20.9GB   0.0484     1    88      30.3m <NULL> <Rprofmem>
 
 # 10 milhoes, resultado_completo =T resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# v0.4.0 dev      36.8m  36.8m  0.000453    8.62GB  0.00498     1    11      36.8m <NULL> <Rprofmem>
-# v0.3.0 CRAN     30.3m  30.3m  0.000550    20.9GB   0.0484     1    88      30.3m <NULL> <Rprofmem>
-
-
-
-
-# 1 milhao
-# seque best 2.15m // 69723 empates
-# 2nd   best 2.1m // 72743 empates
-
-# 25 milhoes
-# seque best 49.4m // 1268668 empates
-# 2nd   best 42.9m // 1331655 empates
-
-
-# novo prob 4.44m // 66561 empates
-# antg prob 15.8m // 77189 empates
-
-# 1 milhao
-# expression   min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     EMPATES
-#        old 4.66m  4.66m   0.00358    1.82GB    0.200     1    56      4.66m <dt>   <Rprofmem> 70940 vs 70940
-#        new 7.33m  7.33m   0.00227    1.83GB    0.173     1    76      7.33m <dt>   <Rprofmem> 71402  vs 71390
-#   20250318 5.26m  5.26m   0.00317     1.8GB    0.181     1    57      5.26m <dt>   <Rprofmem> <bench_tm>
-#> com arrow unique
-
-#   20250319 5.53m  5.53m   0.00301    1.82GB    0.154     1    51      5.53m <dt>   <Rprofmem> 67285
-#> arrow unique + sendQuerryarrow
-
-#   20250320 5.98m  5.98m   0.00279    1.82GB    0.173     1    62      5.98m <dt>   <Rprofmem> 67409
-#> arrow unique + sendQuerryarrow e NO NUMBER nas cat 'pn'
-
-
-# 20250318 1.28h  1.28h  0.000217    1.83GB   0.0141     1    65      1.28h <dt>   <Rprofmem> <bench_tm> <tibble> 67608
-#> com duckdb unique
-
-# 3.61m  3.61m   0.00462    1.83GB    0.365     1    79      3.61m <dt>   <Rprofmem> // 69725
-# latest
-
-
-
-# 500K
-# expression   min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     EMPATES
-#       old 9.56m  9.56m   0.00174    1.02GB   0.0994     1    57      9.56m <dt>   <Rprofmem>  47,258
-#       new 1.99m  1.99m   0.00839    1000MB    0.327     1    39      1.99m <dt>   <Rprofmem>  41,317
-#  20250318 2.26m  2.26m   0.00736    1003MB    0.434     1    59      2.26m <dt>   <Rprofmem>
-
-#  20250321 2.24m  2.24m   0.00743    1015MB    0.320     1    43      2.24m <dt>   <Rprofmem> 41,841
-
-# latest distinct  1.55m  1.55m    0.0107    1022MB    0.569     1    53      1.55m <dt>   <Rprofmem> 43,146
-# latest filter    1.85m  1.85m   0.00903     910MB    0.361     1    40      1.85m <dt>   <Rprofmem> 43147
-
-#         distinct 1.84m  1.84m   0.00905     912MB    0.299     1    33      1.84m <dt>   <Rprofmem> 43129
-#         filter   1.90m   1.9m   0.00878     910MB    0.316     1    36       1.9m <dt>   <Rprofmem> 43153
-
-
-
-# 5 milhoes
-# expression   min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     EMPATES
-#            57.2m  57.2m  0.000292    7.84GB   0.0248     1    85      57.2m <dt>   <Rprofmem> 294,678
-
-
-
-# checando empates no cadunico -------------------------------------------------
-
-
-data.table::setDT(empate)
-
-empate <- filter(cadgeo, empate==T)
-empate <- empate[order(id)]
-empate[, count := .N, by = id]
-#  View(empate)
-
-table(empate$tipo_resultado) / nrow(empate) * 100
-
-
-
-d <- unique(empate$id)[1]
-
-temp <- empate |>
-  dplyr::filter(id == d ) #
-
-
-
-
-temp <- empate |>
-  dplyr::filter( tipo_resultado=='dn02') #
-
-d <- unique(temp$id)[6]
-
-temp <- temp |>
-  dplyr::filter(id == d ) #
-
-temp$tipo_resultado
-temp$endereco_encontrado
-
-
-mapview::mapview(temp, zcol='endereco_encontrado')
-
-sf::st_distance(temp)
-
-# nao era para ser empate
-# 5 "da02" "da02"   mesmo rua e cep
-# [1] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - JARDIM ANGELA, SAO PAULO - SP, 04929-140"
-# [2] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - ALTO DO RIVIERA, SAO PAULO - SP, 04929-140"
-
-
-
-
-
-
+# dev tbl once    25.2m  25.2m  0.000662    8.61GB   0.0338     1    51      25.2m <NULL> <Rprofmem>
 
 
 

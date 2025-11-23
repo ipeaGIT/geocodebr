@@ -20,29 +20,11 @@ match_cases_probabilistic <- function(
   y <- cnefe_table_name
   key_cols <- get_key_cols(match_type)
 
-  # # 1st step: create small table with unique logradouros -----------------------
 
+  # 1st step: create small table with unique logradouros -----------------------
+  unique_logr_tbl_name <- paste0("unique_logr_", cnefe_table_name)
+  write_unique_logradouros_tables(con, match_type)
 
-  # 666 esse passo poderia tmb filtar estados e municipios presentes
-  unique_cols <- key_cols[!key_cols %in% "numero"]
-  aprox_tbl_name <- paste0("aprox_", paste0(unique_cols,collapse = "_" ))
-
-  files <- geocodebr::listar_dados_cache()
-  path_to_parquet_mlcl <- files[grepl("municipio_logradouro_cep_localidade.parquet", files)]
-
-  query_unique_logradouros <- glue::glue(
-    "CREATE TABLE IF NOT EXISTS {aprox_tbl_name} AS
-          WITH unique_munis AS (
-              SELECT DISTINCT municipio
-              FROM input_padrao_db
-          )
-          SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
-          FROM read_parquet('{path_to_parquet_mlcl}') m
-          WHERE m.municipio IN (SELECT municipio FROM unique_munis);"
-
-  )
-
-  DBI::dbSendQueryArrow(con, query_unique_logradouros)
 
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
@@ -57,7 +39,7 @@ match_cases_probabilistic <- function(
   key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
 
   join_condition_lookup <- paste(
-    glue::glue("{aprox_tbl_name}.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
+    glue::glue("{unique_logr_tbl_name}.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
     collapse = ' AND '
   )
 
@@ -69,11 +51,11 @@ match_cases_probabilistic <- function(
     "WITH ranked_data AS (
         SELECT
           {x}.tempidgeocodebr,
-          {aprox_tbl_name}.logradouro AS logradouro_cnefe,
-          CAST(jaro_similarity({x}.logradouro, {aprox_tbl_name}.logradouro) AS NUMERIC(5,3)) AS similarity,
+          {unique_logr_tbl_name}.logradouro AS logradouro_cnefe,
+          CAST(jaro_similarity({x}.logradouro, {unique_logr_tbl_name}.logradouro) AS NUMERIC(5,3)) AS similarity,
           RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
         FROM {x}
-        JOIN {aprox_tbl_name}
+        JOIN {unique_logr_tbl_name}
           ON {join_condition_lookup}
        WHERE {cols_not_null}
              AND {x}.log_causa_confusao is false

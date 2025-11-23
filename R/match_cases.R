@@ -8,26 +8,12 @@ match_cases <- function( # nocov start
 
   # match_type = "dn01"
 
-  # get corresponding parquet table
-  cnefe_table_name <- get_reference_table(match_type)
-  y <- cnefe_table_name
+  # get corresponding table and key cols
+  y <- get_reference_table(match_type)
   key_cols <- get_key_cols(match_type)
 
-  files <- geocodebr::listar_dados_cache()
-  path_to_parquet <- files[grepl( paste0(cnefe_table_name,".parquet"), files)]
-
-  query_unique_logradouros <- glue::glue(
-    "CREATE TABLE IF NOT EXISTS {cnefe_table_name} AS
-          WITH unique_munis AS (
-              SELECT DISTINCT municipio
-              FROM input_padrao_db
-          )
-          SELECT *
-          FROM read_parquet('{path_to_parquet}') m
-          WHERE m.municipio IN (SELECT municipio FROM unique_munis);"
-
-  )
-  DBI::dbSendQueryArrow(con, query_unique_logradouros)
+  # write cnefe table to db
+  write_cnefe_tables(con, match_type)
 
   # Create the JOIN condition by concatenating the key columns
   join_condition <- paste(
