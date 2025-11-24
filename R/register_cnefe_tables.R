@@ -64,8 +64,10 @@ register_unique_logradouros_table <- function(con, match_type){
 
   # tabela de referencia para unique logradouros
   unique_logradouros_cep_localidade <- arrow_open_dataset( path_to_parquet_mlcl ) |>
+    dplyr::select(dplyr::all_of(c("estado", "municipio", "logradouro", "cep", "localidade"))) |>
     dplyr::filter(estado %in% input_states) |>
     dplyr::filter(municipio %in% input_municipio) |>
+    # dplyr::distinct() |>
     dplyr::compute()
 
 
@@ -77,3 +79,76 @@ register_unique_logradouros_table <- function(con, match_type){
 
   return(TRUE)
 }
+
+
+
+calculate_string_dist <- function(con, match_type){
+
+  # match_type = "pn01"
+
+  cnefe_table_name <- get_reference_table(match_type)
+  y <- cnefe_table_name
+  key_cols <- get_key_cols(match_type)
+
+  # cols that cannot be null
+  cols_not_null <-  paste(
+    glue::glue("input_padrao_db.{key_cols} IS NOT NULL"),
+    collapse = ' AND '
+  )
+
+  # remove numero and logradouro from key cols to allow for the matching
+  key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
+
+  join_condition_lookup <- paste(
+    glue::glue("unique_logradouros.{key_cols_string_dist} = input_padrao_db.{key_cols_string_dist}"),
+    collapse = ' AND '
+  )
+
+  # min cutoff for string match
+  min_cutoff <- get_prob_match_cutoff(match_type)
+
+
+  # query
+  query_calc_dist <- glue::glue(
+    "
+    -- STEP 1: pick only rows that do NOT have similarity in temp table
+    WITH to_compute AS (
+      SELECT
+          input_padrao_db.tempidgeocodebr,
+          input_padrao_db.logradouro AS logradouro_input,
+          unique_logradouros.logradouro AS logradouro_cnefe
+      FROM input_padrao_db
+      JOIN unique_logradouros
+        ON {join_condition_lookup}
+      WHERE {cols_not_null}
+        AND input_padrao_db.log_causa_confusao = FALSE
+        AND input_padrao_db.similaridade_logradouro IS NULL
+        ),
+
+    -- STEP 2: calculate similarity only for missing pairs
+    computed AS (
+      SELECT
+          tempidgeocodebr,
+          logradouro_cnefe,
+          CAST(jaro_similarity(logradouro_input, logradouro_cnefe) AS NUMERIC(5,3)) AS similarity,
+          RANK() OVER (PARTITION BY tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
+      FROM to_compute
+      WHERE similarity > {min_cutoff}
+      )
+
+    -- STEP 3: distances to input db
+    UPDATE input_padrao_db
+      SET temp_lograd_determ = computed.logradouro_cnefe,
+          similaridade_logradouro = similarity
+      FROM computed
+      WHERE input_padrao_db.tempidgeocodebr = computed.tempidgeocodebr
+            AND computed.rank = 1;"
+  )
+
+
+  DBI::dbSendQueryArrow(con, query_calc_dist)
+
+  # a <- DBI::dbReadTable(con, 'input_padrao_db')
+  # sum(is.na(a$similaridade_logradouro))
+}
+
