@@ -1,3 +1,10 @@
+# geocodebr 0.4.0.999 dev
+
+## Mudanças pequenas (Minor changes)
+
+- As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
+
+
 # geocodebr 0.4.0
 
 ## Mudanças grandes (Major changes)

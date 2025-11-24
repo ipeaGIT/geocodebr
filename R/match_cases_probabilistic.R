@@ -20,61 +20,14 @@ match_cases_probabilistic <- function(
   y <- cnefe_table_name
   key_cols <- get_key_cols(match_type)
 
-  # build path to local file
-  path_to_parquet <- fs::path(
-    listar_pasta_cache(),
-    glue::glue("geocodebr_data_release_{data_release}"),
-    paste0(cnefe_table_name,".parquet")
-  )
-
-  # determine geographical scope of the search
-  input_states <- DBI::dbGetQuery(con, "SELECT DISTINCT estado FROM input_padrao_db;")$estado
-  input_municipio <- DBI::dbGetQuery(con, "SELECT DISTINCT municipio FROM input_padrao_db;")$municipio
-
-  # Load CNEFE data and write to DuckDB
-  # filter cnefe to include only states and municipalities
-  # present in the input table, reducing the search scope
-  filtered_cnefe <- arrow_open_dataset( path_to_parquet ) |>
-    dplyr::filter(estado %in% input_states) |>
-    dplyr::filter(municipio %in% input_municipio) |>
-    dplyr::compute()
-
-  # register filtered_cnefe to db
-  duckdb::duckdb_register_arrow(con, cnefe_table_name, filtered_cnefe)
+  # write cnefe table to db
+  register_cnefe_table(con, match_type)
 
 
 
   # 1st step: create small table with unique logradouros -----------------------
+  register_unique_logradouros_table(con, match_type)
 
-  # check if view 'unique_logradouros_cep_localidade' exists
-  temp_check <- duckdb::duckdb_list_arrow(conn = con)
-  temp_check <- 'unique_logradouros_cep_localidade' %in% temp_check
-
-  if (match_type == 'pn01' | isFALSE(temp_check)) {
-
-    unique_logradouros_cep_localidade <- filtered_cnefe |>
-      dplyr::select(dplyr::all_of(c("estado", "municipio", "logradouro", "cep", "localidade"))) |>
-      dplyr::distinct() |>
-      dplyr::compute()
-
-    # register to db
-    duckdb::duckdb_register_arrow(con, "unique_logradouros", unique_logradouros_cep_localidade)
-    duckdb::duckdb_register_arrow(con, "unique_logradouros_cep_localidade", unique_logradouros_cep_localidade)
-    # a <- DBI::dbReadTable(con, 'unique_logradouros')
-
-  } else {
-
-    # 666 esse passo poderia tmb filtar estados e municipios presentes
-    unique_cols <- key_cols[!key_cols %in% "numero"]
-
-    query_unique_logradouros <- glue::glue(
-      "CREATE OR REPLACE VIEW unique_logradouros AS
-            SELECT DISTINCT {paste(unique_cols, collapse = ', ')}
-            FROM unique_logradouros_cep_localidade;"
-    )
-
-    DBI::dbSendQueryArrow(con, query_unique_logradouros)
-  }
 
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
@@ -203,7 +156,6 @@ match_cases_probabilistic <- function(
 
   # remove arrow tables from db
   duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-  duckdb::duckdb_unregister_arrow(con, cnefe_table_name) # 6666666666666666666
 
 
 
