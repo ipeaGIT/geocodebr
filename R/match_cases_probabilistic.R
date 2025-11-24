@@ -20,6 +20,9 @@ match_cases_probabilistic <- function(
   y <- cnefe_table_name
   key_cols <- get_key_cols(match_type)
 
+  # write cnefe table to db
+  write_cnefe_tables(con, match_type)
+
 
   # 1st step: create small table with unique logradouros -----------------------
   unique_logr_tbl_name <- paste0("unique_logr_", cnefe_table_name)

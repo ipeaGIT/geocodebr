@@ -19,6 +19,8 @@ match_weighted_cases_probabilistic <- function( # nocov start
   key_cols <- get_key_cols(match_type)
 
 
+  # write cnefe table to db
+  write_cnefe_tables(con, match_type)
 
 
   # 1st step: create small table with unique logradouros -----------------------

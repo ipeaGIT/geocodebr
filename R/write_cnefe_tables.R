@@ -6,12 +6,12 @@ write_cnefe_tables <- function(con, match_type){
   # get corresponding table and key cols
   cnefe_table_name <- get_reference_table(match_type)
 
-  # check if table already exists
-  recorded_tbls <- DBI::dbListTables(con)
-  if (cnefe_table_name %in% recorded_tbls) {
+  # if table already exists, stop
+  if (duckdb::dbExistsTable(con, cnefe_table_name)) {
     return(TRUE)
     }
 
+  # write table
   files <- geocodebr::listar_dados_cache()
   path_to_parquet <- files[grepl( paste0(cnefe_table_name,".parquet"), files)]
 
@@ -55,9 +55,8 @@ write_unique_logradouros_tables <- function(con, match_type){
   cnefe_table_name <- get_reference_table(match_type)
   unique_logr_tbl_name <- paste0("unique_logr_", cnefe_table_name)
 
-  # check if table already exists
-  recorded_tbls <- DBI::dbListTables(con)
-  if (unique_logr_tbl_name %in% recorded_tbls) {
+  # if table already exists, stop
+  if (duckdb::dbExistsTable(con, unique_logr_tbl_name)) {
     return(TRUE)
   }
 
