@@ -23,6 +23,16 @@ set.seed(42)
 
 
 
+  dplyr::select(
+    c("co_familiar_fam", "co_uf", "cd_ibge_cadastro",
+        "no_localidade_fam", "no_tip_logradouro_fam",
+        "no_tit_logradouro_fam", "no_logradouro_fam",
+        "nu_logradouro_fam", "ds_complemento_fam",
+        "ds_complemento_adic_fam",
+        "nu_cep_logradouro_fam", "co_unidade_territorial_fam",
+        "no_unidade_territorial_fam", "co_local_domic_fam")
+    )
+
 
 # cad unico --------------------------------------------------------------------
 sample_size <- 10000000
@@ -43,7 +53,7 @@ cad_con <- ipeadatalake::ler_cadunico(
 # a <- tail(cad, n = 100) |> collect()
 
 # compose address fields
-cad <- cad_con |>
+df <- cad_con |>
   mutate(no_tip_logradouro_fam = ifelse(is.na(no_tip_logradouro_fam), '', no_tip_logradouro_fam),
          no_tit_logradouro_fam = ifelse(is.na(no_tit_logradouro_fam), '', no_tit_logradouro_fam),
          no_logradouro_fam = ifelse(is.na(no_logradouro_fam), '', no_logradouro_fam)
@@ -62,7 +72,7 @@ cad <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-    # dplyr::slice_sample(n = sample_size) |> # sample 20K
+  # dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 
@@ -76,9 +86,9 @@ cad <- cad_con |>
 # cad[, abbrev_state := enderecobr::padronizar_estados(abbrev_state, formato = 'sigla') ]
 
 
-cad$id <- 1:nrow(cad)
+df$id <- 1:nrow(df)
 
-fields_cad <- geocodebr::definir_campos(
+campos <- geocodebr::definir_campos(
   logradouro = 'logradouro',
   numero = 'numero',
   cep = 'cep',
@@ -148,8 +158,14 @@ bench::mark( iterations = 1, check = F,
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # v0.4.0 dev      36.8m  36.8m  0.000453    8.62GB  0.00498     1    11      36.8m <NULL> <Rprofmem>
 # v0.3.0 CRAN     30.3m  30.3m  0.000550    20.9GB   0.0484     1    88      30.3m <NULL> <Rprofmem>
+# v0.4.0 CRAN 666666
 
 
+
+# register arrw   30.6m  30.6m  0.000545    8.62GB  0.00763     1    14      30.6m <NULL> <Rprofmem>
+# register arrw   36.1m  36.1m  0.000462    8.62GB  0.00508     1    11      36.1m <NULL> <Rprofmem> <bench_tm> <tibble>
+
+# register+dist
 
 
 # 1 milhao
