@@ -77,7 +77,7 @@
 
 devtools::load_all('.')
 library(dplyr)
-# library(geocodebr)
+ # library(geocodebr)
 # library(enderecobr)
 # library(data.table)
 # library(arrow)

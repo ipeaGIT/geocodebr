@@ -24,7 +24,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
 
   # 1st step: create small table with unique logradouros -----------------------
-  register_unique_logradouros_table(con, match_type)
+  unique_logradouros_tbl <- register_unique_logradouros_table(con, match_type)
 
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
@@ -39,7 +39,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
 
   join_condition_string_dist <- paste(
-    glue::glue("unique_logradouros.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
+    glue::glue("{unique_logradouros_tbl}.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
     collapse = ' AND '
   )
 
@@ -51,11 +51,11 @@ match_weighted_cases_probabilistic <- function( # nocov start
     "WITH ranked_data AS (
         SELECT
           {x}.tempidgeocodebr,
-          unique_logradouros.logradouro AS logradouro_cnefe,
-          CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
+          {unique_logradouros_tbl}.logradouro AS logradouro_cnefe,
+          CAST(jaro_similarity({x}.logradouro, {unique_logradouros_tbl}.logradouro) AS NUMERIC(5,3)) AS similarity,
           RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
         FROM {x}
-        JOIN unique_logradouros
+        JOIN {unique_logradouros_tbl}
           ON {join_condition_string_dist}
         WHERE {cols_not_null}
               AND {x}.log_causa_confusao is false
@@ -179,9 +179,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   # d <- DBI::dbReadTable(con, 'aaa')
 
 
-  #  if (match_type %like% "01") {
-  duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
-  #  }
+
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(

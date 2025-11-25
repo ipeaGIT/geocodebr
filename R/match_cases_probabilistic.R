@@ -26,7 +26,7 @@ match_cases_probabilistic <- function(
 
 
   # 1st step: create small table with unique logradouros -----------------------
-  register_unique_logradouros_table(con, match_type)
+  unique_logradouros_tbl <- register_unique_logradouros_table(con, match_type)
 
 
 
@@ -42,7 +42,7 @@ match_cases_probabilistic <- function(
   key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
 
   join_condition_lookup <- paste(
-    glue::glue("unique_logradouros.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
+    glue::glue("{unique_logradouros_tbl}.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
     collapse = ' AND '
   )
 
@@ -54,11 +54,11 @@ match_cases_probabilistic <- function(
     "WITH ranked_data AS (
         SELECT
           {x}.tempidgeocodebr,
-          unique_logradouros.logradouro AS logradouro_cnefe,
-          CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
+          {unique_logradouros_tbl}.logradouro AS logradouro_cnefe,
+          CAST(jaro_similarity({x}.logradouro, {unique_logradouros_tbl}.logradouro) AS NUMERIC(5,3)) AS similarity,
           RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
         FROM {x}
-        JOIN unique_logradouros
+        JOIN {unique_logradouros_tbl}
           ON {join_condition_lookup}
        WHERE {cols_not_null}
              AND {x}.log_causa_confusao is false
@@ -152,10 +152,6 @@ match_cases_probabilistic <- function(
   DBI::dbSendQueryArrow(con, query_update_db)
   # DBI::dbExecute(con, query_update_db)
   # c <- DBI::dbReadTable(con, 'output_db')
-
-
-  # remove arrow tables from db
-  duckdb::duckdb_unregister_arrow(con, "unique_logradouros")
 
 
 
