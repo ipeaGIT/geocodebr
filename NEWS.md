@@ -1,5 +1,12 @@
 # geocodebr 0.4.0.999 dev
 
+
+## Mudanças grandes (Major changes)
+
+- Nova versão da função `geocode_reverso()` significativamente mais rápida e que 
+usa menos RAM. [Encerra issue #81](https://github.com/ipeaGIT/geocodebr/issues/81).
+
+
 ## Mudanças pequenas (Minor changes)
 
 - As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
