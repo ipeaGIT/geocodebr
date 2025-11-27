@@ -3,8 +3,10 @@
 
 ## Mudanças grandes (Major changes)
 
-- Nova versão da função `geocode_reverso()` significativamente mais rápida e que 
-usa menos RAM. [Encerra issue #81](https://github.com/ipeaGIT/geocodebr/issues/81).
+- Nova versão da função `geocode_reverso()` é mais rápida e usa menos RAM. O ganho
+de eficiência é relativamente maior em consultas de vetores pequenos. [Encerra issue #83](https://github.com/ipeaGIT/geocodebr/issues/83).
+- Nova versão da função `geocode_reverso()` é significativamente mais eficiente
+(mais rápida e usa menos RAM). [Encerra issue #81](https://github.com/ipeaGIT/geocodebr/issues/81).
 
 
 ## Mudanças pequenas (Minor changes)
