@@ -53,7 +53,7 @@ ceps <- c("70390-025", "20071-001", "99999-999")
 df <- geocodebr::busca_por_cep(
   cep = ceps,
   h3_res = 10,
-  verboso = FALSE
+  verboso = TRUE
   )
 
 head(df)

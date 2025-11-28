@@ -23,7 +23,7 @@
 #' df <- geocodebr::busca_por_cep(
 #'   cep = ceps,
 #'   h3_res = 10,
-#'   verboso = FALSE
+#'   verboso = TRUE
 #'   )
 #'
 #' head(df)
@@ -46,8 +46,9 @@ busca_por_cep <- function(cep,
   # normalize input data -------------------------------------------------------
 
   cep_padrao <- enderecobr::padronizar_ceps(cep)
-
-
+  cep_padrao <- unique(cep_padrao)
+  cep_padrao <- na.omit(cep_padrao)
+  cep_padrao <- cep_padrao[cep_padrao!=""]
 
   # download cnefe  -------------------------------------------------------
 
@@ -57,6 +58,9 @@ busca_por_cep <- function(cep,
     verboso = verboso,
     cache = cache
   )
+  # creating a temporary db and register the input table data
+  con <- create_geocodebr_db()
+
 
   # build path to local file
   path_to_parquet <- fs::path(
@@ -65,17 +69,23 @@ busca_por_cep <- function(cep,
     paste0("municipio_logradouro_cep_localidade.parquet")
   )
 
-  # Load CNEFE data and filter it to include only states
-  # present in the input table, reducing the search scope
-  # Narrow search global scope of cnefe to bounding box
-  cnefe <- arrow_open_dataset( path_to_parquet )
+
+  # ceps string
+  unique_ceps <- glue::glue_collapse(glue::single_quote(cep_padrao), sep = ",")
+
+
+  # select columns
+  cols_to_keep <- c("cep", "estado", "municipio", "logradouro", "localidade", "lon", "lat")
+  cols_to_keep <- paste0(cols_to_keep, collapse = ", ")
 
   # filtrar por uf ?
-  output_df <- cnefe |>
-    dplyr::select(cep, estado, municipio, logradouro, localidade, lat, lon) |>  # Drop the n_casos column
-    dplyr::filter(cep %in% cep_padrao) |>
-    dplyr::collect()
+  query_filter_cnefe <- glue::glue(
+    "SELECT {cols_to_keep}
+        FROM read_parquet('{path_to_parquet}') m
+        WHERE m.cep IN ({unique_ceps});"
+  )
 
+  output_df <- DBI::dbGetQuery(con, query_filter_cnefe)
 
   # add any missing cep
   missing_cep <- cep_padrao[!cep_padrao %in% output_df$cep]
@@ -104,8 +114,8 @@ busca_por_cep <- function(cep,
                 {{colname}} := h3r::latLngToCell(lat = lat,
                                                  lng = lon,
                                                  resolution = i)]
-      }
     }
+  }
 
 
   # convert df to simple feature
