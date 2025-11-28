@@ -3,10 +3,12 @@
 
 ## Mudanças grandes (Major changes)
 
-- Nova versão da função `geocode_reverso()` é mais rápida e usa menos RAM. O ganho
-de eficiência é relativamente maior em consultas de vetores pequenos. [Encerra issue #83](https://github.com/ipeaGIT/geocodebr/issues/83).
-- Nova versão da função `geocode_reverso()` é significativamente mais eficiente
-(mais rápida e usa menos RAM). [Encerra issue #81](https://github.com/ipeaGIT/geocodebr/issues/81).
+
+- Novas versões da funções `geocode()`, `geocode_reverso()` e `busca_por_cep()` são 
+significamente mais rápidas e usam menos memória RAM. O ganho de eficiência é 
+relativamente maior em consultas pequenas. Encerra issues [#82](https://github.com/ipeaGIT/geocodebr/issues/82),
+[#81](https://github.com/ipeaGIT/geocodebr/issues/81) e [#83](https://github.com/ipeaGIT/geocodebr/issues/83)
+
 
 
 ## Mudanças pequenas (Minor changes)
@@ -35,6 +37,9 @@ agora aceita um vetor de números indicando diferentes resoluções de H3. [Ence
 calcular distâncias entre coordendas. Esses cálculo agora é feito inteiramente
 dentro do DuckDB.
 
+## Novos contribuidores (New contributions)
+
+- Pedro Milreu Cunha
 
 
 
