@@ -101,7 +101,7 @@ match_weighted_cases <- function( # nocov start
   )
 
 
-  DBI::dbSendQueryArrow(con, query_match)
+  DBI::dbExecute(con, query_match)
   # b <- DBI::dbReadTable(con, 'output_db')
   # summary(b$desvio_metros)
 

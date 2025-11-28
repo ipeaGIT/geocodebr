@@ -71,7 +71,7 @@ match_cases <- function( # nocov start
       WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
   )
 
-  DBI::dbSendQueryArrow(con, query_match)
+  DBI::dbExecute(con, query_match)
   # a <- DBI::dbReadTable(con, 'output_db')
   # summary(a$desvio_metros)
   # summary(a$lat)

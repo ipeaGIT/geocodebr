@@ -171,7 +171,7 @@ geocode_reverso <- function(pontos,
   )
 
 
-  DBI::dbSendQueryArrow(con, query_filter_cnefe)
+  DBI::dbExecute(con, query_filter_cnefe)
   # DBI::dbExecute(con, query_filter_cnefe)
   # b <- DBI::dbReadTable(con, "filtered_cnefe")
 

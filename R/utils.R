@@ -97,7 +97,7 @@ add_precision_col <- function(con, update_tb = NULL){
 
   # add empty column
   query_add_col <- glue::glue("ALTER TABLE {update_tb} ADD COLUMN precisao TEXT;")
-  DBI::dbSendQueryArrow(con, query_add_col)
+  DBI::dbExecute(con, query_add_col)
 
   # populate column
   query_precision_cats <- glue::glue("
@@ -117,7 +117,7 @@ add_precision_col <- function(con, update_tb = NULL){
 
 
   # DBI::dbExecute(con, query_precision_cats )
-  DBI::dbSendQueryArrow(con, query_precision_cats )
+  DBI::dbExecute(con, query_precision_cats )
 }
 
 
@@ -147,7 +147,7 @@ merge_results_to_input <- function(con,
                           'contagem_cnefe', 'empate')
 
     # relace NULL similaridade_logradouro as 1 because they were found deterministically
-    DBI::dbSendQueryArrow(
+    DBI::dbExecute(
       con,
       glue::glue(
       "UPDATE {y}
