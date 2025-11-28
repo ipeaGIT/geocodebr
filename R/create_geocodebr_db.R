@@ -31,7 +31,14 @@ create_geocodebr_db <- function( # nocov start
     )
   }
 
+  # Set threads
   DBI::dbExecute(con, sprintf("SET threads = %s;", n_cores))
+
+
+  # Silence progress bar from duckdb
+  DBI::dbExecute(con, "SET enable_progress_bar = false")
+
+
 
   # Set Memory limit
   # DBI::dbExecute(con, "SET memory_limit = '8GB'")
