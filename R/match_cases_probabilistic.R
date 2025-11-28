@@ -24,7 +24,6 @@ match_cases_probabilistic <- function(
   register_cnefe_table(con, match_type)
 
 
-
   # 1st step: create small table with unique logradouros -----------------------
   unique_logradouros_tbl <- register_unique_logradouros_table(con, match_type)
 
@@ -33,63 +32,12 @@ match_cases_probabilistic <- function(
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
 
-  calculate_string_dist(con, match_type)
-
-            # cols that cannot be null
-            cols_not_null <-  paste(
-              glue::glue("{x}.{key_cols} IS NOT NULL"),
-              collapse = ' AND '
-            )
-            #
-            # # remove numero and logradouro from key cols to allow for the matching
-            # key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
-            #
-            # join_condition_lookup <- paste(
-            #   glue::glue("unique_logradouros.{key_cols_string_dist} = {x}.{key_cols_string_dist}"),
-            #   collapse = ' AND '
-            # )
-            #
-            # # min cutoff for string match
-            # min_cutoff <- get_prob_match_cutoff(match_type)
-            #
-            # # query
-            # query_lookup <- glue::glue(
-            #   "WITH ranked_data AS (
-            #       SELECT
-            #         {x}.tempidgeocodebr,
-            #         unique_logradouros.logradouro AS logradouro_cnefe,
-            #         CAST(jaro_similarity({x}.logradouro, unique_logradouros.logradouro) AS NUMERIC(5,3)) AS similarity,
-            #         RANK() OVER (PARTITION BY {x}.tempidgeocodebr ORDER BY similarity DESC, logradouro_cnefe) AS rank
-            #       FROM {x}
-            #       JOIN unique_logradouros
-            #         ON {join_condition_lookup}
-            #      WHERE {cols_not_null}
-            #            AND {x}.log_causa_confusao is false
-            #            AND {x}.similaridade_logradouro IS NULL
-            #            AND similarity > {min_cutoff}
-            #     )
-            #
-            #     UPDATE {x}
-            #        SET temp_lograd_determ = ranked_data.logradouro_cnefe,
-            #            similaridade_logradouro = similarity
-            #      FROM ranked_data
-            #     WHERE {x}.tempidgeocodebr = ranked_data.tempidgeocodebr
-            #           AND ranked_data.similarity > {min_cutoff}
-            #           AND ranked_data.rank = 1;"
-            #     )
-            #
-            #
-            #
-            # DBI::dbSendQueryArrow(con, query_lookup)
-            # # DBI::dbExecute(con, query_lookup)
-            # # b <- DBI::dbReadTable(con, 'input_padrao_db')
-            #
+  calculate_string_dist(con, match_type, unique_logradouros_tbl)
 
 
 
   # 3rd step: update output table com match deterministico --------------------------------------------------------
 
-  key_cols <- get_key_cols(match_type)
 
   # update join condition to use probable logradouro and deterministic number
   join_condition_match <- paste(
@@ -152,7 +100,7 @@ match_cases_probabilistic <- function(
 
 
 
-  DBI::dbSendQueryArrow(con, query_update_db)
+  DBI::dbExecute(con, query_update_db)
   # DBI::dbExecute(con, query_update_db)
   # c <- DBI::dbReadTable(con, 'output_db')
 
