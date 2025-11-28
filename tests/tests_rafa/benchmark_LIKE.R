@@ -135,22 +135,11 @@ bench::mark( iterations = 1,
   )
 )
 
-# expression           min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#       orig         33.5s  33.5s    0.0299    77.1MB    0.239     1     8      33.5s <dt>   <Rprofmem> <bench_tm>
-#       duckrafa     50.2s    0.0199    56.5MB    0.160     1     8      50.2s <dt>   <Rprofmem> <bench_tm>
+# args: n_cores = 7, resultado_completo = F, verboso = T, resultado_sf = T, resolver_empates = T, h3_res = 9
+# expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+# v0.4.0        28.6s  28.6s    0.0350      83MB    0.245     1     7      28.6s <sf>   <Rprofmem> <bench_tm> <tibble>
+# v0.5.0_dev    7.63s  7.63s     0.131    39.4MB    0.918     1     7      7.63s <sf>   <Rprofmem> <bench_tm> <tibble>
 
-#         v2_F       25.6s  25.6s    0.0391    64.6MB    0.352     1     9      25.6s <dt>
-#         v3_F       26.2s  26.2s    0.0381      65MB    0.343     1     9      26.2s <dt>
-
-
-    # v2: 729 empates
-# v3: 744 empates
-
-# sequencia de matches
-#   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#           v2  28.4s  28.4s    0.0352    3.06GB    0.246     1     7
-#           v3  34.9s  34.9s    0.0287    78.6MB    0.401     1    14      34.9s
-#       v3 1.4  32.1s  32.1s    0.0311    87.5MB    0.280     1     9      32.1s
 
 
 

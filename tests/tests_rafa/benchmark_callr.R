@@ -30,9 +30,8 @@ bench::bench_time(
       n_cores = 7,
       resultado_completo = F,
       verboso = T,
-      resultado_sf = T,
       resolver_empates = T,
-      h3_res = 9)
+      )
   },
   args = list(df = df, campos = campos),
   show = TRUE
@@ -41,16 +40,15 @@ bench::bench_time(
 
 
 gc(full = T)
-bench::bench_time(
+bench::mark(
     v3 <- geocode(
       enderecos = df,
       campos_endereco = campos,
       n_cores = 7,
       resultado_completo = F,
       verboso = T,
-      resultado_sf = T,
-      resolver_empates = T,
-      h3_res = 9)
+      resolver_empates = T
+      )
 )
 
 
@@ -60,8 +58,10 @@ bench::bench_time(
 #  register    | 49.25s   7.88m
 #  temp table  | 46.66s   7.05m (antigo calc dist 7.08m)
 
-#   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
-#   temp table  7.04m  7.04m   0.00237     916MB  0.00946     1     4      7.04m <sf>   <Rprofmem> <bench_tm> <tibble>
+# expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc
+# v0.4.0 CRAN 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+# v0.5.0 dev
+# temp table  7.04m  7.04m   0.00237     916MB  0.00946     1     4      7.04m <sf>   <Rprofmem> <bench_tm> <tibble>
 
 
 # 10 milhoes cad unico direto
