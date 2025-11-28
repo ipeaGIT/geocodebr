@@ -29,11 +29,11 @@ tester <- function(pontos = points,
 test_that("expected output", {
 
   # radio de busca de 1 Km
-  testthat::expect_success(std_output <- tester())
+  testthat::succeed(std_output <- tester())
   testthat::expect_true(nrow(std_output) == 1)
 
   # radio de busca de 5 Km
-  testthat::expect_success(std_output_5K <- tester(dist_max = 5000))
+  testthat::succeed(std_output_5K <- tester(dist_max = 5000))
   testthat::expect_true(nrow(std_output_5K) == 7)
 
   # output in sf format
