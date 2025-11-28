@@ -10,6 +10,8 @@
 
 - **Arthur Bazolli**. Contributor.
 
+- **Pedro Milreu Cunha**. Contributor.
+
 - **Ipea - Instituto de Pesquisa Econômica Aplicada**. Copyright holder,
   funder.
 

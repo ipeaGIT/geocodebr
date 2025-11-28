@@ -44,16 +44,16 @@ head(df_enderecos)
 #> Geodetic CRS:  SIRGAS 2000
 #>   id                                                      endereco_completo
 #> 1  1                CORREGO BOA VISTA, 32 - LAJINHA, PANCAS - ES, 29750-000
-#> 2 11 RODOVIA SAO MATEUS NOVA VENECIA, 6 - KM 13, SAO MATEUS - ES, 29944-025
-#> 3 17        RAMAL MATAO DO PIACACA 1, 14 - PIACACA, SANTANA - AP, 68925-001
+#> 2 17        RAMAL MATAO DO PIACACA 1, 14 - PIACACA, SANTANA - AP, 68925-001
+#> 3 11 RODOVIA SAO MATEUS NOVA VENECIA, 6 - KM 13, SAO MATEUS - ES, 29944-025
 #>   estado  municipio                      logradouro numero       cep localidade
 #> 1     ES     PANCAS               CORREGO BOA VISTA     32 29750-000    LAJINHA
-#> 2     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13
-#> 3     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA
+#> 2     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA
+#> 3     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13
 #>   distancia_metros                    geometry
 #> 1         560.6426  POINT (-40.7334 -19.29416)
-#> 2         373.7936 POINT (-39.92601 -18.69095)
-#> 3         364.7792 POINT (-51.49634 0.3649148)
+#> 2         364.7792 POINT (-51.49634 0.3649148)
+#> 3         373.7936 POINT (-39.92601 -18.69095)
 ```
 
 Por padrão, a função busca pelo endereço mais próximo num raio

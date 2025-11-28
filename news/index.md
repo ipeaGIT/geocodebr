@@ -2,6 +2,19 @@
 
 ## geocodebr 0.4.0.999 dev
 
+### Mudanças grandes (Major changes)
+
+- Novas versões da funções
+  [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md),
+  [`geocode_reverso()`](https://ipeagit.github.io/geocodebr/reference/geocode_reverso.md)
+  e
+  [`busca_por_cep()`](https://ipeagit.github.io/geocodebr/reference/busca_por_cep.md)
+  são significamente mais rápidas e usam menos memória RAM. O ganho de
+  eficiência é relativamente maior em consultas pequenas. Encerra issues
+  [\#82](https://github.com/ipeaGIT/geocodebr/issues/82),
+  [\#81](https://github.com/ipeaGIT/geocodebr/issues/81) e
+  [\#83](https://github.com/ipeaGIT/geocodebr/issues/83)
+
 ### Mudanças pequenas (Minor changes)
 
 - As tabelas do cnefe agora são registradas na db uma única vez.
@@ -45,6 +58,10 @@ CRAN release: 2025-11-18
 - O geocodebr não depende mais do pacote Rcpp, que antes era utilizado
   para calcular distâncias entre coordendas. Esses cálculo agora é feito
   inteiramente dentro do DuckDB.
+
+### Novos contribuidores (New contributions)
+
+- Pedro Milreu Cunha
 
 ## geocodebr 0.3.0
 

@@ -66,8 +66,9 @@ ceps <- c("70390-025", "20071-001", "99999-999")
 df <- geocodebr::busca_por_cep(
   cep = ceps,
   h3_res = 10,
-  verboso = FALSE
+  verboso = TRUE
   )
+#> ℹ Baixando dados do CNEFE
 
 head(df)
 #>          cep estado      municipio                logradouro localidade
@@ -77,11 +78,11 @@ head(df)
 #> 3: 70390-025     DF       BRASILIA  EDF SEPS 702 902 BLOCO C    ASA SUL
 #> 4: 20071-001     RJ RIO DE JANEIRO AVENIDA PRESIDENTE VARGAS     CENTRO
 #> 5: 99999-999   <NA>           <NA>                      <NA>       <NA>
-#>          lat       lon           h3_10
+#>          lon       lat           h3_10
 #>        <num>     <num>          <char>
-#> 1: -15.79815 -47.89608 8aa8c249d857fff
-#> 2: -15.79741 -47.89439 8aa8c249d8e7fff
-#> 3: -15.79922 -47.89707 8aa8c249d867fff
-#> 4: -22.90234 -43.18266 8aa8a06a0a1ffff
+#> 1: -47.89608 -15.79815 8aa8c249d857fff
+#> 2: -47.89439 -15.79741 8aa8c249d8e7fff
+#> 3: -47.89707 -15.79922 8aa8c249d867fff
+#> 4: -43.18266 -22.90234 8aa8a06a0a1ffff
 #> 5:        NA        NA            <NA>
 ```
