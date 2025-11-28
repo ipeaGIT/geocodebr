@@ -217,10 +217,6 @@ geocode <- function(enderecos,
   # issue https://github.com/ipeaGIT/geocodebr/issues/67
   cria_col_logradouro_confusao(con)
 
-  # systime cria coluna "log_causa_confusao 66666 ----------------
-  # timer$mark("Cria coluna log_causa_confusao")
-
-
 
 
   # create an empty output table that will be populated -----------------------------------------------
@@ -265,6 +261,8 @@ geocode <- function(enderecos,
   output_db_arrow <- arrow::arrow_table(schema = schema_output_db)
   DBI::dbWriteTableArrow(con, name = "output_db", output_db_arrow,
                          overwrite = TRUE, temporary = TRUE)
+
+
 
 
   # START MATCHING -----------------------------------------------
@@ -378,17 +376,7 @@ geocode <- function(enderecos,
 
 
 
-
-
-
-  # systime merge results 66666 ----------------
-  # timer$mark("Merge results")
-
-
   data.table::setDT(output_df)
-
-  # systime resolve empates 66666 ----------------
-  # timer$mark("Resolve empates")
 
 
   # drop geocodebr temp id column
@@ -398,8 +386,6 @@ geocode <- function(enderecos,
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
-
-  # add H3
 
   # add H3
   if (!is.null(h3_res)) {

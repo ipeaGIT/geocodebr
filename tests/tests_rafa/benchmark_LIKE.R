@@ -77,11 +77,6 @@
 
 devtools::load_all('.')
 library(dplyr)
- # library(geocodebr)
-# library(enderecobr)
-# library(data.table)
-# library(arrow)
-# library(duckdb)
 
 
 # open input data

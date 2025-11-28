@@ -23,16 +23,6 @@ set.seed(42)
 
 
 
-  dplyr::select(
-    c("co_familiar_fam", "co_uf", "cd_ibge_cadastro",
-        "no_localidade_fam", "no_tip_logradouro_fam",
-        "no_tit_logradouro_fam", "no_logradouro_fam",
-        "nu_logradouro_fam", "ds_complemento_fam",
-        "ds_complemento_adic_fam",
-        "nu_cep_logradouro_fam", "co_unidade_territorial_fam",
-        "no_unidade_territorial_fam", "co_local_domic_fam")
-    )
-
 
 # cad unico --------------------------------------------------------------------
 sample_size <- 10000000
@@ -72,19 +62,8 @@ df <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  # dplyr::slice_sample(n = sample_size) |> # sample 20K
+   dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
-
-
-# setDT(cad)
-#
-# cad[, logradouro := enderecobr::padronizar_logradouros(logradouro) ]
-# cad[, numero := enderecobr::padronizar_numeros(numero,formato = 'integer') ]
-# cad[, cep := enderecobr::padronizar_ceps(cep) ]
-# cad[, bairro := enderecobr::padronizar_bairros(bairro) ]
-# cad[, code_muni := enderecobr::padronizar_municipios(code_muni) ]
-# cad[, abbrev_state := enderecobr::padronizar_estados(abbrev_state, formato = 'sigla') ]
-
 
 df$id <- 1:nrow(df)
 
@@ -120,11 +99,11 @@ campos <- geocodebr::definir_campos(
 
 
 
-bench::mark( iterations = 1, check = F,
-# bench::system_time(
+#bench::mark( iterations = 1,
+ bench::system_time(
   cadgeo <- geocode(
-    enderecos  = cad,
-    campos_endereco = fields_cad,
+    enderecos  = df,
+    campos_endereco = campos,
     n_cores = 7, # 7
     verboso = T,
     resultado_completo = T,
