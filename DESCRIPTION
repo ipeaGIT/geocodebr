@@ -30,6 +30,7 @@ Depends:
 Imports:
     arrow (>= 15.0.1),
     checkmate,
+    callr,
     cli,
     data.table,
     DBI,
