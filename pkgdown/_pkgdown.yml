@@ -11,6 +11,7 @@ reference:
   - title: "Geolocalização"
   - contents:
     - geocode
+    - geocode_callr
     - geocode_reverso
     - busca_por_cep
   - title: "Gestão de dados em cache"
