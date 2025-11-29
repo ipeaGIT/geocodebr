@@ -122,18 +122,33 @@ campos <- geocodebr::definir_campos(
 # temp_df <- filter(input_df,id %in% c(1371)  )
 
 
-bench::mark( iterations = 1,
-  v3 <- geocode(
+# bench::mark( iterations = 1,
+#   v3 <- geocode(
+#     enderecos = input_df,
+#     campos_endereco = campos,
+#     n_cores = 1,
+#     resultado_completo = F,
+#     verboso = T,
+#     resultado_sf = T,
+#     resolver_empates = T,
+#     h3_res = 9,
+#     cache= T
+#   )
+# )
+
+bench::mark(
+  iterations = 1,
+  original = geocode(
     enderecos = input_df,
-    campos_endereco = campos,
-    n_cores = ncores,
-    resultado_completo = F,
-    verboso = T,
-    resultado_sf = T,
-    resolver_empates = T,
-    h3_res = 9
+    campos_endereco = campos
+    ),
+
+  callr = geocode_callr(
+    enderecos = input_df,
+    campos_endereco = campos
   )
 )
+
 
 # args: n_cores = 7, resultado_completo = F, verboso = T, resultado_sf = T, resolver_empates = T, h3_res = 9
 # expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory     time       gc

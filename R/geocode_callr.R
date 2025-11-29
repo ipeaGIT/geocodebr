@@ -65,7 +65,7 @@
 #' head(df)
 #'
 #' @export
-geocode <- function(enderecos,
+geocode_callr <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = FALSE,
@@ -73,7 +73,67 @@ geocode <- function(enderecos,
                     resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
-                    n_cores = 1){
+                    n_cores = 1 ){
+
+  callr::r(
+    func = function(enderecos,
+                    campos_endereco,
+                    resultado_completo,
+                    resolver_empates,
+                    h3_res,
+                    resultado_sf,
+                    verboso,
+                    cache,
+                    n_cores) {
+
+      # Subprocess environment
+      library(geocodebr)
+
+
+      # Run internal engine
+      geocodebr:::geocode_core(
+      # geocode_core(
+          enderecos = enderecos,
+        campos_endereco = campos_endereco,
+        resultado_completo = resultado_completo,
+        resolver_empates = resolver_empates,
+        h3_res = h3_res,
+        resultado_sf = resultado_sf,
+        verboso =verboso,
+        cache = cache,
+        n_cores = n_cores
+      )
+
+    },
+    args = list(
+      enderecos = enderecos,
+      campos_endereco = campos_endereco,
+      resultado_completo = resultado_completo,
+      resolver_empates = resolver_empates,
+      h3_res = h3_res,
+      resultado_sf = resultado_sf,
+      verboso =verboso,
+      cache = cache,
+      n_cores = n_cores
+    ),
+    show = TRUE
+
+  )
+
+}
+
+
+
+
+geocode_core <- function(enderecos = parent.frame()$enderecos,
+                    campos_endereco = parent.frame()$campos_endereco,
+                    resultado_completo = parent.frame()$resultado_completo,
+                    resolver_empates = parent.frame()$resolver_empates,
+                    h3_res = parent.frame()$h3_res,
+                    resultado_sf = parent.frame()$resultado_sf,
+                    verboso = parent.frame()$verboso,
+                    cache = parent.frame()$cache,
+                    n_cores = parent.frame()$n_cores ){
 
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
@@ -328,7 +388,7 @@ geocode <- function(enderecos,
     resultado_completo,
     resolver_empates,
     verboso
-    )
+  )
 
 
 
