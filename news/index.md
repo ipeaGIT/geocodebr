@@ -20,6 +20,10 @@
 - As tabelas do cnefe agora são registradas na db uma única vez.
   [Encerra issue](https://github.com/ipeaGIT/geocodebr/issues/79)
   [\#79](https://github.com/ipeaGIT/geocodebr/issues/79).
+- O output da função
+  [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
+  agora é apenas um `"data.frame"`, e não mais um
+  `"data.table" "data.frame"`.
 
 ## geocodebr 0.4.0
 
