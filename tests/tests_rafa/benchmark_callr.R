@@ -200,3 +200,27 @@ bench::mark(
 # resultado.
 # process    real
 #   3.37m  28.53m
+
+
+# parallel callr --------------------------------
+
+input_df$uf <- enderecobr::padronizar_estados(input_df$uf)
+
+dfs <- split(input_df, input_df$uf)
+library(furrr)
+library(future)
+
+future::plan(future::multisession(workers = 3))
+
+bench::bench_time(
+  out_list <- furrr::future_map(
+    .x = dfs,
+    .f = function(endereco, campos){
+      geocode_callr(enderecos = endereco, campos_endereco = campos, verboso = F)
+    }, campos
+
+
+  )
+
+)
+out <- data.table::rbindlist(out_list, fill = TRUE)

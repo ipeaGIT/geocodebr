@@ -86,10 +86,6 @@ geocode_callr <- function(enderecos,
                     cache,
                     n_cores) {
 
-      # Subprocess environment
-      library(geocodebr)
-
-
       # Run internal engine
       geocodebr:::geocode_core(
       # geocode_core(
@@ -116,7 +112,8 @@ geocode_callr <- function(enderecos,
       cache = cache,
       n_cores = n_cores
     ),
-    show = TRUE
+    show = TRUE,
+    package = "geocodebr"
 
   )
 
