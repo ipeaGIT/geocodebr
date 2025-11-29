@@ -14,6 +14,8 @@ relativamente maior em consultas pequenas. Encerra issues [#82](https://github.c
 ## Mudanças pequenas (Minor changes)
 
 - As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
+- O output da função `geocode()` agora é apenas um `"data.frame"`, e não mais um 
+`"data.table" "data.frame"`.
 
 
 # geocodebr 0.4.0
