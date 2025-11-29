@@ -199,6 +199,8 @@ desempenho.
 
 - [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
   : Geolocaliza endereços no Brasil
+- [`geocode_callr()`](https://ipeagit.github.io/geocodebr/reference/geocode_callr.md)
+  : Geolocaliza endereços no Brasil
 - [`geocode_reverso()`](https://ipeagit.github.io/geocodebr/reference/geocode_reverso.md)
   : Geocode reverso de coordenadas espaciais no Brasil
 - [`busca_por_cep()`](https://ipeagit.github.io/geocodebr/reference/busca_por_cep.md)
