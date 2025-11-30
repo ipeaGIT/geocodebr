@@ -10,7 +10,8 @@
   e
   [`busca_por_cep()`](https://ipeagit.github.io/geocodebr/reference/busca_por_cep.md)
   são significamente mais rápidas e usam menos memória RAM. O ganho de
-  eficiência é relativamente maior em consultas pequenas. Encerra issues
+  eficiência é relativamente maior em consultas pequenas. Ver ganhos de
+  performance no issues encerrados:
   [\#82](https://github.com/ipeaGIT/geocodebr/issues/82),
   [\#81](https://github.com/ipeaGIT/geocodebr/issues/81) e
   [\#83](https://github.com/ipeaGIT/geocodebr/issues/83)
@@ -24,6 +25,9 @@
   [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
   agora é apenas um `"data.frame"`, e não mais um
   `"data.table" "data.frame"`.
+- Atualização da documentação do parametro `n_cores` para deixar claro
+  que o pacote utiliza o número máximo de cores físicos disponíveis
+  quando `n_cores = NULL`.
 
 ## geocodebr 0.4.0
 
