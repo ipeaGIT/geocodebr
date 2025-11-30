@@ -3,12 +3,11 @@
 
 ## Mudanças grandes (Major changes)
 
-
 - Novas versões da funções `geocode()`, `geocode_reverso()` e `busca_por_cep()` são 
 significamente mais rápidas e usam menos memória RAM. O ganho de eficiência é 
-relativamente maior em consultas pequenas. Encerra issues [#82](https://github.com/ipeaGIT/geocodebr/issues/82),
+relativamente maior em consultas pequenas. Ver ganhos de performance no issues 
+encerrados: [#82](https://github.com/ipeaGIT/geocodebr/issues/82),
 [#81](https://github.com/ipeaGIT/geocodebr/issues/81) e [#83](https://github.com/ipeaGIT/geocodebr/issues/83)
-
 
 
 ## Mudanças pequenas (Minor changes)
@@ -16,6 +15,8 @@ relativamente maior em consultas pequenas. Encerra issues [#82](https://github.c
 - As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
 - O output da função `geocode()` agora é apenas um `"data.frame"`, e não mais um 
 `"data.table" "data.frame"`.
+- Atualização da documentação do parametro `n_cores` para deixar claro que o 
+pacote utiliza o número máximo de cores físicos disponíveis quando `n_cores = NULL`.
 
 
 # geocodebr 0.4.0

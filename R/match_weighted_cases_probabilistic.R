@@ -11,7 +11,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
   match_type = match_type,
   resultado_completo){
 
-  # match_type = "pa01"
+  # match_type = "pn01"
 
   # get corresponding parquet table
   cnefe_table_name <- get_reference_table(match_type)
