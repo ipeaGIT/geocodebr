@@ -96,7 +96,7 @@ gc(T,T,T)
   cadgeo <- geocode_callr(
     enderecos  = df,
     campos_endereco = campos,
-    n_cores = 7, # 7
+    # n_cores = 7, # 7
     verboso = T,
     resultado_completo = F,
     resolver_empates = T
@@ -125,51 +125,22 @@ gc(T,T,T)
 
 # 0.4.0              4.53h  4.53h 0.0000613    34.5GB  0.00423     1    69      4.53h
 
-# checando empates no cadunico -------------------------------------------------
-
-
-data.table::setDT(empate)
-
-empate <- filter(cadgeo, empate==T)
-empate <- empate[order(id)]
-empate[, count := .N, by = id]
-#  View(empate)
-
-table(empate$tipo_resultado) / nrow(empate) * 100
-
-
-
-d <- unique(empate$id)[1]
-
-temp <- empate |>
-  dplyr::filter(id == d ) #
-
-
-
-
-temp <- empate |>
-  dplyr::filter( tipo_resultado=='dn02') #
-
-d <- unique(temp$id)[6]
-
-temp <- temp |>
-  dplyr::filter(id == d ) #
-
-temp$tipo_resultado
-temp$endereco_encontrado
-
-
-mapview::mapview(temp, zcol='endereco_encontrado')
-
-sf::st_distance(temp)
 
 # nao era para ser empate
 # 5 "da02" "da02"   mesmo rua e cep
 # [1] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - JARDIM ANGELA, SAO PAULO - SP, 04929-140"
 # [2] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - ALTO DO RIVIERA, SAO PAULO - SP, 04929-140"
 
-
-
+ # 100 milhoes com callr
+#                             step_sec total_sec step_relative
+#                       Start     0.06      0.06           0.0
+#                Padronizacao   139.62    139.68          49.2
+# Register standardized input    22.08    161.76           7.8
+#                    Matching    87.11    248.87          30.7
+#             Resolve empates     6.55    255.42           2.3
+#   Write original input back     4.19    259.61           1.5
+#               Add precision     0.34    259.95           0.1
+#               Merge results    23.80    283.75           8.4
 
 
 

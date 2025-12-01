@@ -73,7 +73,7 @@ geocode <- function(enderecos,
                     resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
-                    n_cores = 1){
+                    n_cores = NULL){
 
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------

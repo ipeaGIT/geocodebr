@@ -9,7 +9,7 @@ geocode_reverso(
   dist_max = 1000,
   verboso = TRUE,
   cache = TRUE,
-  n_cores = 1
+  n_cores = NULL
 )
 }
 \arguments{
@@ -29,8 +29,8 @@ padrão é \code{TRUE}. Quando \code{FALSE}, os dados do CNEFE são baixados par
 diretório temporário.}
 
 \item{n_cores}{Um número. O número de núcleos de CPU a serem utilizados no
-processamento dos dados. O padrão é \code{1}. Quando \code{n_cores = NULL}, o pacote
-utiliza o número máximo de cores físicos disponíveis.}
+processamento dos dados. Por padrão, \code{n_cores = NULL} e o pacote utiliza o
+número máximo de cores físicos disponíveis.}
 }
 \value{
 Retorna o \verb{sf data.frame} de input adicionado das colunas do endereço

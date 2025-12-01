@@ -8,15 +8,14 @@ significamente mais rápidas e usam menos memória RAM. O ganho de eficiência �
 relativamente maior em consultas pequenas. Ver ganhos de performance no issues 
 encerrados: [#82](https://github.com/ipeaGIT/geocodebr/issues/82),
 [#81](https://github.com/ipeaGIT/geocodebr/issues/81) e [#83](https://github.com/ipeaGIT/geocodebr/issues/83)
-
+- Por padrão, as funções agora recebem `n_cores = NULL`, e o pacote utiliza o 
+número máximo de cores físicos disponíveis.
 
 ## Mudanças pequenas (Minor changes)
 
 - As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
 - O output da função `geocode()` agora é apenas um `"data.frame"`, e não mais um 
 `"data.table" "data.frame"`.
-- Atualização da documentação do parametro `n_cores` para deixar claro que o 
-pacote utiliza o número máximo de cores físicos disponíveis quando `n_cores = NULL`.
 
 
 # geocodebr 0.4.0
