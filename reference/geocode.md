@@ -20,7 +20,7 @@ geocode(
   resultado_sf = FALSE,
   verboso = TRUE,
   cache = TRUE,
-  n_cores = 1
+  n_cores = NULL
 )
 ```
 
@@ -86,8 +86,8 @@ geocode(
 - n_cores:
 
   Um número. O número de núcleos de CPU a serem utilizados no
-  processamento dos dados. O padrão é `1`. Quando `n_cores = NULL`, o
-  pacote utiliza o número máximo de cores físicos disponíveis.
+  processamento dos dados. Por padrão, `n_cores = NULL` e o pacote
+  utiliza o número máximo de cores físicos disponíveis.
 
 ## Value
 
@@ -319,9 +319,15 @@ fields <- geocodebr::definir_campos(
 df <- geocodebr::geocode(
   enderecos = input_df,
   campos_endereco = fields,
-  resolver_empates = TRUE,
-  verboso = FALSE
+  resolver_empates = TRUE
   )
+#> ℹ Padronizando endereços de entrada
+#> ℹ Utilizando dados do CNEFE armazenados localmente
+#> ℹ Geolocalizando endereços
+#>  Casos processados: 0/2 ■                                  0% - dn01 
+#>  Casos processados: 2/2 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% - Fim! 
+#> 
+#> ℹ Preparando resultados
 
 head(df)
 #>       id            nm_logradouro Numero       Cep     Bairro    nm_municipio

@@ -12,7 +12,7 @@ geocode_reverso(
   dist_max = 1000,
   verboso = TRUE,
   cache = TRUE,
-  n_cores = 1
+  n_cores = NULL
 )
 ```
 
@@ -44,8 +44,8 @@ geocode_reverso(
 - n_cores:
 
   Um número. O número de núcleos de CPU a serem utilizados no
-  processamento dos dados. O padrão é `1`. Quando `n_cores = NULL`, o
-  pacote utiliza o número máximo de cores físicos disponíveis.
+  processamento dos dados. Por padrão, `n_cores = NULL` e o pacote
+  utiliza o número máximo de cores físicos disponíveis.
 
 ## Value
 
@@ -71,8 +71,7 @@ ponto <- pontos[1,]
 df_enderecos <- geocodebr::geocode_reverso(
   pontos = ponto,
   dist_max = 800,
-  verboso = TRUE,
-  n_cores = 1
+  verboso = TRUE
   )
 #> ℹ Utilizando dados do CNEFE armazenados localmente
 

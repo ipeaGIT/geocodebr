@@ -74,7 +74,7 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.</p>
 <span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
+<span>  n_cores <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -140,8 +140,8 @@ diretório temporário.</p></dd>
 
 <dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
 <dd><p>Um número. O número de núcleos de CPU a serem utilizados no
-processamento dos dados. O padrão é <code>1</code>. Quando <code>n_cores = NULL</code>, o pacote
-utiliza o número máximo de cores físicos disponíveis.</p></dd>
+processamento dos dados. Por padrão, <code>n_cores = NULL</code> e o pacote utiliza o
+número máximo de cores físicos disponíveis.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -305,9 +305,15 @@ probabilistico, e de <code>0.90</code> nos demais casos.</p>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">geocode</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  enderecos <span class="op">=</span> <span class="va">input_df</span>,</span></span>
 <span class="r-in"><span>  campos_endereco <span class="op">=</span> <span class="va">fields</span>,</span></span>
-<span class="r-in"><span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Padronizando endereços de entrada</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Utilizando dados do CNEFE armazenados localmente</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Geolocalizando endereços</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  Casos processados: 0/2 <span style="color: #00BB00;">■                               </span>   0% - dn01 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  Casos processados: 2/2 <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ </span> 100% - Fim! </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Preparando resultados</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       id            nm_logradouro Numero       Cep     Bairro    nm_municipio</span>

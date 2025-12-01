@@ -47,8 +47,8 @@ dados:
 
 ### 1. Geolocalização: de endereços para coordenadas espaciais
 
-Uma que você possui uma tabela de dados (`data.frame`) com endereços no
-Brasil, a geolocalização desses dados pode ser feita em apenas dois
+Uma vez que você possui uma tabela de dados (`data.frame`) com endereços
+no Brasil, a geolocalização desses dados pode ser feita em apenas dois
 passos:
 
 1.  O primeiro passo é usar a função
@@ -63,12 +63,11 @@ passos:
 ``` r
 library(geocodebr)
 library(sf)
-#> Linking to GEOS 3.13.0, GDAL 3.10.1, PROJ 9.5.1; sf_use_s2() is TRUE
 
 # carregando uma amostra de dados
 input_df <- read.csv(system.file("extdata/small_sample.csv", package = "geocodebr"))
 
-# Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos
+# Primeiro passo: indicar o nome das colunas com cada campo dos enderecos
 campos <- geocodebr::definir_campos(
   logradouro = "nm_logradouro",
   numero = "Numero",
@@ -83,24 +82,17 @@ df <- geocodebr::geocode(
   enderecos = input_df,
   campos_endereco = campos,
   resultado_completo = FALSE,
-  resolver_empates = FALSE,
-  h3_res = NULL,
-  resultado_sf = FALSE,
-  verboso = FALSE,
-  cache = TRUE,
-  n_cores = 1
+  resolver_empates = TRUE,
+  resultado_sf = TRUE,
+  verboso = FALSE
   )
-#> Warning: Foram encontrados 1 casos de empate. Estes casos foram marcados com valor
-#> `TRUE` na coluna 'empate', e podem ser inspecionados na coluna
-#> 'endereco_encontrado'. Alternativamente, use `resolver_empates = TRUE` para que
-#> o pacote lide com os empates automaticamente. Ver documentação da função.
 ```
 
 Os resultados do **{geocodebr}** são classificados em seis categorias
 gerais de `precisao`, dependendo do nível de exatidão com que cada
-endereço de input foi encontrado nos dados do CNEFE. s resultados trazem
-ainda uma estimativa da incerteza da localização encontrado como um
-`desvio_metros`. Para mais informações, consulte a documentação da
+endereço de input foi encontrado nos dados do CNEFE. Os resultados
+trazem ainda uma estimativa da incerteza da localização encontrada como
+um `desvio_metros`. Para mais informações, consulte a documentação da
 função ou a [**vignette
 “geocode”**](https://ipeagit.github.io/geocodebr/articles/geocode.html).
 
@@ -111,10 +103,8 @@ A função
 por sua vez, permite a geolocalização reversa, ou seja, a busca de
 endereços próximos a um conjunto de coordenadas geográficas. A função
 pode ser útil, por exemplo, para identificar endereços próximos a pontos
-de interesse, como escolas, hospitais, ou locais de acidentes.
-
-Mais detalhes na [**vignette
-“geocode”**](https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html).
+de interesse, como escolas, hospitais, ou locais de acidentes. Aqui um
+exemplo de como usar a função:
 
 ``` r
 # amostra de pontos espaciais
@@ -128,10 +118,12 @@ pontos <- pontos[1:20,]
 df_enderecos <- geocodebr::geocode_reverso(
  pontos = pontos,
  dist_max = 1000,
- verboso = FALSE,
- n_cores = 1
+ verboso = FALSE
  )
 ```
+
+Mais detalhes na [**vignette “geocode
+reverso”**](https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html).
 
 ### 3. Busca por CEPs
 
@@ -146,8 +138,7 @@ ceps <- c("70390-025", "20071-001")
 
 df_ceps <- geocodebr::busca_por_cep(
  cep = ceps,
- h3_res = NULL,
- resultado_sf = FALSE,
+ resultado_sf = TRUE,
  verboso = FALSE
  )
 ```
@@ -161,10 +152,11 @@ uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)
 ## Instituições utilizando o {geocodebr}
 
 Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o
-pacote também tem sido utilizado oficialmente por algumas instituições
-públicas no planejamento e avaliação de políticas públicas. Entre elas:
+pacote também tem sido utilizado por algumas instituições públicas no
+planejamento e avaliação de políticas públicas. Entre elas:
 
-- Banco Central do Brasil
+- Instituto Brasileiro de Geografia e Estatistica (IBGE)
+- Banco Central do Brasil (BCB)
 - Ministério do Desenvolvimento Social e Combate à Fome (MDS)
 
 ## Projetos relacionados

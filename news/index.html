@@ -49,12 +49,12 @@
 <h3 id="mudanças-grandes-major-changes-0-4-0-999">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-4-0-999"></a></h3>
 <ul><li>Novas versões da funções <code><a href="../reference/geocode.html">geocode()</a></code>, <code><a href="../reference/geocode_reverso.html">geocode_reverso()</a></code> e <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> são significamente mais rápidas e usam menos memória RAM. O ganho de eficiência é relativamente maior em consultas pequenas. Ver ganhos de performance no issues encerrados: <a href="https://github.com/ipeaGIT/geocodebr/issues/82" class="external-link">#82</a>, <a href="https://github.com/ipeaGIT/geocodebr/issues/81" class="external-link">#81</a> e <a href="https://github.com/ipeaGIT/geocodebr/issues/83" class="external-link">#83</a>
 </li>
+<li>Por padrão, as funções agora recebem <code>n_cores = NULL</code>, e o pacote utiliza o número máximo de cores físicos disponíveis.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="mudanças-pequenas-minor-changes-0-4-0-999">Mudanças pequenas (Minor changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-pequenas-minor-changes-0-4-0-999"></a></h3>
 <ul><li>As tabelas do cnefe agora são registradas na db uma única vez. <a href="https://github.com/ipeaGIT/geocodebr/issues/79" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/79" class="external-link">#79</a>.</li>
 <li>O output da função <code><a href="../reference/geocode.html">geocode()</a></code> agora é apenas um <code>"data.frame"</code>, e não mais um <code>"data.table" "data.frame"</code>.</li>
-<li>Atualização da documentação do parametro <code>n_cores</code> para deixar claro que o pacote utiliza o número máximo de cores físicos disponíveis quando <code>n_cores = NULL</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
