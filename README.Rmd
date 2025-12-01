@@ -55,7 +55,7 @@ O {geocodebr} possui três funções principais para geolocalização de dados:
 
 ### 1. Geolocalização: de endereços para coordenadas espaciais
 
-Uma que você possui uma tabela de dados (`data.frame`) com endereços no Brasil, a geolocalização desses dados pode ser feita em apenas dois passos:
+Uma vez que você possui uma tabela de dados (`data.frame`) com endereços no Brasil, a geolocalização desses dados pode ser feita em apenas dois passos:
 
 1. O primeiro passo é usar a função `definir_campos()` para indicar os nomes das colunas no seu `data.frame` que correspondem a cada campo dos endereços.
 
@@ -69,7 +69,7 @@ library(sf)
 # carregando uma amostra de dados
 input_df <- read.csv(system.file("extdata/small_sample.csv", package = "geocodebr"))
 
-# Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos
+# Primeiro passo: indicar o nome das colunas com cada campo dos enderecos
 campos <- geocodebr::definir_campos(
   logradouro = "nm_logradouro",
   numero = "Numero",
@@ -84,25 +84,23 @@ df <- geocodebr::geocode(
   enderecos = input_df,
   campos_endereco = campos,
   resultado_completo = FALSE,
-  resolver_empates = FALSE,
-  h3_res = NULL,
-  resultado_sf = FALSE,
-  verboso = FALSE,
-  cache = TRUE,
-  n_cores = 1
+  resolver_empates = TRUE,
+  resultado_sf = TRUE,
+  verboso = FALSE
   )
 
 ```
 
-Os resultados do **{geocodebr}** são classificados em seis categorias gerais de `precisao`, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. s resultados trazem ainda uma estimativa da 
-incerteza da localização encontrado como um `desvio_metros`. Para mais 
+Os resultados do **{geocodebr}** são classificados em seis categorias gerais de `precisao`, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. Os resultados trazem ainda uma estimativa da 
+incerteza da localização encontrada como um `desvio_metros`. Para mais 
 informações, consulte a documentação da função ou a [**vignette "geocode"**](https://ipeagit.github.io/geocodebr/articles/geocode.html).
 
 ### 2. Geolocalização reversa: de coordenadas espaciais para endereços
 
-A função `geocode_reverso()`, por sua vez, permite a geolocalização reversa, ou seja, a busca de endereços próximos a um conjunto de coordenadas geográficas. A função pode ser útil, por exemplo, para identificar endereços próximos a pontos de interesse, como escolas, hospitais, ou locais de acidentes.
+A função `geocode_reverso()`, por sua vez, permite a geolocalização reversa, ou seja, a busca de endereços próximos a um conjunto de coordenadas geográficas. A função pode ser útil, por exemplo, para identificar endereços próximos a pontos 
+de interesse, como escolas, hospitais, ou locais de acidentes. Aqui um exemplo de
+como usar a função:
 
-Mais detalhes na [**vignette "geocode"**](https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html).
 
 ```{r, eval=TRUE}
 # amostra de pontos espaciais
@@ -116,11 +114,12 @@ pontos <- pontos[1:20,]
 df_enderecos <- geocodebr::geocode_reverso(
  pontos = pontos,
  dist_max = 1000,
- verboso = FALSE,
- n_cores = 1
+ verboso = FALSE
  )
 
 ```
+Mais detalhes na [**vignette "geocode reverso"**](https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html).
+
 ### 3. Busca por CEPs
 
 Por fim, a função `busca_por_cep()` permite fazer consultas de CEPs para encontrar endereços associados a cada CEP e suas coordenadas espaciais.
@@ -131,8 +130,7 @@ ceps <- c("70390-025", "20071-001")
 
 df_ceps <- geocodebr::busca_por_cep(
  cep = ceps,
- h3_res = NULL,
- resultado_sf = FALSE,
+ resultado_sf = TRUE,
  verboso = FALSE
  )
 ```
@@ -145,15 +143,20 @@ Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografi
 
 ## Instituições utilizando o {geocodebr}
 
-Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o pacote também tem sido utilizado oficialmente por algumas instituições públicas no planejamento e avaliação de políticas públicas. Entre elas:
+Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o pacote também tem sido utilizado por algumas instituições públicas no planejamento e avaliação de políticas públicas. Entre elas:
 
-- Banco Central do Brasil
+- Instituto Brasileiro de Geografia e Estatistica (IBGE)
+- Banco Central do Brasil (BCB)
 - Ministério do Desenvolvimento Social e Combate à Fome (MDS)
 
 
 ## Projetos relacionados
 
-Existem diversos pacotes de geolocalização disponíveis, muitos dos quais podem ser utilizados em R (listados abaixo). A maioria dessas alternativas depende de softwares e conjuntos de dados comerciais, geralmente impondo limites de número de consultas gratuitas. Em contraste, as principais vantagens do **{geocodebr}** são que o pacote: (a) é completamente gratuito, permitindo consultas ilimitadas sem nenhum custo; (b) opera com alta velocidade e escalabilidade eficiente, permitindo geocodificar milhões de endereços em apenas alguns minutos, sem a necessidade de infraestrutura computacional avançada ou de alto desempenho.
+Existem diversos pacotes de geolocalização disponíveis, muitos dos quais podem 
+ser utilizados em R (listados abaixo). A maioria dessas alternativas depende de softwares e conjuntos de dados comerciais, geralmente impondo limites de número 
+de consultas gratuitas. Em contraste, as principais vantagens do **{geocodebr}** 
+são que o pacote: (a) é completamente gratuito, permitindo consultas ilimitadas 
+sem nenhum custo; (b) opera com alta velocidade e escalabilidade eficiente, permitindo geocodificar milhões de endereços em apenas alguns minutos, sem a necessidade de infraestrutura computacional avançada ou de alto desempenho.
 
 - [{arcgisgeocode}](https://cran.r-project.org/package=arcgisgeocode) and [{arcgeocoder}](https://cran.r-project.org/package=arcgeocoder): utiliza serviço de geocode do ArcGIS
 - [{nominatimlite}](https://cran.r-project.org/package=nominatimlite): baseado dados do OSM

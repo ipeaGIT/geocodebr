@@ -260,8 +260,7 @@ fields <- geocodebr::definir_campos(
 df <- geocodebr::geocode(
   enderecos = input_df,
   campos_endereco = fields,
-  resolver_empates = TRUE,
-  verboso = FALSE
+  resolver_empates = TRUE
   )
 
 head(df)

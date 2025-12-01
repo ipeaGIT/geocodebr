@@ -33,8 +33,7 @@
 #' df_enderecos <- geocodebr::geocode_reverso(
 #'   pontos = ponto,
 #'   dist_max = 800,
-#'   verboso = TRUE,
-#'   n_cores = 1
+#'   verboso = TRUE
 #'   )
 #'
 #'head(df_enderecos)

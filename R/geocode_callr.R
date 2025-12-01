@@ -58,8 +58,7 @@
 #' df <- geocodebr::geocode(
 #'   enderecos = input_df,
 #'   campos_endereco = fields,
-#'   resolver_empates = TRUE,
-#'   verboso = FALSE
+#'   resolver_empates = TRUE
 #'   )
 #'
 #' head(df)
@@ -113,7 +112,7 @@ geocode_callr <- function(enderecos,
       n_cores = n_cores
     ),
     show = TRUE,
-    package = "geocodebr"
+    package = TRUE
 
   )
 
