@@ -73,7 +73,7 @@ geocode_callr <- function(enderecos,
                     resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
-                    n_cores = 1 ){
+                    n_cores = NULL ){
 
   callr::r(
     func = function(enderecos,
@@ -192,7 +192,6 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
-  checkmate::assert_number(n_cores, lower = 1, finite = TRUE)
   checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
   campos_endereco <- assert_and_assign_address_fields(
     campos_endereco,

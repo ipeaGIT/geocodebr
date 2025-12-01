@@ -13,7 +13,7 @@ geocode(
   resultado_sf = FALSE,
   verboso = TRUE,
   cache = TRUE,
-  n_cores = 1
+  n_cores = NULL
 )
 }
 \arguments{
