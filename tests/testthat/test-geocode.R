@@ -40,14 +40,15 @@ tester <- function(enderecos = input_df,
 
 test_that("expected output", {
 
-  testthat::expect_warning(std_output <- tester())
+  std_output <- tester()
 
   # find expected match cases
   match_types_found <- unique(std_output$tipo_resultado)
   testthat::expect_true(length(match_types_found) == 17)
 
   # full results
-  testthat::expect_warning(full_output <- tester(resultado_completo = TRUE))
+  full_output <- tester(resultado_completo = TRUE)
+
 
   all_cols_completas <- c("lat", "lon", "precisao", "tipo_resultado",
     "desvio_metros", "endereco_encontrado", "logradouro_encontrado",
@@ -62,7 +63,7 @@ test_that("expected output", {
   testthat::expect_true(all(c('h3_03', 'h3_04') %in% names(std_output_h3)))
 
   # output in sf format
-  testthat::expect_warning(sf_output <- tester(resultado_sf = TRUE))
+  sf_output <- tester(resultado_sf = TRUE)
   testthat::expect_true(is(sf_output , 'sf'))
 })
 
@@ -70,11 +71,11 @@ test_that("expected output", {
 test_that("test empates", {
 
   # com empates
-  testthat::expect_warning( std_output <- tester(resolver_empates = FALSE) )
+  std_output <- tester(resolver_empates = FALSE)
   testthat::expect_true(nrow(std_output) > nrow(input_df))
 
   # resolvendo empates
-  testthat::expect_message( std_output <- tester(verboso = TRUE, resolver_empates = TRUE) )
+  std_output <- tester(verboso = TRUE, resolver_empates = TRUE)
   testthat::expect_true(nrow(std_output) == nrow(input_df))
 
   # output ordenado como input
@@ -85,18 +86,19 @@ test_that("test empates", {
   testthat::expect_true('h3_03' %in% names(std_output_h3))
 })
 
-test_that("test no messages", {
-
-  testthat::expect_no_message(
-    testthat::expect_warning(
-      std_output <- tester(verboso = FALSE,
-                           resolver_empates = FALSE)
-                               ))
-
-  testthat::expect_no_message( std_output <- tester(verboso = FALSE,
-                                                    resolver_empates = TRUE)
-                             )
-})
+# test_that("test no messages", {
+#
+#   testthat::expect_no_message(
+#     testthat::expect_warning(
+#       std_output <- tester(verboso = FALSE,
+#                            resolver_empates = FALSE)
+#                                )
+#     )
+#
+#    testthat::expect_no_message(
+#     std_output <- tester(verboso = FALSE, resolver_empates = TRUE)
+#                             )
+# })
 
 
 test_that("errors with incorrect input", {

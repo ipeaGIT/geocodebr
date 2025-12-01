@@ -63,8 +63,7 @@
 #'
 #' head(df)
 #'
-#' @export
-geocode <- function(enderecos,
+geocode_orig <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = FALSE,

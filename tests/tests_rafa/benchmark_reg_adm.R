@@ -62,7 +62,7 @@ df <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
- dplyr::slice_sample(n = sample_size) |> # sample 20K
+  #dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 df$id <- 1:nrow(df)
@@ -92,11 +92,11 @@ stop()
 
 gc(T,T,T)
 #bench::system_time( iterations = 1,
- bench::system_time(
+ bench::mark(
   cadgeo <- geocode_callr(
     enderecos  = df,
     campos_endereco = campos,
-    # n_cores = 7, # 7
+    n_cores = 7, # 7
     verboso = T,
     resultado_completo = F,
     resolver_empates = T
@@ -131,7 +131,7 @@ gc(T,T,T)
 # [1] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - JARDIM ANGELA, SAO PAULO - SP, 04929-140"
 # [2] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - ALTO DO RIVIERA, SAO PAULO - SP, 04929-140"
 
- # 100 milhoes com callr
+ # 10 milhoes com callr
 #                             step_sec total_sec step_relative
 #                       Start     0.06      0.06           0.0
 #                Padronizacao   139.62    139.68          49.2

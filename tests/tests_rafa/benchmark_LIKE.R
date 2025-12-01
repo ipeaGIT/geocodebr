@@ -120,11 +120,11 @@ campos <- geocodebr::definir_campos(
 # temp_df <- filter(input_df,id %in% c(1371)  )
 
 
-bench::bench_time(
+bench::mark(
   v3 <- geocode_callr(
     enderecos = input_df,
     campos_endereco = campos,
-    # n_cores = NULL,
+     n_cores = 7,
     resultado_completo = F,
     verboso = T,
     # resultado_sf = T,

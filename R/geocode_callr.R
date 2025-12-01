@@ -64,7 +64,7 @@
 #' head(df)
 #'
 #' @export
-geocode_callr <- function(enderecos,
+geocode <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = FALSE,
@@ -86,7 +86,7 @@ geocode_callr <- function(enderecos,
                     n_cores) {
 
       # Run internal engine
-      geocodebr:::geocode_core(
+      geocode_core(
       # geocode_core(
           enderecos = enderecos,
         campos_endereco = campos_endereco,
