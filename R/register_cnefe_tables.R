@@ -75,6 +75,29 @@ register_cnefe_table <- function(con, match_type){
 
   DBI::dbExecute(con, query_filter_cnefe)
 
+
+  # # create index
+  # if (cnefe_table_name %in% c("municipio_logradouro_cep_localidade",
+  #                             "municipio_logradouro_numero_cep_localidade")) {
+  #
+  #   # index name
+  #   idx_name <- paste0("idx_", cnefe_table_name)
+  #
+  #   # columns to index
+  #   cols_index <- strsplit(x = cnefe_table_name, "_") |> unlist()
+  #   cols_index <- cols_index[!cols_index %in% "numero"]
+  #
+  #   cols_index <- c("municipio", "logradouro")
+  #   cols_expr <- paste(c("estado", cols_index), collapse = ", ")
+  #
+  #     query_index <- glue::glue("
+  #       CREATE INDEX IF NOT EXISTS {idx_name}
+  #         ON {cnefe_table_name} ({cols_expr});")
+  #
+  #     DBI::dbExecute(con, query_index)
+  # }
+
+
   return(TRUE)
 
 }

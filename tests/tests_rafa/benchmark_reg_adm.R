@@ -62,7 +62,7 @@ df <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  # dplyr::slice_sample(n = sample_size) |> # sample 20K
+ dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 df$id <- 1:nrow(df)
@@ -78,11 +78,22 @@ campos <- geocodebr::definir_campos(
 
 stop()
 
+# bench::mark(
+#   iterations = 1,
+#   callr = geocode_callr(
+#     enderecos = df,
+#     campos_endereco = campos
+#   ),
+#   original = geocode(
+#     enderecos = df,
+#     campos_endereco = campos
+#   )
+# )
 
-
+gc(T,T,T)
 #bench::system_time( iterations = 1,
- bench::mark(
-  cadgeo <- geocode(
+ bench::system_time(
+  cadgeo <- geocode_callr(
     enderecos  = df,
     campos_endereco = campos,
     n_cores = 7, # 7
@@ -101,15 +112,18 @@ stop()
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
 # v0.5.0 dev      22.2m  22.2m  0.000749    8.05GB  0.00674     1     9      22.2m <dt>   <Rprofmem>
+# v0.5.0 devcallr 5.94m  5.94m  0.00280     1.01GB  0           1     0      5.94m <NULL> <Rprofmem>
 
 
 # 43 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# v0.3.0 CRAN
+# v0.3.0 CRAN        2h     2h  0.000139    79.3GB   0.0176     1   127         2h <dt>
 # v0.4.0 CRAN
-# v0.5.0 dev !!!!!!!!!!
+# v0.5.0 dev         111111111111111111111111111111
+# v0.5.0 devcallr      21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
 
+# 0.4.0              4.53h  4.53h 0.0000613    34.5GB  0.00423     1    69      4.53h
 
 # checando empates no cadunico -------------------------------------------------
 

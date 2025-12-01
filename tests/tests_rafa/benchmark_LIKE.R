@@ -76,8 +76,6 @@
 
 
 devtools::load_all('.')
-library(dplyr)
-
 
 # open input data
 data_path <- system.file("extdata/large_sample.parquet", package = "geocodebr")
@@ -122,32 +120,51 @@ campos <- geocodebr::definir_campos(
 # temp_df <- filter(input_df,id %in% c(1371)  )
 
 
-# bench::mark( iterations = 1,
-#   v3 <- geocode(
-#     enderecos = input_df,
-#     campos_endereco = campos,
-#     n_cores = 1,
-#     resultado_completo = F,
-#     verboso = T,
-#     resultado_sf = T,
-#     resolver_empates = T,
-#     h3_res = 9,
-#     cache= T
-#   )
-# )
-
-bench::mark(
-  iterations = 1,
-  original = geocode(
+bench::bench_time(
+  v3 <- geocode_callr(
     enderecos = input_df,
-    campos_endereco = campos
-    ),
-
-  callr = geocode_callr(
-    enderecos = input_df,
-    campos_endereco = campos
+    campos_endereco = campos,
+    # n_cores = NULL,
+    resultado_completo = F,
+    verboso = T,
+    # resultado_sf = T,
+    resolver_empates = T,
+    # h3_res = 9,
+    cache= T
   )
 )
+
+
+gc(T,T,T)
+bench::mark(
+
+  iterations = 1, check = F,
+
+  # callr = geocode_callr(
+  #   enderecos = df,
+  #   campos_endereco = campos,
+  #   n_cores = 7,
+  #   resultado_completo = F,
+  #   resolver_empates = T
+  #   ),
+
+  original = geocode(
+    enderecos = input_df,
+    campos_endereco = campos,
+    n_cores = 7,
+    resultado_completo = F,
+    resolver_empates = T
+    )
+)
+
+#   expression     min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+#   <bch:expr> <bch:t> <bch:>     <dbl> <bch:byt>    <dbl> <int> <dbl>   <bch:tm> <list> <list>
+# 1 original     24.3m  24.3m  0.000685    8.24GB  0.00479     1     7      24.3m <dt>   <Rprofmem>
+
+#   expression     min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
+# v0.5.0 dev      22.2m  22.2m  0.000749    8.05GB  0.00674     1     9      22.2m <dt>   <Rprofmem>
+# v0.5.0 devcallr 5.94m  5.94m  0.00280   1016.2MB  0           1     0      5.94m <NULL> <Rprofmem>
 
 
 # args: n_cores = 7, resultado_completo = F, verboso = T, resultado_sf = T, resolver_empates = T, h3_res = 9
@@ -305,4 +322,58 @@ unique(df_rafa$match_type) |> length()
 
 table(df_rafa$match_type)
 
+
+# parallel callr --------------------------------------
+
+library(future.callr)
+library(future)
+library(furrr)
+
+future::plan(future::multisession(workers = 10))
+
+
+bench::bench_time(
+a <-   split(df, f = "abbrev_state") |>
+    furrr::future_map(
+      .f = function(x){
+        geocode_callr(
+          enderecos = x,
+          campos_endereco = campos,
+          n_cores = 1,
+          resultado_completo = F,
+          resolver_empates = T
+        )
+      }
+        )
+
+)
+
+
+future::plan(future.callr::callr)
+
+bench::bench_time(
+  split(input_df, f = "uf") |>
+    furrr::future_map(
+      .f = function(x){
+        geocode_callr(
+          enderecos = x,
+          campos_endereco = campos,
+          n_cores = 7,
+          resultado_completo = F,
+          resolver_empates = T
+        )
+      }
+    )
+
+)
+
+bench::bench_time(
+        geocode_callr(
+          enderecos = df,
+          campos_endereco = campos,
+          n_cores = 10,
+          resultado_completo = F,
+          resolver_empates = T
+        )
+)
 
