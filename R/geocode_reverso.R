@@ -51,7 +51,6 @@ geocode_reverso <- function(pontos,
   checkmate::assert_number(dist_max, lower = 500, upper = 100000) # max 100 Km
   checkmate::assert_logical(verboso)
   checkmate::assert_logical(cache)
-  checkmate::assert_number(n_cores)
 
   # check if geometry type is POINT
   if (any(sf::st_geometry_type(pontos) != 'POINT')) {
