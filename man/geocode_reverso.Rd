@@ -29,7 +29,8 @@ padrão é \code{TRUE}. Quando \code{FALSE}, os dados do CNEFE são baixados par
 diretório temporário.}
 
 \item{n_cores}{Um número. O número de núcleos de CPU a serem utilizados no
-processamento dos dados. O padrão é 1.}
+processamento dos dados. O padrão é \code{1}. Quando \code{n_cores = NULL}, o pacote
+utiliza o número máximo de cores físicos disponíveis.}
 }
 \value{
 Retorna o \verb{sf data.frame} de input adicionado das colunas do endereço

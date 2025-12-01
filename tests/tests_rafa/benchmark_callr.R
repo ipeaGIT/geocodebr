@@ -200,3 +200,107 @@ bench::mark(
 # resultado.
 # process    real
 #   3.37m  28.53m
+
+
+# parallel callr --------------------------------
+
+input_df$uf <- enderecobr::padronizar_estados(input_df$uf)
+
+dfs <- split(input_df, input_df$uf)
+library(furrr)
+library(future)
+
+future::plan(future::multisession(workers = 3))
+
+bench::bench_time(
+  out_list <- furrr::future_map(
+    .x = dfs,
+    .f = function(endereco, campos){
+      geocode_callr(enderecos = endereco, campos_endereco = campos, verboso = F)
+    }, campos
+
+
+  )
+
+)
+out <- data.table::rbindlist(out_list, fill = TRUE)
+
+
+
+
+# teste callr para busca_por_cep ---------------------------------------------
+
+# open input data
+data_path <- system.file("extdata/large_sample.parquet", package = "geocodebr")
+input_df <- arrow::read_parquet(data_path)
+ceps <- input_df$cep
+
+bench::mark(
+df <- geocodebr::busca_por_cep(
+  cep = ceps,
+  h3_res = 10,
+  verboso = TRUE
+  )
+)
+
+gc(full = T)
+bench::mark(
+  #bench::mark(
+  callr::r(function(ceps) {
+    rfiles <- list.files("R", full.names = TRUE)
+    invisible(lapply(rfiles, source))
+    # library("geocodebr")
+    v3 <- geocodebr::busca_por_cep(
+      cep = ceps,
+      h3_res = 10,
+      verboso = TRUE
+    )
+  },
+  args = list(ceps = ceps),
+  show = TRUE
+  )
+)
+
+# expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result
+# 1 df <- geocod… 568ms  568ms      1.76      26MB        0     1     0      568ms <dt>
+# 1 "callr::r(fu… 1.63s  1.63s     0.614    6.69MB        0     1     0      1.63s <dt>
+
+# teste callr para geocode_reverso ---------------------------------------------
+
+bench::mark(
+  df_enderecos <- geocodebr::geocode_reverso(
+    pontos = pontos,
+    dist_max = 800,
+    verboso = TRUE,
+    n_cores = 1
+  )
+)
+
+gc(full = T)
+bench::mark(
+  #bench::mark(
+  callr::r(function(pontos) {
+    rfiles <- list.files("R", full.names = TRUE)
+    invisible(lapply(rfiles, source))
+    # library("geocodebr")
+    v3 <- geocodebr::geocode_reverso(
+      pontos = pontos,
+      dist_max = 800,
+      verboso = TRUE,
+      n_cores = 1
+    )
+  },
+  args = list(pontos = pontos),
+  show = TRUE
+  )
+)
+
+# 1000 pontos
+#   expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result
+#   <bch:expr>    <bch> <bch:>     <dbl> <bch:byt>    <dbl> <int> <dbl>   <bch:tm> <list>
+# 1 df_enderecos… 5.09s  5.09s     0.196     249MB     1.96     1    10      5.09s <sf>
+# 1 "callr::r(fu… 5.07s  5.07s     0.197    79.9KB        0     1     0      5.07s <sf>
+
+# 20 mil pontos
+#   expression      min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result
+

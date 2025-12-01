@@ -376,10 +376,10 @@ geocode <- function(enderecos,
 
 
 
-  data.table::setDT(output_df)
 
 
   # drop geocodebr temp id column
+  data.table::setDT(output_df)
   output_df[, tempidgeocodebr := NULL]
 
 
@@ -401,6 +401,10 @@ geocode <- function(enderecos,
                                                  lng = lon,
                                                  resolution = i)]
     }
+
+    # drop data.table
+    data.table::setDF(output_df)
+
 
     # systime add h3 66666 ----------------
     # timer$mark("Add H3")
