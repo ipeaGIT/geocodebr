@@ -10,6 +10,7 @@ encerrados: [#82](https://github.com/ipeaGIT/geocodebr/issues/82),
 [#81](https://github.com/ipeaGIT/geocodebr/issues/81) e [#83](https://github.com/ipeaGIT/geocodebr/issues/83)
 - Por padrão, as funções agora recebem `n_cores = NULL`, e o pacote utiliza o 
 número máximo de cores físicos disponíveis.
+- Agora o argumento `resolver_empates` passa a ser `TRUE` como padrão.
 
 ## Mudanças pequenas (Minor changes)
 

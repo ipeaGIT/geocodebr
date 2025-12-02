@@ -22,7 +22,7 @@
 #'    indicar diferentes coordenadas possíveis (e.g. duas ruas diferentes com o
 #'    mesmo nome em uma mesma cidade). Esses casos são trados como 'empate' e o
 #'    parâmetro `resolver_empates` indica se a função deve resolver esses empates
-#'    automaticamente. Por padrão, é `FALSE`, e a função retorna apenas o caso
+#'    automaticamente. Por padrão, é `TRUE`, e a função retorna apenas o caso
 #'    mais provável. Para mais detalhes sobre como é feito o processo de
 #'    desempate, consulte abaixo a seção "Detalhes".
 #' @template h3_res
@@ -66,7 +66,7 @@
 geocode_orig <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
-                    resolver_empates = FALSE,
+                    resolver_empates = TRUE,
                     h3_res = NULL,
                     resultado_sf = FALSE,
                     verboso = TRUE,

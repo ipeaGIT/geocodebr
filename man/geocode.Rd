@@ -8,7 +8,7 @@ geocode(
   enderecos,
   campos_endereco = definir_campos(),
   resultado_completo = FALSE,
-  resolver_empates = FALSE,
+  resolver_empates = TRUE,
   h3_res = NULL,
   resultado_sf = FALSE,
   verboso = TRUE,
@@ -35,7 +35,7 @@ adicionais, como o endereço encontrado de referência. Por padrão, é \code{FA
 indicar diferentes coordenadas possíveis (e.g. duas ruas diferentes com o
 mesmo nome em uma mesma cidade). Esses casos são trados como 'empate' e o
 parâmetro \code{resolver_empates} indica se a função deve resolver esses empates
-automaticamente. Por padrão, é \code{FALSE}, e a função retorna apenas o caso
+automaticamente. Por padrão, é \code{TRUE}, e a função retorna apenas o caso
 mais provável. Para mais detalhes sobre como é feito o processo de
 desempate, consulte abaixo a seção "Detalhes".}
 
@@ -91,8 +91,8 @@ o parâmetro \code{resolver_empates = TRUE}, os casos de empate são resolvidos
 automaticamente pela função. A solução destes empates é feita da seguinte
 maneira:
 \enumerate{
-\item Quando se encontra diferente coordenadas possíveis para um endereço de
-input, nós assumimos que essas coordendas pertencem provavelmente a endereços
+\item Quando se encontra diferente coordenadas possíveis para um mesmo endereço
+de input, nós assumimos que essas coordendas pertencem provavelmente a endereços
 diferentes se (a) estas coordenadas estão a mais de 1Km entre si, ou (b) estão
 associadas a um logradouro 'ambíguo', i.e. que costumam se repetir em muitos
 bairros (e.g. "RUA A", "RUA QUATRO", "RUA 10", etc). Nestes casos, a solução

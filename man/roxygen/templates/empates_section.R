@@ -8,8 +8,8 @@
 #' automaticamente pela função. A solução destes empates é feita da seguinte
 #' maneira:
 #'
-#' 1) Quando se encontra diferente coordenadas possíveis para um endereço de
-#' input, nós assumimos que essas coordendas pertencem provavelmente a endereços
+#' 1) Quando se encontra diferente coordenadas possíveis para um mesmo endereço
+#' de input, nós assumimos que essas coordendas pertencem provavelmente a endereços
 #' diferentes se (a) estas coordenadas estão a mais de 1Km entre si, ou (b) estão
 #' associadas a um logradouro 'ambíguo', i.e. que costumam se repetir em muitos
 #' bairros (e.g. "RUA A", "RUA QUATRO", "RUA 10", etc). Nestes casos, a solução
