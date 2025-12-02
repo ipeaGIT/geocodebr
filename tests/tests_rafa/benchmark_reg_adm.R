@@ -119,7 +119,7 @@ gc(T,T,T)
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # v0.3.0 CRAN        2h     2h  0.000139    79.3GB   0.0176     1   127         2h <dt>
-# v0.4.0 CRAN         111111111111111111111111111111
+# v0.4.0 CRAN      3.3h   3.3h 0.0000843    34.5GB  0.00244     1    29       3.3h <dt>   <Rprofmem> <bench_tm> <tibble>
 # v0.5.0 dev
 # v0.5.0 devcallr      21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
 
