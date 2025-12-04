@@ -121,7 +121,7 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark(
-  v3 <- geocode_callr(
+  v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,
      n_cores = 7,
@@ -130,7 +130,7 @@ bench::mark(
     # resultado_sf = T,
     resolver_empates = T,
     # h3_res = 9,
-    cache= T
+    cache= T, padronizar_enderecos = T
   )
 )
 

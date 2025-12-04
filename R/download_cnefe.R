@@ -143,8 +143,8 @@ perform_requests_in_parallel <- function(requests, dest_files, verboso) {
 error_cnefe_download_failed <- function() {
   geocodebr_error(
     c(
-      "Could not download one or more CNEFE data files.",
-      "i" = "Please try again later."
+      "Não foi possível baixar os dados do CNEFE.",
+      "i" = "Por favor, tente novamente."
     ),
     call = rlang::caller_env(n = 2)
   )
