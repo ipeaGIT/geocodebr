@@ -14,7 +14,7 @@ geocodebr_error <- function(message, call, .envir = parent.frame()) {
 error_input_nao_padronizado <- function() {
   geocodebr_error(
     c(
-      "Os dados de entrada não estão padronizados.",
+      "Os dados de entrada nao estao padronizados.",
       "i" = "Use o argumento `padronizar_enderecos = TRUE`, ou
       padronize os dados de input com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`."
     ),
