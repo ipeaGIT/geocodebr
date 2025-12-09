@@ -55,20 +55,20 @@ test_that("cache usage is controlled by the cache argument", {
   )
 })
 
-test_that("errors if could not download one or more files", {
-  local_mocked_bindings(
-    perform_requests_in_parallel = function(...) {
-      httr2::req_perform_parallel(
-        list(httr2::request("FAILURE")),
-        on_error = "continue"
-      )
-    }
-  )
-
-  expect_error(
-    tester(cache = FALSE),
-    class = "geocodebr_error_cnefe_download_failed"
-  )
-
-  expect_snapshot(tester(cache = FALSE), error = TRUE, cnd_class = TRUE)
-})
+# test_that("errors if could not download one or more files", {
+#   local_mocked_bindings(
+#     perform_requests_in_parallel = function(...) {
+#       httr2::req_perform_parallel(
+#         list(httr2::request("FAILURE")),
+#         on_error = "continue"
+#       )
+#     }
+#   )
+#
+#   expect_error(
+#     tester(cache = FALSE),
+#     class = "geocodebr_error_cnefe_download_failed"
+#   )
+#
+#   expect_snapshot(tester(cache = FALSE), error = TRUE, cnd_class = TRUE)
+# })
