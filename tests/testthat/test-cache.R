@@ -163,10 +163,11 @@ test_that("deletar_pasta_cache behaves correctly", {
     transform = function(x) sub(listar_pasta_cache(), "<path_to_cache_dir>", x)
   )
 
+  # mensagem se pasta de cache estiver vazia
+  expect_message( geocodebr::listar_dados_cache() )
+
   expect_identical(res, as.character(fs::path_norm(tmpdir)))
   expect_false(dir.exists(res))
 
-  # mensagem se pasta de cache estiver vazia
-  expect_message( geocodebr::listar_dados_cache() )
 
 })
