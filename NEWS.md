@@ -18,6 +18,10 @@ número máximo de cores físicos disponíveis.
 - O output da função `geocode()` agora é apenas um `"data.frame"`, e não mais um 
 `"data.table" "data.frame"`.
 
+## Correção de bugs (Bug fixes)
+
+- A função `geocode()` agora é envolta com {callr}, e por isso usa muito menos 
+memória RAM e não tem vazamento de memória. [#48](https://github.com/ipeaGIT/geocodebr/issues/48) 
 
 # geocodebr 0.4.0
 
