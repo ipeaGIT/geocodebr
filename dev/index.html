@@ -24,7 +24,7 @@
 
     <a class="navbar-brand me-2" href="index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@
 <div class="section level3">
 <h3 id="id_1-geolocalização-de-endereços-para-coordenadas-espaciais">1. Geolocalização: de endereços para coordenadas espaciais<a class="anchor" aria-label="anchor" href="#id_1-geolocaliza%C3%A7%C3%A3o-de-endere%C3%A7os-para-coordenadas-espaciais"></a>
 </h3>
-<p>Uma que você possui uma tabela de dados (<code>data.frame</code>) com endereços no Brasil, a geolocalização desses dados pode ser feita em apenas dois passos:</p>
+<p>Uma vez que você possui uma tabela de dados (<code>data.frame</code>) com endereços no Brasil, a geolocalização desses dados pode ser feita em apenas dois passos:</p>
 <ol style="list-style-type: decimal">
 <li><p>O primeiro passo é usar a função <code><a href="reference/definir_campos.html">definir_campos()</a></code> para indicar os nomes das colunas no seu <code>data.frame</code> que correspondem a cada campo dos endereços.</p></li>
 <li><p>O segundo passo é usar a função <code><a href="reference/geocode.html">geocode()</a></code> para encontrar as coordenadas geográficas dos endereços de input.</p></li>
@@ -103,12 +103,11 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ipeaGIT/geocodebr" class="external-link">geocodebr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.13.0, GDAL 3.10.1, PROJ 9.5.1; sf_use_s2() is TRUE</span></span>
 <span></span>
 <span><span class="co"># carregando uma amostra de dados</span></span>
 <span><span class="va">input_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/small_sample.csv"</span>, package <span class="op">=</span> <span class="st">"geocodebr"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Primeiro passo: inidicar o nome das colunas com cada campo dos enderecos</span></span>
+<span><span class="co"># Primeiro passo: indicar o nome das colunas com cada campo dos enderecos</span></span>
 <span><span class="va">campos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/definir_campos.html">definir_campos</a></span><span class="op">(</span></span>
 <span>  logradouro <span class="op">=</span> <span class="st">"nm_logradouro"</span>,</span>
 <span>  numero <span class="op">=</span> <span class="st">"Numero"</span>,</span>
@@ -123,24 +122,16 @@
 <span>  enderecos <span class="op">=</span> <span class="va">input_df</span>,</span>
 <span>  campos_endereco <span class="op">=</span> <span class="va">campos</span>,</span>
 <span>  resultado_completo <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  resolver_empates <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  h3_res <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Foram encontrados 1 casos de empate. Estes casos foram marcados com valor</span></span>
-<span><span class="co">#&gt; `TRUE` na coluna 'empate', e podem ser inspecionados na coluna</span></span>
-<span><span class="co">#&gt; 'endereco_encontrado'. Alternativamente, use `resolver_empates = TRUE` para que</span></span>
-<span><span class="co">#&gt; o pacote lide com os empates automaticamente. Ver documentação da função.</span></span></code></pre></div>
-<p>Os resultados do <strong>{geocodebr}</strong> são classificados em seis categorias gerais de <code>precisao</code>, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. s resultados trazem ainda uma estimativa da incerteza da localização encontrado como um <code>desvio_metros</code>. Para mais informações, consulte a documentação da função ou a <a href="https://ipeagit.github.io/geocodebr/articles/geocode.html"><strong>vignette “geocode”</strong></a>.</p>
+<span>  resolver_empates <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  resultado_sf <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<p>Os resultados do <strong>{geocodebr}</strong> são classificados em seis categorias gerais de <code>precisao</code>, dependendo do nível de exatidão com que cada endereço de input foi encontrado nos dados do CNEFE. Os resultados trazem ainda uma estimativa da incerteza da localização encontrada como um <code>desvio_metros</code>. Para mais informações, consulte a documentação da função ou a <a href="https://ipeagit.github.io/geocodebr/articles/geocode.html"><strong>vignette “geocode”</strong></a>.</p>
 </div>
 <div class="section level3">
 <h3 id="id_2-geolocalização-reversa-de-coordenadas-espaciais-para-endereços">2. Geolocalização reversa: de coordenadas espaciais para endereços<a class="anchor" aria-label="anchor" href="#id_2-geolocaliza%C3%A7%C3%A3o-reversa-de-coordenadas-espaciais-para-endere%C3%A7os"></a>
 </h3>
-<p>A função <code><a href="reference/geocode_reverso.html">geocode_reverso()</a></code>, por sua vez, permite a geolocalização reversa, ou seja, a busca de endereços próximos a um conjunto de coordenadas geográficas. A função pode ser útil, por exemplo, para identificar endereços próximos a pontos de interesse, como escolas, hospitais, ou locais de acidentes.</p>
-<p>Mais detalhes na <a href="https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html"><strong>vignette “geocode”</strong></a>.</p>
+<p>A função <code><a href="reference/geocode_reverso.html">geocode_reverso()</a></code>, por sua vez, permite a geolocalização reversa, ou seja, a busca de endereços próximos a um conjunto de coordenadas geográficas. A função pode ser útil, por exemplo, para identificar endereços próximos a pontos de interesse, como escolas, hospitais, ou locais de acidentes. Aqui um exemplo de como usar a função:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># amostra de pontos espaciais</span></span>
 <span><span class="va">pontos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span></span>
@@ -153,9 +144,9 @@
 <span><span class="va">df_enderecos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/geocode_reverso.html">geocode_reverso</a></span><span class="op">(</span></span>
 <span> pontos <span class="op">=</span> <span class="va">pontos</span>,</span>
 <span> dist_max <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span> verboso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span> n_cores <span class="op">=</span> <span class="fl">1</span></span>
+<span> verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span> <span class="op">)</span></span></code></pre></div>
+<p>Mais detalhes na <a href="https://ipeagit.github.io/geocodebr/articles/geocode_reverso.html"><strong>vignette “geocode reverso”</strong></a>.</p>
 </div>
 <div class="section level3">
 <h3 id="id_3-busca-por-ceps">3. Busca por CEPs<a class="anchor" aria-label="anchor" href="#id_3-busca-por-ceps"></a>
@@ -167,8 +158,7 @@
 <span></span>
 <span><span class="va">df_ceps</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu"><a href="reference/busca_por_cep.html">busca_por_cep</a></span><span class="op">(</span></span>
 <span> cep <span class="op">=</span> <span class="va">ceps</span>,</span>
-<span> h3_res <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span> resultado_sf <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span> resultado_sf <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span> verboso <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span> <span class="op">)</span></span></code></pre></div>
 </div>
@@ -177,14 +167,15 @@
 <h2 id="nota-">Nota <a href="https://www.ipea.gov.br" class="external-link"><img src="reference/figures/ipea_logo.png" alt="IPEA" align="right" width="300"></a>
 <a class="anchor" aria-label="anchor" href="#nota-"></a>
 </h2>
-<p>Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografia e Estatística (IBGE). O <strong>{geocodebr}</strong> foi desenvolvido por uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)</p>
+<p>Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografia e Estatística (IBGE). O <strong>{geocodebr}</strong> foi desenvolvido por uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea), e conta com apoio do Instituto Todos pela Saúde (ITpS).</p>
 </div>
 <div class="section level2">
 <h2 id="instituições-utilizando-o-geocodebr">Instituições utilizando o {geocodebr}<a class="anchor" aria-label="anchor" href="#institui%C3%A7%C3%B5es-utilizando-o-geocodebr"></a>
 </h2>
-<p>Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o pacote também tem sido utilizado oficialmente por algumas instituições públicas no planejamento e avaliação de políticas públicas. Entre elas:</p>
+<p>Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o pacote também tem sido utilizado por algumas instituições públicas no planejamento e avaliação de políticas públicas. Entre elas:</p>
 <ul>
-<li>Banco Central do Brasil</li>
+<li>Instituto Brasileiro de Geografia e Estatistica (IBGE)</li>
+<li>Banco Central do Brasil (BCB)</li>
 <li>Ministério do Desenvolvimento Social e Combate à Fome (MDS)</li>
 </ul>
 </div>
@@ -237,6 +228,7 @@
 <ul class="list-unstyled">
 <li>Rafael H. M. Pereira <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2125-7465" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Daniel Herszenhut <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8066-1105" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>ITpS - Instituto Todos pela Saúde <br><small class="roles"> Funder </small>   </li>
 <li>Ipea - Instituto de Pesquisa Econômica Aplicada <br><small class="roles"> Copyright holder, funder </small>   </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
@@ -249,7 +241,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

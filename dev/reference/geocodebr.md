@@ -36,5 +36,9 @@ Other contributors:
 
 - Arthur Bazolli <baz.arthur@gmail.com> \[contributor\]
 
+- Pedro Milreu Cunha <pedro.cunha@ipea.gov.br> \[contributor\]
+
+- ITpS - Instituto Todos pela Saúde \[funder\]
+
 - Ipea - Instituto de Pesquisa Econômica Aplicada \[copyright holder,
   funder\]

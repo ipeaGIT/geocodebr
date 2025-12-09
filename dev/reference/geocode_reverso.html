@@ -11,7 +11,7 @@ distância máxima de busca."><meta property="og:image" content="https://ipeagit
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.3.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@ distância máxima de busca.</p>
 <span>  dist_max <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
+<span>  n_cores <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -94,7 +94,8 @@ diretório temporário.</p></dd>
 
 <dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
 <dd><p>Um número. O número de núcleos de CPU a serem utilizados no
-processamento dos dados. O padrão é 1.</p></dd>
+processamento dos dados. Por padrão, <code>n_cores = NULL</code> e o pacote utiliza o
+número máximo de cores físicos disponíveis.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -122,8 +123,7 @@ encontrado.</p>
 <span class="r-in"><span><span class="va">df_enderecos</span> <span class="op">&lt;-</span> <span class="fu">geocodebr</span><span class="fu">::</span><span class="fu">geocode_reverso</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  pontos <span class="op">=</span> <span class="va">ponto</span>,</span></span>
 <span class="r-in"><span>  dist_max <span class="op">=</span> <span class="fl">800</span>,</span></span>
-<span class="r-in"><span>  verboso <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  n_cores <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  verboso <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Utilizando dados do CNEFE armazenados localmente</span>
 <span class="r-in"><span></span></span>
@@ -146,7 +146,7 @@ encontrado.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">
