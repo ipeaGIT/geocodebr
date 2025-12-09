@@ -87,8 +87,7 @@ geocode <- function(enderecos,
 
       # Run internal engine
       geocode_core(
-      # geocode_core(
-          enderecos = enderecos,
+        enderecos = enderecos,
         campos_endereco = campos_endereco,
         resultado_completo = resultado_completo,
         resolver_empates = resolver_empates,
@@ -122,14 +121,14 @@ geocode <- function(enderecos,
 
 
 geocode_core <- function(enderecos = parent.frame()$enderecos,
-                    campos_endereco = parent.frame()$campos_endereco,
-                    resultado_completo = parent.frame()$resultado_completo,
-                    resolver_empates = parent.frame()$resolver_empates,
-                    h3_res = parent.frame()$h3_res,
-                    resultado_sf = parent.frame()$resultado_sf,
-                    verboso = parent.frame()$verboso,
-                    cache = parent.frame()$cache,
-                    n_cores = parent.frame()$n_cores ){
+                         campos_endereco = parent.frame()$campos_endereco,
+                         resultado_completo = parent.frame()$resultado_completo,
+                         resolver_empates = parent.frame()$resolver_empates,
+                         h3_res = parent.frame()$h3_res,
+                         resultado_sf = parent.frame()$resultado_sf,
+                         verboso = parent.frame()$verboso,
+                         cache = parent.frame()$cache,
+                         n_cores = parent.frame()$n_cores){
 
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
@@ -206,7 +205,7 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
 
 
   input_padrao <- enderecobr::padronizar_enderecos(
-    enderecos,
+    enderecos = enderecos,
     campos_do_endereco = enderecobr::correspondencia_campos(
       logradouro = campos_endereco[["logradouro"]],
       numero = campos_endereco[["numero"]],

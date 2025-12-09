@@ -121,7 +121,7 @@ campos <- geocodebr::definir_campos(
 
 
 bench::mark(
-  v3 <- geocode_callr(
+  v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,
      n_cores = 7,
@@ -329,17 +329,20 @@ library(future.callr)
 library(future)
 library(furrr)
 
-future::plan(future::multisession(workers = 10))
+future::plan(future::multisession(workers = 3))
+
+input_df$estado <- enderecobr::padronizar_estados(input_df$uf)
+
+
 
 
 bench::bench_time(
-a <-   split(df, f = "abbrev_state") |>
+a <-   split(input_df, f = input_df$estado) |>
     furrr::future_map(
       .f = function(x){
-        geocode_callr(
+        geocode(
           enderecos = x,
           campos_endereco = campos,
-          n_cores = 1,
           resultado_completo = F,
           resolver_empates = T
         )
