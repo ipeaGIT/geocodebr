@@ -7,7 +7,7 @@ geocode_orig <- function(enderecos,
                     resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
-                    n_cores = NULL){
+                    n_cores = NULL){ # nocov start
 
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
@@ -363,4 +363,4 @@ geocode_orig <- function(enderecos,
   }
 
   return(output_df[])
-}
+} # nocov end

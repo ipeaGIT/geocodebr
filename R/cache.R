@@ -117,7 +117,10 @@ listar_dados_cache <- function(print_tree = FALSE) {
 
   cache_dir <- listar_pasta_cache()
 
-  if (!fs::dir_exists(cache_dir)) return(character(0))
+  if (!fs::dir_exists(cache_dir)) {
+    message_cache()
+    return(NULL)
+    }
 
   cached_data <- list.files(cache_dir, recursive = TRUE, full.names = TRUE)
 

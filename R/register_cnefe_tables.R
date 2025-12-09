@@ -1,7 +1,7 @@
 
 
 
-register_cnefe_table <- function(con, match_type){
+register_cnefe_table <- function(con, match_type){ # nocov start
 
   # message("register_cnefe_table")
 
@@ -100,12 +100,12 @@ register_cnefe_table <- function(con, match_type){
 
   return(TRUE)
 
-}
+} # nocov end
 
 
 
 # create small table with unique logradouros
-register_unique_logradouros_table <- function(con, match_type){
+register_unique_logradouros_table <- function(con, match_type){ # nocov start
 
 
   # match_type = "pn03"
@@ -234,7 +234,7 @@ register_unique_logradouros_table <- function(con, match_type){
 
   return(unique_logr_tbl_name)
 
-}
+} # nocov end
 
 
 
@@ -285,3 +285,19 @@ register_unique_logradouros_table <- function(con, match_type){
 # }
 
 
+
+# register all geocodebr-cnefe tables
+register_geocodebr_tables <- function(con){ # nocov start
+
+  all_tables <- geocodebr::listar_dados_cache()
+
+  for(i in all_tables){
+
+    tb_name <- basename(i)
+    tb_name <- fs::path_ext_remove(tb_name)
+
+    temp_arrow <- arrow::open_dataset(i)
+
+    duckdb::duckdb_register_arrow(con, tb_name, temp_arrow)
+  }
+} # nocov ends
