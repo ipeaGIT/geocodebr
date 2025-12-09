@@ -1,4 +1,4 @@
-# geocodebr 0.4.0.999 dev
+# geocodebr 0.5.0
 
 
 ## Mudanças grandes (Major changes)
@@ -30,6 +30,8 @@ sido padronizados anteriormente com `enderecobr::padronizar_enderecos(..., forma
 
 - A função `geocode()` agora é envolta com {callr}, e por isso usa muito menos 
 memória RAM e não tem vazamento de memória. [#48](https://github.com/ipeaGIT/geocodebr/issues/48) 
+
+
 
 # geocodebr 0.4.0
 

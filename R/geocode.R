@@ -488,6 +488,9 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
 
   }
 
+  # remove data.table class
+  data.table::setindex(output_df, NULL)
+  data.table::setDF(output_df)
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {
