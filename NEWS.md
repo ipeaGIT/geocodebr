@@ -17,6 +17,14 @@ número máximo de cores físicos disponíveis.
 - As tabelas do cnefe agora são registradas na db uma única vez. [Encerra issue #79](https://github.com/ipeaGIT/geocodebr/issues/79).
 - O output da função `geocode()` agora é apenas um `"data.frame"`, e não mais um 
 `"data.table" "data.frame"`.
+- A função `geocode()` passa a ter um novo argumento `padronizar_enderecos` que
+indica se os dados de endereço de entrada devem ser padronizados. Por padrão, é 
+`TRUE`. Essa padronização é essencial para uma geolocalizaçao correta. Alerta! 
+Apenas utilize `padronizar_enderecos = FALSE` caso os dados de input já tenham 
+sido padronizados anteriormente com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`.
+[Encerra issue #68](https://github.com/ipeaGIT/geocodebr/issues/68).
+
+
 
 ## Correção de bugs (Bug fixes)
 

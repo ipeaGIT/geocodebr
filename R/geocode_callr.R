@@ -134,8 +134,8 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
                          resultado_completo = parent.frame()$resultado_completo,
                          resolver_empates = parent.frame()$resolver_empates,
                          resultado_sf = parent.frame()$resultado_sf,
-                    h3_res = parent.frame()$h3_res,
-                    padronizar_enderecos = parent.frame()$padronizar_enderecos,
+                         h3_res = parent.frame()$h3_res,
+                         padronizar_enderecos = parent.frame()$padronizar_enderecos,
                          verboso = parent.frame()$verboso,
                          cache = parent.frame()$cache,
                          n_cores = parent.frame()$n_cores){
@@ -206,10 +206,10 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
 
 
   # normalize input data -------------------------------------------------------
-
-    if (isTRUE(padronizar_enderecos)) {
   # standardizing the addresses table to increase the chances of finding a match
   # in the CNEFE data
+
+    if (isTRUE(padronizar_enderecos)) {
 
       if (verboso) message_standardizing_addresses()
 
@@ -219,7 +219,7 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
       )
 
       input_padrao <- enderecobr::padronizar_enderecos(
-    enderecos = enderecos,
+        enderecos = enderecos,
         campos_do_endereco = enderecobr::correspondencia_campos(
           logradouro = campos_endereco[["logradouro"]],
           numero = campos_endereco[["numero"]],
