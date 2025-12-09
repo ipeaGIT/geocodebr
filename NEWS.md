@@ -21,9 +21,9 @@ número máximo de cores físicos disponíveis.
 indica se os dados de endereço de entrada devem ser padronizados. Por padrão, é 
 `TRUE`. Essa padronização é essencial para uma geolocalizaçao correta. Alerta! 
 Apenas utilize `padronizar_enderecos = FALSE` caso os dados de input já tenham 
-sido padronizados anteriormente com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`.
-[Encerra issue #68](https://github.com/ipeaGIT/geocodebr/issues/68).
-
+sido padronizados anteriormente com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`. [Encerra issue #68](https://github.com/ipeaGIT/geocodebr/issues/68).
+- Incluído o apoio do Instituto Todos pela Saúde (ITpS) no `README` e no arquivo 
+`DESCRIPTION`. [Encerra issue #71](https://github.com/ipeaGIT/geocodebr/issues/71).
 
 
 ## Correção de bugs (Bug fixes)

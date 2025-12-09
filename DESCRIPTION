@@ -9,6 +9,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-8066-1105")),
     person("Arthur", "Bazolli", , "baz.arthur@gmail.com", role = "ctb"),
     person("Pedro", "Milreu Cunha", , "pedro.cunha@ipea.gov.br", role = "ctb"),
+    person("ITpS - Instituto Todos pela Saúde", role = "fnd"),
     person("Ipea - Instituto de Pesquisa Econômica Aplicada", role = c("cph", "fnd"))
   )
 Description: Método simples e eficiente de geolocalizar dados no Brasil. O 
