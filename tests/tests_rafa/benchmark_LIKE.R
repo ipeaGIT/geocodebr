@@ -130,7 +130,7 @@ bench::mark(
     # resultado_sf = T,
     resolver_empates = T,
     # h3_res = 9,
-    cache= T
+    cache= T, padronizar_enderecos = T
   )
 )
 

@@ -7,7 +7,7 @@ testthat::skip_if_not_installed("arrow")
 data_path <- system.file("extdata/small_sample.csv", package = "geocodebr")
 input_df <- read.csv(data_path)
 
-campos <- definir_campos(
+campos <- geocodebr::definir_campos(
   logradouro = "nm_logradouro",
   numero = "Numero",
   cep = "Cep",
@@ -20,8 +20,9 @@ tester <- function(enderecos = input_df,
                    campos_endereco = campos,
                    resultado_completo = FALSE,
                    resolver_empates = FALSE,
-                   h3_res = NULL,
                    resultado_sf = FALSE,
+                   h3_res = NULL,
+                   padronizar_enderecos = TRUE,
                    verboso = FALSE,
                    cache = TRUE,
                    n_cores = 1) {
@@ -30,8 +31,9 @@ tester <- function(enderecos = input_df,
     campos_endereco,
     resultado_completo,
     resolver_empates,
-    h3_res,
     resultado_sf,
+    h3_res,
+    padronizar_enderecos,
     verboso,
     cache,
     n_cores
@@ -65,6 +67,35 @@ test_that("expected output", {
   # output in sf format
   sf_output <- tester(resultado_sf = TRUE)
   testthat::expect_true(is(sf_output , 'sf'))
+})
+
+
+test_that("argumento padronizar endereco", {
+
+  # erro se input nao estiver padronizado
+  testthat::expect_error( tester(padronizar_enderecos = FALSE) )
+
+  # sucesso se tiver sido padronizado
+  campos2 <- enderecobr::correspondencia_campos(
+    logradouro = "nm_logradouro",
+    numero = "Numero",
+    cep = "Cep",
+    bairro = "Bairro",
+    municipio = "nm_municipio",
+    estado = "nm_uf"
+  )
+
+  input_padr <- enderecobr::padronizar_enderecos(
+    enderecos = input_df,
+    campos_do_endereco = campos2,
+    formato_estados = "sigla",
+    formato_numeros = 'integer'
+    )
+
+  testthat::succeed(
+    tester(enderecos = input_padr, padronizar_enderecos = FALSE)
+  )
+
 })
 
 
@@ -119,6 +150,10 @@ test_that("errors with incorrect input", {
   expect_error(tester(resultado_sf = 1))
   expect_error(tester(resultado_sf = NA))
   expect_error(tester(resultado_sf = c(TRUE, TRUE)))
+
+  expect_error(tester(padronizar_enderecos = "a"))
+  expect_error(tester(padronizar_enderecos = 50))
+  expect_error(tester(padronizar_enderecos = Inf))
 
   expect_error(tester(h3_res = "a"))
   expect_error(tester(h3_res = 50))

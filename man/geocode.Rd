@@ -9,8 +9,9 @@ geocode(
   campos_endereco = definir_campos(),
   resultado_completo = FALSE,
   resolver_empates = TRUE,
-  h3_res = NULL,
   resultado_sf = FALSE,
+  h3_res = NULL,
+  padronizar_enderecos = TRUE,
   verboso = TRUE,
   cache = TRUE,
   n_cores = NULL
@@ -39,14 +40,20 @@ automaticamente. Por padrão, é \code{TRUE}, e a função retorna apenas o caso
 mais provável. Para mais detalhes sobre como é feito o processo de
 desempate, consulte abaixo a seção "Detalhes".}
 
+\item{resultado_sf}{Lógico. Indica se o resultado deve ser um objeto espacial
+da classe \code{sf}. Por padrão, é \code{FALSE}, e o resultado é um \code{data.frame} com
+as colunas \code{lat} e \code{lon}.}
+
 \item{h3_res}{Um número que indica a resolução espacial da célula hexagonal
 H3 da localização dos pontos retornados. Também aceita um vetor de números,
 e.g. \code{c(8, 9)} Por padrão, é \code{NULL}. Detalhes sobre as resoluções disponíveis
 em \url{https://h3geo.org/docs/core-library/restable/}}
 
-\item{resultado_sf}{Lógico. Indica se o resultado deve ser um objeto espacial
-da classe \code{sf}. Por padrão, é \code{FALSE}, e o resultado é um \code{data.frame} com
-as colunas \code{lat} e \code{lon}.}
+\item{padronizar_enderecos}{Lógico. Indica se os dados de endereço de entrada
+devem ser padronizados. Por padrão, é \code{TRUE}. Essa padronização é essencial
+para uma geolocalizaçao correta. Alerta! Apenas utilize
+\code{padronizar_enderecos = FALSE} caso os dados de input já tenham sido
+padronizados anteriormente com \code{enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')}.}
 
 \item{verboso}{Um valor lógico. Indica se barras de progresso e mensagens
 devem ser exibidas durante o download dos dados do CNEFE e a geocodificação

@@ -9,3 +9,15 @@ geocodebr_error <- function(message, call, .envir = parent.frame()) {
 
   cli::cli_abort(message, class = error_classes, call = call, .envir = .envir)
 }
+
+
+error_input_nao_padronizado <- function() {
+  geocodebr_error(
+    c(
+      "Os dados de entrada nao estao padronizados.",
+      "i" = "Use o argumento `padronizar_enderecos = TRUE`, ou
+      padronize os dados de input com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`."
+    ),
+    call = rlang::caller_env(n = 2)
+  )
+}
