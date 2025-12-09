@@ -147,7 +147,8 @@ df_ceps <- geocodebr::busca_por_cep(
 
 Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de
 Geografia e Estatística (IBGE). O **{geocodebr}** foi desenvolvido por
-uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)
+uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea), e conta
+com apoio do Instituto Todos pela Saúde (ITpS).
 
 ## Instituições utilizando o {geocodebr}
 

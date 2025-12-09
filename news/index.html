@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,17 +44,25 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.0.999" id="geocodebr-040999-dev">geocodebr 0.4.0.999 dev<a class="anchor" aria-label="anchor" href="#geocodebr-040999-dev"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.5.0" id="geocodebr-050">geocodebr 0.5.0<a class="anchor" aria-label="anchor" href="#geocodebr-050"></a></h2>
 <div class="section level3">
-<h3 id="mudanças-grandes-major-changes-0-4-0-999">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-4-0-999"></a></h3>
+<h3 id="mudanças-grandes-major-changes-0-5-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-5-0"></a></h3>
 <ul><li>Novas versões da funções <code><a href="../reference/geocode.html">geocode()</a></code>, <code><a href="../reference/geocode_reverso.html">geocode_reverso()</a></code> e <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> são significamente mais rápidas e usam menos memória RAM. O ganho de eficiência é relativamente maior em consultas pequenas. Ver ganhos de performance no issues encerrados: <a href="https://github.com/ipeaGIT/geocodebr/issues/82" class="external-link">#82</a>, <a href="https://github.com/ipeaGIT/geocodebr/issues/81" class="external-link">#81</a> e <a href="https://github.com/ipeaGIT/geocodebr/issues/83" class="external-link">#83</a>
 </li>
 <li>Por padrão, as funções agora recebem <code>n_cores = NULL</code>, e o pacote utiliza o número máximo de cores físicos disponíveis.</li>
+<li>Agora o argumento <code>resolver_empates</code> passa a ser <code>TRUE</code> como padrão.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="mudanças-pequenas-minor-changes-0-4-0-999">Mudanças pequenas (Minor changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-pequenas-minor-changes-0-4-0-999"></a></h3>
+<h3 id="mudanças-pequenas-minor-changes-0-5-0">Mudanças pequenas (Minor changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-pequenas-minor-changes-0-5-0"></a></h3>
 <ul><li>As tabelas do cnefe agora são registradas na db uma única vez. <a href="https://github.com/ipeaGIT/geocodebr/issues/79" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/79" class="external-link">#79</a>.</li>
 <li>O output da função <code><a href="../reference/geocode.html">geocode()</a></code> agora é apenas um <code>"data.frame"</code>, e não mais um <code>"data.table" "data.frame"</code>.</li>
+<li>A função <code><a href="../reference/geocode.html">geocode()</a></code> passa a ter um novo argumento <code>padronizar_enderecos</code> que indica se os dados de endereço de entrada devem ser padronizados. Por padrão, é <code>TRUE</code>. Essa padronização é essencial para uma geolocalizaçao correta. Alerta! Apenas utilize <code>padronizar_enderecos = FALSE</code> caso os dados de input já tenham sido padronizados anteriormente com <code>enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')</code>. <a href="https://github.com/ipeaGIT/geocodebr/issues/68" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/68" class="external-link">#68</a>.</li>
+<li>Incluído o apoio do Instituto Todos pela Saúde (ITpS) no <code>README</code> e no arquivo <code>DESCRIPTION</code>. <a href="https://github.com/ipeaGIT/geocodebr/issues/71" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/71" class="external-link">#71</a>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="correção-de-bugs-bug-fixes-0-5-0">Correção de bugs (Bug fixes)<a class="anchor" aria-label="anchor" href="#corre%C3%A7%C3%A3o-de-bugs-bug-fixes-0-5-0"></a></h3>
+<ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora é envolta com {callr}, e por isso usa muito menos memória RAM e não tem vazamento de memória. <a href="https://github.com/ipeaGIT/geocodebr/issues/48" class="external-link">#48</a>
+</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -136,7 +144,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

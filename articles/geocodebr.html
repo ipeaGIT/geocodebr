@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Introdução ao geocodebr</h1>
             
-            <h4 data-toc-skip class="date">2025-12-01</h4>
+            <h4 data-toc-skip class="date">2025-12-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocodebr.Rmd" class="external-link"><code>vignettes/geocodebr.Rmd</code></a></small>
       <div class="d-none name"><code>geocodebr.Rmd</code></div>
@@ -150,10 +150,12 @@ encontrar as coordenadas geográficas dos endereços de input.</li>
 <span>  cache <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Foram encontrados 3 casos de empate. Estes casos foram marcados com valor</span></span>
-<span><span class="co">#&gt; `TRUE` na coluna 'empate', e podem ser inspecionados na coluna</span></span>
-<span><span class="co">#&gt; 'endereco_encontrado'. Alternativamente, use `resolver_empates = TRUE` para que</span></span>
-<span><span class="co">#&gt; o pacote lide com os empates automaticamente. Ver documentação da função.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BB0000;">Warning message:</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; Foram encontrados 3 casos de empate. Estes casos foram marcados com valor</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; `TRUE` na coluna 'empate', e podem ser inspecionados na coluna</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; 'endereco_encontrado'. Alternativamente, use `resolver_empates = TRUE` para que</span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; o pacote lide com os empates automaticamente. Ver documentação da função. </span></span></span>
+<span><span class="co"><span style="color: #BB0000;">#&gt; </span></span></span></code></pre></div>
 <p><strong>Nota:</strong> A função <code><a href="../reference/geocode.html">geocode()</a></code> requer que os
 dados do CNEFE estejam armazenados localmente. A primeita vez que a
 função é executada, ela baixa os dados do CNEFE e salva em um cache
@@ -262,7 +264,7 @@ dentro dela.</li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

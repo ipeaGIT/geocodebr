@@ -147,7 +147,8 @@ df_ceps <- geocodebr::busca_por_cep(
 
 Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de
 Geografia e Estatística (IBGE). O **{geocodebr}** foi desenvolvido por
-uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)
+uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea), e conta
+com apoio do Instituto Todos pela Saúde (ITpS).
 
 ## Instituições utilizando o {geocodebr}
 
@@ -190,8 +191,6 @@ desempenho.
 ## Geolocalização
 
 - [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
-  : Geolocaliza endereços no Brasil
-- [`geocode_callr()`](https://ipeagit.github.io/geocodebr/reference/geocode_callr.md)
   : Geolocaliza endereços no Brasil
 - [`geocode_reverso()`](https://ipeagit.github.io/geocodebr/reference/geocode_reverso.md)
   : Geocode reverso de coordenadas espaciais no Brasil

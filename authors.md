@@ -12,6 +12,8 @@
 
 - **Pedro Milreu Cunha**. Contributor.
 
+- **ITpS - Instituto Todos pela Saúde**. Funder.
+
 - **Ipea - Instituto de Pesquisa Econômica Aplicada**. Copyright holder,
   funder.
 

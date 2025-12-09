@@ -15,9 +15,10 @@ geocode(
   enderecos,
   campos_endereco = definir_campos(),
   resultado_completo = FALSE,
-  resolver_empates = FALSE,
-  h3_res = NULL,
+  resolver_empates = TRUE,
   resultado_sf = FALSE,
+  h3_res = NULL,
+  padronizar_enderecos = TRUE,
   verboso = TRUE,
   cache = TRUE,
   n_cores = NULL
@@ -53,9 +54,15 @@ geocode(
   coordenadas possíveis (e.g. duas ruas diferentes com o mesmo nome em
   uma mesma cidade). Esses casos são trados como 'empate' e o parâmetro
   `resolver_empates` indica se a função deve resolver esses empates
-  automaticamente. Por padrão, é `FALSE`, e a função retorna apenas o
+  automaticamente. Por padrão, é `TRUE`, e a função retorna apenas o
   caso mais provável. Para mais detalhes sobre como é feito o processo
   de desempate, consulte abaixo a seção "Detalhes".
+
+- resultado_sf:
+
+  Lógico. Indica se o resultado deve ser um objeto espacial da classe
+  `sf`. Por padrão, é `FALSE`, e o resultado é um `data.frame` com as
+  colunas `lat` e `lon`.
 
 - h3_res:
 
@@ -64,11 +71,14 @@ geocode(
   e.g. `c(8, 9)` Por padrão, é `NULL`. Detalhes sobre as resoluções
   disponíveis em <https://h3geo.org/docs/core-library/restable/>
 
-- resultado_sf:
+- padronizar_enderecos:
 
-  Lógico. Indica se o resultado deve ser um objeto espacial da classe
-  `sf`. Por padrão, é `FALSE`, e o resultado é um `data.frame` com as
-  colunas `lat` e `lon`.
+  Lógico. Indica se os dados de endereço de entrada devem ser
+  padronizados. Por padrão, é `TRUE`. Essa padronização é essencial para
+  uma geolocalizaçao correta. Alerta! Apenas utilize
+  `padronizar_enderecos = FALSE` caso os dados de input já tenham sido
+  padronizados anteriormente com
+  `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`.
 
 - verboso:
 
@@ -114,14 +124,14 @@ uma mesma cidade). Esses casos são trados como empate'. Quando a função
 empate são resolvidos automaticamente pela função. A solução destes
 empates é feita da seguinte maneira:
 
-1.  Quando se encontra diferente coordenadas possíveis para um endereço
-    de input, nós assumimos que essas coordendas pertencem provavelmente
-    a endereços diferentes se (a) estas coordenadas estão a mais de 1Km
-    entre si, ou (b) estão associadas a um logradouro 'ambíguo', i.e.
-    que costumam se repetir em muitos bairros (e.g. "RUA A", "RUA
-    QUATRO", "RUA 10", etc). Nestes casos, a solução de desempate é
-    retornar o ponto com maior número de estabelecimentos no CNEFE,
-    valor indicado na coluna `"contagem_cnefe"`.
+1.  Quando se encontra diferente coordenadas possíveis para um mesmo
+    endereço de input, nós assumimos que essas coordendas pertencem
+    provavelmente a endereços diferentes se (a) estas coordenadas estão
+    a mais de 1Km entre si, ou (b) estão associadas a um logradouro
+    'ambíguo', i.e. que costumam se repetir em muitos bairros (e.g. "RUA
+    A", "RUA QUATRO", "RUA 10", etc). Nestes casos, a solução de
+    desempate é retornar o ponto com maior número de estabelecimentos no
+    CNEFE, valor indicado na coluna `"contagem_cnefe"`.
 
 2.  Quando as coordenadas possivelmente associadas a um endereço estão a
     menos de 1Km entre si e não se trata de um logradouro 'ambíguo', nós
@@ -328,18 +338,16 @@ df <- geocodebr::geocode(
 #>  Casos processados: 2/2 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■  100% - Fim! 
 #> 
 #> ℹ Preparando resultados
+#> 
 
 head(df)
-#>       id            nm_logradouro Numero       Cep     Bairro    nm_municipio
-#>    <int>                   <char>  <int>    <char>     <char>          <char>
-#> 1:     1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
-#> 2:     2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
-#>    code_muni  nm_uf       lat       lon precisao tipo_resultado desvio_metros
-#>        <int> <char>     <num>     <num>   <char>         <char>         <int>
-#> 1:   3303500     RJ -22.69551 -43.47116   numero           dn01             9
-#> 2:   3301702     RJ -22.77917 -43.31132   numero           dn01             6
-#>                                                       endereco_encontrado
-#>                                                                    <char>
-#> 1: RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730
-#> 2:  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050
+#>   id            nm_logradouro Numero       Cep     Bairro    nm_municipio
+#> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
+#> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
+#>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros
+#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9
+#> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6
+#>                                                      endereco_encontrado
+#> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730
+#> 2  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050
 ```
