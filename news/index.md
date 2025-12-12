@@ -2,6 +2,8 @@
 
 ## geocodebr 0.5.0
 
+CRAN release: 2025-12-09
+
 ### Mudanças grandes (Major changes)
 
 - Novas versões da funções
