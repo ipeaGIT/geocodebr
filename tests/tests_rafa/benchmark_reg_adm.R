@@ -91,8 +91,8 @@ stop()
 # )
 
 gc(T,T,T)
-bench::system_time(
-# bench::mark(iterations = 1,
+#bench::system_time(
+ bench::mark(iterations = 1,
   cadgeo <- geocode(
     enderecos  = df,
     campos_endereco = campos,
@@ -105,15 +105,20 @@ bench::system_time(
     )
 )
 
+# process    real
+# 54.8s   13.7m
+# > 10000000/(13.7*60)
+# [1] 12165.45
+# > 10000000/(13.7)
+# [1] 729927
 
 # 10 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
-# v0.5.0 dev      22.2m  22.2m  0.000749    8.05GB  0.00674     1     9      22.2m <dt>   <Rprofmem>
-# v0.5.0 devcallr 5.94m  5.94m  0.00280     1.01GB  0           1     0      5.94m <NULL> <Rprofmem>
-# v0.5.0 devcallr 3.53m em paralelo
+# v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
+# v0.5.0 CRAN     2.39m em paralelo
 
 # 43 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
@@ -148,18 +153,18 @@ bench::system_time(
 
 ## cadunico parallel callr ----------------
 
-# library(future.callr)
+library(future.callr)
 library(future)
 library(furrr)
 
-future::plan(future::multisession)
+future::plan(future.callr::callr)
+future::plan(future.callr::callr)
 
-#df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
-df$code_muni <- enderecobr::padronizar_estados(df$code_muni)
+df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
 
 gc(T,T,T)
 bench::bench_time(
- a <-   split(df, f = df$code_muni) |>
+ a <-   split(df, f = df$abbrev_state) |>
    furrr::future_map(
      .progress = TRUE,
      .f = function(x){

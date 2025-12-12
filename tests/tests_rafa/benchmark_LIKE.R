@@ -1,3 +1,14 @@
+#' proximos passos
+#' 0. padronizacao cnefe usado aprox linear para lidar com ruas curvas
+#' 1. add census tracts
+#' 2. check ground truth data for distance
+#' 3. more efficient string dist with cache
+#' 4. make solving ties more efficient
+#' 5. helper function to parallelize chuncks of the same size
+#' 6. targets to track the evolution of the package performance
+#'
+#'
+#'
 # esperado
 5 - deterministico certinho
 7312 - OTIMO antes rua errada no bairro errada, agora pega rua certa no certo
