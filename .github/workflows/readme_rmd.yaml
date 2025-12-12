@@ -19,7 +19,10 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages("rmarkdown", repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages("pak", repos = "https://cloud.r-project.org")'
+          Rscript -e 'pak::pkg_install("rmarkdown")'
+          Rscript -e 'pak::pkg_install("sf")'
+          Rscript -e 'pak::pkg_install("ipeaGIT/geocodebr")'
 
       - name: Render README
         run: |
