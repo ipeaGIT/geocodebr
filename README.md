@@ -25,7 +25,7 @@ o pacote está disponível apenas em R.
 
 ## Instalação
 
-A última versão estável pode ser baixada do CRAN com o comando a seguir:
+A última versão estável pode ser baixada do CRAN com o comando:
 
 ``` r
 # from CRAN
