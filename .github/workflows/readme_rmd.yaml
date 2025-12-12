@@ -2,9 +2,8 @@ name: Render README
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    paths:
+      - README.Rmd
 
 jobs:
   render-readme:
@@ -35,3 +34,12 @@ jobs:
       - name: Render README
         run: |
           Rscript -e 'rmarkdown::render("README.Rmd")'
+
+
+      - name: Commit README.md
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add README.md
+          git commit -m "Render README.md" || echo "No changes"
+          git push
