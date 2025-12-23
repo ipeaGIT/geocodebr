@@ -29,3 +29,7 @@ message_looking_for_matches <- function() {
 message_preparando_output <- function() {
   geocodebr_message(c("i" = "Preparando resultados"))
 }
+
+message_cache <- function() {
+  geocodebr_message(c("i" = "Nenhum dado em cache local"))
+}

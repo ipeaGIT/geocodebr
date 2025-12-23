@@ -85,11 +85,14 @@ Sys.setenv(NOT_CRAN = "true")
 t1 <- covr::function_coverage(fun=geocode, test_file("tests/testthat/test-geocode.R"))
 t1 <- covr::function_coverage(fun=definir_campos, test_file("tests/testthat/test-definir_campos.R"))
 t1 <- covr::function_coverage(fun=download_cnefe, test_file("tests/testthat/test-download_cnefe.R"))
-t1 <- covr::function_coverage(fun=listar_dados_cache, test_file("tests/testthat/test_cache.R"))
+t1 <- covr::function_coverage(fun=listar_dados_cache, test_file("tests/testthat/test-cache.R"))
+# t1 <- covr::function_coverage(fun=deletar_pasta_cache, test_file("tests/testthat/test-cache.R"))
 t1 <- covr::function_coverage(fun=busca_por_cep, test_file("tests/testthat/test-busca_por_cep.R"))
 t1 <- covr::function_coverage(fun=geocodebr_message, test_file("tests/testthat/test-message.R"))
 
 t1
+
+rep <- covr::report(t1)
 
 
 

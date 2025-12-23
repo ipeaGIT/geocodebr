@@ -31,7 +31,7 @@ dados sem limite de número de consultas. O pacote é baseado em conjuntos de da
 
 ## Instalação
 
-A última versão estável pode ser baixada do CRAN com o comando a seguir:
+A última versão estável pode ser baixada do CRAN com o comando:
 
 ```r
 # from CRAN
@@ -138,7 +138,7 @@ df_ceps <- geocodebr::busca_por_cep(
 
 ## Nota <a href="https://www.ipea.gov.br"><img src="man/figures/ipea_logo.png" alt="IPEA" align="right" width="300"/></a>
 
-Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografia e Estatística (IBGE). O **{geocodebr}** foi desenvolvido por uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea)
+Os dados originais do CNEFE são coletados pelo Instituto Brasileiro de Geografia e Estatística (IBGE). O **{geocodebr}** foi desenvolvido por uma equipe do Instituto de Pesquisa Econômica Aplicada (Ipea), e conta com apoio do Instituto Todos pela Saúde (ITpS).
 
 
 ## Instituições utilizando o {geocodebr}

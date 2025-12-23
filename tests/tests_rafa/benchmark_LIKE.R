@@ -1,3 +1,14 @@
+#' proximos passos
+#' 0. padronizacao cnefe usado aprox linear para lidar com ruas curvas
+#' 1. add census tracts
+#' 2. check ground truth data for distance
+#' 3. more efficient string dist with cache
+#' 4. make solving ties more efficient
+#' 5. helper function to parallelize chuncks of the same size
+#' 6. targets to track the evolution of the package performance
+#'
+#'
+#'
 # esperado
 5 - deterministico certinho
 7312 - OTIMO antes rua errada no bairro errada, agora pega rua certa no certo
@@ -329,17 +340,20 @@ library(future.callr)
 library(future)
 library(furrr)
 
-future::plan(future::multisession(workers = 10))
+future::plan(future::multisession(workers = 3))
+
+input_df$estado <- enderecobr::padronizar_estados(input_df$uf)
+
+
 
 
 bench::bench_time(
-a <-   split(df, f = "abbrev_state") |>
+a <-   split(input_df, f = input_df$estado) |>
     furrr::future_map(
       .f = function(x){
-        geocode_callr(
+        geocode(
           enderecos = x,
           campos_endereco = campos,
-          n_cores = 1,
           resultado_completo = F,
           resolver_empates = T
         )

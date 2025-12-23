@@ -143,7 +143,11 @@ geocode_reverso <- function(pontos,
   potential_munis <- lapply(X=1:nrow(coords), FUN=get_muni)
   potential_munis <- unlist(potential_munis) |> unique()
   potential_munis <- enderecobr::padronizar_municipios(potential_munis)
-  unique_munis <- glue::glue_collapse(glue::single_quote(potential_munis), sep = ",")
+
+  # lida com munis com apostrofe no nome tipo Olho d'agua
+  potential_munis <- gsub("'", "''", potential_munis, fixed = TRUE)
+
+  unique_munis <- paste(glue::glue("'{potential_munis}'"), collapse = ",")
 
   # build path to local file
   path_to_parquet <- fs::path(

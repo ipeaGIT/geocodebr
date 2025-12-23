@@ -1,145 +1,13 @@
-#' Geolocaliza endereços no Brasil
-#'
-#' Geocodifica endereços brasileiros com base nos dados do CNEFE. Os endereços
-#' de input devem ser passados como um `data.frame`, no qual cada coluna
-#' descreve um campo do endereço (logradouro, número, cep, etc). Os resuldos dos
-#' endereços geolocalizados podem seguir diferentes níveis de precisão. Consulte
-#' abaixo a seção "Detalhes" para mais informações. As coordenadas de output
-#' utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.
-#'
-#' @param enderecos Um `data.frame`. Os endereços a serem geolocalizados. Cada
-#'    coluna deve representar um campo do endereço.
-#' @param campos_endereco Um vetor de caracteres. A correspondência entre cada
-#'    campo de endereço e o nome da coluna que o descreve na tabela `enderecos`.
-#'    A função [definir_campos()] auxilia na criação deste vetor e realiza
-#'    algumas verificações nos dados de entrada. Campos de endereço passados
-#'    como `NULL` serão ignorados, e a função deve receber pelo menos um campo
-#'    não nulo, além  dos campos `"estado"` e `"municipio"`, que são
-#'    obrigatórios. Note que o campo  `"localidade"` é equivalente a 'bairro'.
-#' @param resultado_completo Lógico. Indica se o output deve incluir colunas
-#'    adicionais, como o endereço encontrado de referência. Por padrão, é `FALSE`.
-#' @param resolver_empates Lógico. Alguns resultados da geolocalização podem
-#'    indicar diferentes coordenadas possíveis (e.g. duas ruas diferentes com o
-#'    mesmo nome em uma mesma cidade). Esses casos são trados como 'empate' e o
-#'    parâmetro `resolver_empates` indica se a função deve resolver esses empates
-#'    automaticamente. Por padrão, é `TRUE`, e a função retorna apenas o caso
-#'    mais provável. Para mais detalhes sobre como é feito o processo de
-#'    desempate, consulte abaixo a seção "Detalhes".
-#' @template resultado_sf
-#' @template h3_res
-#' @param padronizar_enderecos Lógico. Indica se os dados de endereço de entrada
-#'    devem ser padronizados. Por padrão, é `TRUE`. Essa padronização é essencial
-#'    para uma geolocalizaçao correta. Alerta! Apenas utilize
-#'    `padronizar_enderecos = FALSE` caso os dados de input já tenham sido
-#'    padronizados anteriormente com `enderecobr::padronizar_enderecos(..., formato_estados = 'sigla', formato_numeros = 'integer')`.
-#' @template verboso
-#' @template cache
-#' @template n_cores
-#'
-#' @return Retorna o `data.frame` de input `enderecos` adicionado das colunas de
-#'   latitude (`lat`) e longitude (`lon`), bem como as colunas (`precisao` e
-#'   `tipo_resultado`) que indicam o nível de precisão e o tipo de resultado.
-#'   Alternativamente, o resultado pode ser um objeto `sf`.
-#'
-#' @template precision_section
-#' @template empates_section
-#'
-#' @examplesIf identical(tolower(Sys.getenv("NOT_CRAN")), "true")
-#' library(geocodebr)
-#'
-#' # ler amostra de dados
-#' data_path <- system.file("extdata/small_sample.csv", package = "geocodebr")
-#' input_df <- read.csv(data_path)[1:2,]
-#'
-#' fields <- geocodebr::definir_campos(
-#'   logradouro = "nm_logradouro",
-#'   numero = "Numero",
-#'   cep = "Cep",
-#'   localidade = "Bairro",
-#'   municipio = "nm_municipio",
-#'   estado = "nm_uf"
-#' )
-#'
-#' df <- geocodebr::geocode(
-#'   enderecos = input_df,
-#'   campos_endereco = fields,
-#'   resolver_empates = TRUE
-#'   )
-#'
-#' head(df)
-#'
-#' @export
-geocode <- function(enderecos,
+#' @keywords internal
+geocode_orig <- function(enderecos,
                     campos_endereco = definir_campos(),
                     resultado_completo = FALSE,
                     resolver_empates = TRUE,
-                    resultado_sf = FALSE,
                     h3_res = NULL,
-                    padronizar_enderecos = TRUE,
+                    resultado_sf = FALSE,
                     verboso = TRUE,
                     cache = TRUE,
-                    n_cores = NULL ){
-
-  callr::r(
-    func = function(enderecos,
-                    campos_endereco,
-                    resultado_completo,
-                    resolver_empates,
-                    resultado_sf,
-                    h3_res,
-                    padronizar_enderecos,
-                    verboso,
-                    cache,
-                    n_cores) {
-
-      # Run internal engine
-      geocode_core(
-      # geocode_core(
-          enderecos = enderecos,
-        campos_endereco = campos_endereco,
-        resultado_completo = resultado_completo,
-        resolver_empates = resolver_empates,
-        resultado_sf = resultado_sf,
-        h3_res = h3_res,
-        padronizar_enderecos = padronizar_enderecos,
-        verboso =verboso,
-        cache = cache,
-        n_cores = n_cores
-      )
-
-    },
-    args = list(
-      enderecos = enderecos,
-      campos_endereco = campos_endereco,
-      resultado_completo = resultado_completo,
-      resolver_empates = resolver_empates,
-      resultado_sf = resultado_sf,
-      h3_res = h3_res,
-      padronizar_enderecos = padronizar_enderecos,
-      verboso =verboso,
-      cache = cache,
-      n_cores = n_cores
-    ),
-    show = TRUE,
-    package = TRUE
-
-  )
-
-}
-
-
-
-
-geocode_core <- function(enderecos = parent.frame()$enderecos,
-                    campos_endereco = parent.frame()$campos_endereco,
-                    resultado_completo = parent.frame()$resultado_completo,
-                    resolver_empates = parent.frame()$resolver_empates,
-                    resultado_sf = parent.frame()$resultado_sf,
-                    h3_res = parent.frame()$h3_res,
-                    padronizar_enderecos = parent.frame()$padronizar_enderecos,
-                    verboso = parent.frame()$verboso,
-                    cache = parent.frame()$cache,
-                    n_cores = parent.frame()$n_cores ){
+                    n_cores = NULL){ # nocov start
 
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
@@ -196,53 +64,38 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   checkmate::assert_logical(resultado_completo, any.missing = FALSE, len = 1)
   checkmate::assert_logical(resolver_empates, any.missing = FALSE, len = 1)
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
-  checkmate::assert_logical(padronizar_enderecos, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
   checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
-
-
-      # systime start 66666 ----------------
-      # timer$mark("Start")
-
+  campos_endereco <- assert_and_assign_address_fields(
+    campos_endereco,
+    enderecos
+  )
 
   # normalize input data -------------------------------------------------------
 
-    if (isTRUE(padronizar_enderecos)) {
+  # standardizing the addresses table to increase the chances of finding a match
+  # in the CNEFE data
 
-      if (verboso) message_standardizing_addresses()
+  if (verboso) message_standardizing_addresses()
 
-      campos_endereco <- assert_and_assign_address_fields(
-        campos_endereco,
-        enderecos
-      )
+  # systime start 66666 ----------------
+  # timer$mark("Start")
 
-      input_padrao <- enderecobr::padronizar_enderecos(
-        enderecos,
-        campos_do_endereco = enderecobr::correspondencia_campos(
-          logradouro = campos_endereco[["logradouro"]],
-          numero = campos_endereco[["numero"]],
-          cep = campos_endereco[["cep"]],
-          bairro = campos_endereco[["localidade"]],
-          municipio = campos_endereco[["municipio"]],
-          estado = campos_endereco[["estado"]]
-        ),
-        formato_estados = "sigla",
-        formato_numeros = 'integer'
-      )
 
-    }
-
-  if (isFALSE(padronizar_enderecos)) {
-    input_padrao <- data.table::copy(enderecos)
-  }
-
-  # checa se input foi mesmo padronizado
-  all_cols_padr <- c("estado_padr", "municipio_padr", "logradouro_padr", "numero_padr", "cep_padr", "bairro_padr")
-  check_padr <- all(all_cols_padr %in% names(input_padrao))
-
-  if (isFALSE(check_padr)) { error_input_nao_padronizado() }
-
+  input_padrao <- enderecobr::padronizar_enderecos(
+    enderecos,
+    campos_do_endereco = enderecobr::correspondencia_campos(
+      logradouro = campos_endereco[["logradouro"]],
+      numero = campos_endereco[["numero"]],
+      cep = campos_endereco[["cep"]],
+      bairro = campos_endereco[["localidade"]],
+      municipio = campos_endereco[["municipio"]],
+      estado = campos_endereco[["estado"]]
+    ),
+    formato_estados = "sigla",
+    formato_numeros = 'integer'
+  )
 
 
   # keep and rename colunms of input_padrao to use the
@@ -408,7 +261,7 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
     resultado_completo,
     resolver_empates,
     verboso
-  )
+    )
 
 
 
@@ -456,10 +309,10 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
 
 
 
-  data.table::setDT(output_df)
 
 
   # drop geocodebr temp id column
+  data.table::setDT(output_df)
   output_df[, tempidgeocodebr := NULL]
 
 
@@ -481,6 +334,10 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
                                                  lng = lon,
                                                  resolution = i)]
     }
+
+    # drop data.table
+    data.table::setDF(output_df)
+
 
     # systime add h3 66666 ----------------
     # timer$mark("Add H3")
@@ -506,4 +363,4 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   }
 
   return(output_df[])
-}
+} # nocov end

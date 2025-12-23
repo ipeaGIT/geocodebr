@@ -1,0 +1,45 @@
+name: Render README
+
+on:
+  push:
+    paths:
+      - README.Rmd
+
+jobs:
+  render-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages("pak")'
+          Rscript -e 'pak::pkg_install(c("rmarkdown", "ipeaGIT/geocodebr", "sf"))'
+
+      - name: Render README
+        run: |
+          Rscript -e 'rmarkdown::render("README.Rmd")'
+
+
+      - name: Commit README.md
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add README.md
+          git commit -m "Render README.md" || echo "No changes"
+          git push

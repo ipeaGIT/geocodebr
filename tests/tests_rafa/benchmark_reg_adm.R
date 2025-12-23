@@ -62,7 +62,7 @@ df <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  #dplyr::slice_sample(n = sample_size) |> # sample 20K
+  dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 df$id <- 1:nrow(df)
@@ -91,8 +91,8 @@ stop()
 # )
 
 gc(T,T,T)
-#bench::system_time( iterations = 1,
- bench::mark(
+#bench::system_time(
+ bench::mark(iterations = 1,
   cadgeo <- geocode(
     enderecos  = df,
     campos_endereco = campos,
@@ -105,15 +105,20 @@ gc(T,T,T)
     )
 )
 
+# process    real
+# 54.8s   13.7m
+# > 10000000/(13.7*60)
+# [1] 12165.45
+# > 10000000/(13.7)
+# [1] 729927
 
 # 10 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
-# v0.5.0 dev      22.2m  22.2m  0.000749    8.05GB  0.00674     1     9      22.2m <dt>   <Rprofmem>
-# v0.5.0 devcallr 5.94m  5.94m  0.00280     1.01GB  0           1     0      5.94m <NULL> <Rprofmem>
-
+# v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
+# v0.5.0 CRAN     2.39m em paralelo
 
 # 43 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
@@ -121,9 +126,10 @@ gc(T,T,T)
 # v0.3.0 CRAN        2h     2h  0.000139    79.3GB   0.0176     1   127         2h <dt>
 # v0.4.0 CRAN      3.3h   3.3h 0.0000843    34.5GB  0.00244     1    29       3.3h <dt>   <Rprofmem> <bench_tm> <tibble>
 # v0.5.0 dev
-# v0.5.0 devcallr      21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
+# v0.5.0 devcallr  21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
+# v0.5.0 devcallr  8.99m em paralelo por uf
 
-# 0.4.0              4.53h  4.53h 0.0000613    34.5GB  0.00423     1    69      4.53h
+
 
 
 # nao era para ser empate
@@ -145,9 +151,42 @@ gc(T,T,T)
 
 
 
+## cadunico parallel callr ----------------
 
+library(future.callr)
+library(future)
+library(furrr)
 
+future::plan(future.callr::callr)
+future::plan(future.callr::callr)
 
+df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
+
+gc(T,T,T)
+bench::bench_time(
+ a <-   split(df, f = df$abbrev_state) |>
+   furrr::future_map(
+     .progress = TRUE,
+     .f = function(x){
+       geocode(
+         enderecos = x,
+         campos_endereco = campos,
+         resultado_completo = F,
+         resolver_empates = T
+       )
+     }
+   )
+
+)
+
+bench::bench_time(
+
+a <- data.table::rbindlist(a)
+)
+
+quantile(a$desvio_metros, na.rm = T, probs = c(0.5, 0.7, 0.75, 0.8, 0.85, 0.9))
+  # 50%   70%   75%   80%   85%   90%
+  #   7   228   451   864  2418 10763
 
 
 # rais --------------------------------------------------------------------
