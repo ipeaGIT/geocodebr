@@ -135,15 +135,19 @@ bench::mark(
   v3 <- geocode(
     enderecos = input_df,
     campos_endereco = campos,
-     n_cores = 7,
+     # n_cores = 7,
     resultado_completo = F,
     verboso = T,
     # resultado_sf = T,
     resolver_empates = T,
     # h3_res = 9,
-    cache= T, padronizar_enderecos = T
+    cache= T
   )
 )
+
+# sample 20k
+#   expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# v0.5.0 laptop  8.1s   8.1s     0.123    5.55MB        0     1     0       8.1s <df>   <Rprofmem>
 
 
 gc(T,T,T)
@@ -313,15 +317,16 @@ campos <- geocodebr::definir_campos(
 # resultado_sf = FALSE
 # h3_res =9
 
+bench::mark(
 dfgeo <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
-    n_cores = 7,
+    # n_cores = 7,
     resultado_completo = T,
     resolver_empates = F,
     verboso = T
   )
-
+)
 
 identical(df_rafaF$id, input_df$id)
 

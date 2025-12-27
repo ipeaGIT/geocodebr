@@ -86,9 +86,10 @@ match_weighted_cases <- function( # nocov start
       WHERE {cols_not_null} AND {y}.numero IS NOT NULL AND {y}.lon IS NOT NULL
     )
 
-    -- PART 2: aggregate and interpolate get aprox location
-  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas})
-      SELECT tempidgeocodebr,
+   -- PART 2: aggregate and interpolate get aprox location
+
+   WITH temp_aggreg AS (
+     SELECT tempidgeocodebr,
         SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
         SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
         FIRST(endereco_encontrado) AS endereco_encontrado,
@@ -97,7 +98,21 @@ match_weighted_cases <- function( # nocov start
         FIRST(log_causa_confusao) AS log_causa_confusao,
         FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols_second}
     FROM temp_db
-    GROUP BY tempidgeocodebr, endereco_encontrado;"
+    GROUP BY tempidgeocodebr, endereco_encontrado
+   )
+
+  -- PART 3: insert result in output table
+
+  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros, log_causa_confusao, contagem_cnefe {colunas_encontradas})
+      SELECT tempidgeocodebr,
+        lat,
+        lon,
+        endereco_encontrado,
+        tipo_resultado,
+        desvio_metros,
+        log_causa_confusao,
+        contagem_cnefe {additional_cols_second}
+    FROM temp_aggreg;"
   )
 
 

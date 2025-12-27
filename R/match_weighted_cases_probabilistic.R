@@ -113,8 +113,7 @@ match_weighted_cases_probabilistic <- function( # nocov start
 
   -- PART 2: aggregate and interpolate get aprox location
 
-  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
-                         log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
+   WITH temp_aggreg AS (
        SELECT tempidgeocodebr,
          SUM((1/ABS(numero - numero_cnefe) * lat)) / SUM(1/ABS(numero - numero_cnefe)) AS lat,
          SUM((1/ABS(numero - numero_cnefe) * lon)) / SUM(1/ABS(numero - numero_cnefe)) AS lon,
@@ -125,9 +124,24 @@ match_weighted_cases_probabilistic <- function( # nocov start
          FIRST(similaridade_logradouro) AS similaridade_logradouro,
          FIRST(contagem_cnefe) AS contagem_cnefe {additional_cols_second}
       FROM temp_db
-      GROUP BY tempidgeocodebr, endereco_encontrado;"
-  )
+      GROUP BY tempidgeocodebr, endereco_encontrado
+   )
 
+  -- PART 3: insert result in output table
+
+  INSERT INTO output_db (tempidgeocodebr, lat, lon, endereco_encontrado, tipo_resultado, desvio_metros,
+                         log_causa_confusao, similaridade_logradouro, contagem_cnefe {colunas_encontradas})
+       SELECT tempidgeocodebr,
+         lat,
+         lon,
+         endereco_encontrado,
+         tipo_resultado,
+         desvio_metros,
+         log_causa_confusao,
+         similaridade_logradouro,
+         contagem_cnefe {additional_cols_second}
+      FROM temp_aggreg;"
+  )
 
   DBI::dbExecute(con, query_match)
   # DBI::dbExecute(con, query_aggregate)
