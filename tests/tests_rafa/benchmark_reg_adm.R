@@ -78,17 +78,6 @@ campos <- geocodebr::definir_campos(
 
 stop()
 
-# bench::mark(
-#   iterations = 1,
-#   callr = geocode_callr(
-#     enderecos = df,
-#     campos_endereco = campos
-#   ),
-#   original = geocode(
-#     enderecos = df,
-#     campos_endereco = campos
-#   )
-# )
 
 gc(T,T,T)
 #bench::system_time(
@@ -119,6 +108,14 @@ gc(T,T,T)
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
 # v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
 # v0.5.0 CRAN     2.39m em paralelo
+
+
+
+# args: n_cores = 7, resultado_completo = F resolver_empates = T
+# v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
+# main            6.52m  6.52m   0.00256    1014MB  0.00767     1     3      6.52m <df>   <Rprofmem>
+
+
 
 # 43 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
