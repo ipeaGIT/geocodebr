@@ -39,12 +39,13 @@
 #'head(df_enderecos)
 #'
 #' @export
-geocode_reverso <- function(pontos,
-                            dist_max = 1000,
-                            verboso = TRUE,
-                            cache = TRUE,
-                            n_cores = NULL){
-
+geocode_reverso <- function(
+  pontos,
+  dist_max = 1000,
+  verboso = TRUE,
+  cache = TRUE,
+  n_cores = NULL
+) {
   # check input
   checkmate::assert_class(pontos, 'sf')
   checkmate::assert_number(dist_max, lower = 500, upper = 100000) # max 100 Km
@@ -53,14 +54,17 @@ geocode_reverso <- function(pontos,
 
   # check if geometry type is POINT
   if (any(sf::st_geometry_type(pontos) != 'POINT')) {
-    cli::cli_abort("Input precisa ser um sf data frame com geometria do tipo POINT.")
+    cli::cli_abort(
+      "Input precisa ser um sf data frame com geometria do tipo POINT."
+    )
   }
 
   epsg <- sf::st_crs(pontos)$epsg
   if (epsg != 4674) {
-    cli::cli_abort("Dados de input precisam estar com sistema de coordenadas geogr\u00e1ficas SIRGAS 2000, EPSG 4674.")
+    cli::cli_abort(
+      "Dados de input precisam estar com sistema de coordenadas geogr\u00e1ficas SIRGAS 2000, EPSG 4674."
+    )
   }
-
 
   # prep input -------------------------------------------------------
 
@@ -71,7 +75,7 @@ geocode_reverso <- function(pontos,
   data.table::setnames(coords, old = c('x', 'y'), new = c('lon', 'lat'))
 
   # create temp id
-  coords[, tempidgeocodebr := 1:nrow(coords) ]
+  coords[, tempidgeocodebr := 1:nrow(coords)]
 
   # convert max_dist to degrees
   # 1 degree of latitude is always 111320 meters
@@ -80,8 +84,11 @@ geocode_reverso <- function(pontos,
   # 1 degree of longitude is 111320 * cos(lat)
   coords[, c("lat_min", "lat_max") := .(lat - margin_lat, lat + margin_lat)]
 
-  coords[, c("lon_min", "lon_max") := .(lon - dist_max / 111320 * cos(lat),
-                                        lon + dist_max / 111320 * cos(lat))
+  coords[,
+    c("lon_min", "lon_max") := .(
+      lon - dist_max / 111320 * cos(lat),
+      lon + dist_max / 111320 * cos(lat)
+    )
   ]
 
   # get bounding box around input points
@@ -91,25 +98,23 @@ geocode_reverso <- function(pontos,
   bbox_lon_min <- min(coords$lon_min)
   bbox_lon_max <- max(coords$lon_max)
 
-
-
   # check if input falls within Brazil
   bbox_brazil <- data.frame(
     xmin = -73.99044997,
     ymin = -33.75208127,
     xmax = -28.83594354,
-    ymax =   5.27184108
+    ymax = 5.27184108
   )
 
   error_msg <- 'Coordenadas de input localizadas fora do bounding box do Brasil.'
-  if(bbox_lon_min < bbox_brazil$xmin |
-     bbox_lon_max > bbox_brazil$xmax |
-     bbox_lat_min < bbox_brazil$ymin |
-     bbox_lat_max > bbox_brazil$ymax
+  if (
+    bbox_lon_min < bbox_brazil$xmin |
+      bbox_lon_max > bbox_brazil$xmax |
+      bbox_lat_min < bbox_brazil$ymin |
+      bbox_lat_max > bbox_brazil$ymax
   ) {
     cli::cli_abort(error_msg)
   }
-
 
   # download cnefe  -------------------------------------------------------
 
@@ -123,24 +128,28 @@ geocode_reverso <- function(pontos,
   # creating a temporary db and register the input table data
   con <- create_geocodebr_db(n_cores = n_cores)
 
-
   # limita escopo de busca aos municipios  -------------------------------------------------------
 
   # determine potential municipalities
-  bbox_munis <- readRDS(system.file("extdata/munis_bbox.rds", package = "geocodebr"))
+  bbox_munis <- readRDS(system.file(
+    "extdata/munis_bbox.rds",
+    package = "geocodebr"
+  ))
 
-  get_muni <- function(i){ # i=10
-    temp <- coords[i,]
+  get_muni <- function(i) {
+    # i=10
+    temp <- coords[i, ]
     potential_muni <- dplyr::filter(
       bbox_munis,
       xmin <= temp$lon_min &
         xmax >= temp$lon_max &
         ymin <= temp$lat_min &
-        ymax >= temp$lat_max)$code_muni
+        ymax >= temp$lat_max
+    )$code_muni
     return(potential_muni)
   }
 
-  potential_munis <- lapply(X=1:nrow(coords), FUN=get_muni)
+  potential_munis <- lapply(X = 1:nrow(coords), FUN = get_muni)
   potential_munis <- unlist(potential_munis) |> unique()
   potential_munis <- enderecobr::padronizar_municipios(potential_munis)
 
@@ -157,10 +166,18 @@ geocode_reverso <- function(pontos,
   )
 
   # create filtered_cnefe table, filter on the fly
-  cols_to_keep <- c("estado", "municipio", "logradouro", "numero", "cep",
-                    "localidade", "endereco_completo", "lon", "lat")
+  cols_to_keep <- c(
+    "estado",
+    "municipio",
+    "logradouro",
+    "numero",
+    "cep",
+    "localidade",
+    "endereco_completo",
+    "lon",
+    "lat"
+  )
   cols_to_keep <- paste0(cols_to_keep, collapse = ", ")
-
 
   # Load CNEFE data and filter it to include only municipalities
   # present in the input table, reducing the search scope
@@ -172,19 +189,17 @@ geocode_reverso <- function(pontos,
           WHERE m.municipio IN ({unique_munis});"
   )
 
-
   DBI::dbExecute(con, query_filter_cnefe)
   # DBI::dbExecute(con, query_filter_cnefe)
   # b <- DBI::dbReadTable(con, "filtered_cnefe")
 
-
   # Convert input data frame to DuckDB table
-  duckdb::dbWriteTable(con, "input_table_db", coords,
-                       temporary = TRUE)
-
+  duckdb::dbWriteTable(con, "input_table_db", coords, temporary = TRUE)
 
   # Haversine macro (kept for speed; consider spatial extension later)
-  DBI::dbExecute(con, "
+  DBI::dbExecute(
+    con,
+    "
     CREATE MACRO IF NOT EXISTS haversine(lat1, lon1, lat2, lon2) AS (
       6378137 * 2 * ASIN(
         SQRT(
@@ -194,9 +209,8 @@ geocode_reverso <- function(pontos,
         )
       )
     );
-  ")
-
-
+  "
+  )
 
   # Find cases nearby -------------------------------------------------------
   query_filter_cases_nearby <- glue::glue(
@@ -240,9 +254,7 @@ geocode_reverso <- function(pontos,
 
   output <- DBI::dbGetQuery(con, query_filter_cases_nearby)
 
-
   # organize output -------------------------------------------------
-
 
   # convert df to simple feature
   output_sf <- sfheaders::sf_point(
@@ -253,7 +265,6 @@ geocode_reverso <- function(pontos,
   )
 
   sf::st_crs(output_sf) <- 4674
-
 
   duckdb::dbDisconnect(con)
 

@@ -43,13 +43,14 @@
 #' )
 #'
 #' @export
-definir_campos <- function(estado,
-                          municipio,
-                          logradouro = NULL,
-                          numero = NULL,
-                          cep = NULL,
-                          localidade = NULL) {
-
+definir_campos <- function(
+  estado,
+  municipio,
+  logradouro = NULL,
+  numero = NULL,
+  cep = NULL,
+  localidade = NULL
+) {
   col <- checkmate::makeAssertCollection()
   checkmate::assert_string(logradouro, null.ok = TRUE, add = col)
   checkmate::assert_string(numero, null.ok = TRUE, add = col)
@@ -68,7 +69,9 @@ definir_campos <- function(estado,
     estado = estado
   )
 
-  if (is.null(address_fields)) error_null_address_fields()
+  if (is.null(address_fields)) {
+    error_null_address_fields()
+  }
 
   return(address_fields)
 }

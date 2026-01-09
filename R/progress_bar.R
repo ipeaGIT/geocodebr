@@ -1,4 +1,3 @@
-
 create_progress_bar <- function(standard_locations, .envir = parent.frame()) {
   cli::cli_progress_bar(
     total = nrow(standard_locations),
@@ -8,16 +7,18 @@ create_progress_bar <- function(standard_locations, .envir = parent.frame()) {
   )
 }
 
-update_progress_bar <- function(matched_rows,
-                                formatted_case,
-                                .envir = parent.frame()) {
+update_progress_bar <- function(
+  matched_rows,
+  formatted_case,
+  .envir = parent.frame()
+) {
   cli::cli_progress_update(
     set = matched_rows,
     status = glue::glue("{formatted_case}"),
     force = TRUE,
     .envir = .envir
-    )
-  }
+  )
+}
 
 finish_progress_bar <- function(matched_rows, .envir = parent.frame()) {
   cli::cli_progress_update(
@@ -27,4 +28,3 @@ finish_progress_bar <- function(matched_rows, .envir = parent.frame()) {
     .envir = .envir
   )
 }
-

@@ -29,26 +29,32 @@
 #' head(df)
 #'
 #' @export
-busca_por_cep <- function(cep,
-                          h3_res = NULL,
-                          resultado_sf = FALSE,
-                          verboso = TRUE,
-                          cache = TRUE){
-
+busca_por_cep <- function(
+  cep,
+  h3_res = NULL,
+  resultado_sf = FALSE,
+  verboso = TRUE,
+  cache = TRUE
+) {
   # check input
   checkmate::assert_vector(cep)
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
-  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
-
+  checkmate::assert_numeric(
+    h3_res,
+    null.ok = TRUE,
+    lower = 0,
+    upper = 15,
+    max.len = 16
+  )
 
   # normalize input data -------------------------------------------------------
 
   cep_padrao <- enderecobr::padronizar_ceps(cep)
   cep_padrao <- unique(cep_padrao)
   cep_padrao <- na.omit(cep_padrao)
-  cep_padrao <- cep_padrao[cep_padrao!=""]
+  cep_padrao <- cep_padrao[cep_padrao != ""]
 
   # download cnefe  -------------------------------------------------------
 
@@ -61,7 +67,6 @@ busca_por_cep <- function(cep,
   # creating a temporary db and register the input table data
   con <- create_geocodebr_db()
 
-
   # build path to local file
   path_to_parquet <- fs::path(
     listar_pasta_cache(),
@@ -69,13 +74,19 @@ busca_por_cep <- function(cep,
     paste0("municipio_logradouro_cep_localidade.parquet")
   )
 
-
   # ceps string
   unique_ceps <- glue::glue_collapse(glue::single_quote(cep_padrao), sep = ",")
 
-
   # select columns
-  cols_to_keep <- c("cep", "estado", "municipio", "logradouro", "localidade", "lon", "lat")
+  cols_to_keep <- c(
+    "cep",
+    "estado",
+    "municipio",
+    "logradouro",
+    "localidade",
+    "lon",
+    "lat"
+  )
   cols_to_keep <- paste0(cols_to_keep, collapse = ", ")
 
   # filtrar por uf ?
@@ -94,8 +105,8 @@ busca_por_cep <- function(cep,
     cli::cli_abort("Nenhum CEP foi encontrado.")
   }
 
-  if (length(missing_cep)>0) {
-    temp_dt <- data.table::data.table(cep= missing_cep)
+  if (length(missing_cep) > 0) {
+    temp_dt <- data.table::data.table(cep = missing_cep)
     output_df <- data.table::rbindlist(list(output_df, temp_dt), fill = TRUE)
   }
 
@@ -103,20 +114,18 @@ busca_por_cep <- function(cep,
 
   # add H3
   if (!is.null(h3_res)) {
-
-    for (i in h3_res){
+    for (i in h3_res) {
       colname <- paste0(
         'h3_',
         formatC(h3_res, width = 2, flag = "0")
       )
 
-      output_df[!is.na(lat),
-                {{colname}} := h3r::latLngToCell(lat = lat,
-                                                 lng = lon,
-                                                 resolution = i)]
+      output_df[
+        !is.na(lat),
+        {{ colname }} := h3r::latLngToCell(lat = lat, lng = lon, resolution = i)
+      ]
     }
   }
-
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {

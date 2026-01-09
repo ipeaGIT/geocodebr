@@ -32,9 +32,7 @@ listar_arquivo_config <- function() {
 #' definir_pasta_cache( path = NULL)
 #'
 #' @export
-definir_pasta_cache <- function(path,
-                                verboso = TRUE) {
-
+definir_pasta_cache <- function(path, verboso = TRUE) {
   checkmate::assert_string(path, null.ok = TRUE)
   checkmate::assert_logical(verboso, null.ok = FALSE)
 
@@ -48,8 +46,8 @@ definir_pasta_cache <- function(path,
     cli::cli_inform(
       c("i" = "Definido como pasta de cache {.file {cache_dir}}."),
       class = "geocodebr_cache_dir"
-      )
-    }
+    )
+  }
 
   arquivo_config <- listar_arquivo_config()
 
@@ -66,7 +64,6 @@ definir_pasta_cache <- function(path,
 }
 
 
-
 #' Obtém a pasta de cache usado no geocodebr
 #'
 #' Obtém o caminho da pasta utilizada para armazenar em cache os dados do
@@ -81,7 +78,6 @@ definir_pasta_cache <- function(path,
 #'
 #' @export
 listar_pasta_cache <- function() {
-
   arquivo_config <- listar_arquivo_config()
 
   if (fs::file_exists(arquivo_config)) {
@@ -112,7 +108,6 @@ listar_pasta_cache <- function() {
 #'
 #' @export
 listar_dados_cache <- function(print_tree = FALSE) {
-
   checkmate::assert_logical(print_tree, any.missing = FALSE, len = 1)
 
   cache_dir <- listar_pasta_cache()
@@ -120,7 +115,7 @@ listar_dados_cache <- function(print_tree = FALSE) {
   if (!fs::dir_exists(cache_dir)) {
     message_cache()
     return(NULL)
-    }
+  }
 
   cached_data <- list.files(cache_dir, recursive = TRUE, full.names = TRUE)
 
@@ -172,45 +167,44 @@ message_removed_cache_dir <- function(cache_dir) {
 #'
 #' @keywords internal
 apaga_data_release_antigo <- function() {
-
   # list cache local
   cache_dir <- geocodebr::listar_pasta_cache()
 
   # detect all release paths
   local_release_path <- list.dirs(cache_dir, recursive = T)[-1]
-  local_release_path <- local_release_path[grep('geocodebr_data_release_', local_release_path)]
+  local_release_path <- local_release_path[grep(
+    'geocodebr_data_release_',
+    local_release_path
+  )]
 
   new_data_release_dir <- fs::path(
     cache_dir,
     glue::glue("geocodebr_data_release_{data_release}")
   )
 
-
-  if (identical(as.character(new_data_release_dir),local_release_path)) {
+  if (identical(as.character(new_data_release_dir), local_release_path)) {
     return(cache_dir)
   }
 
   # versao numerica dos releases local e do pacote
-  local_release <- gsub("[^0-9]", "", basename(local_release_path)) |> as.numeric()
+  local_release <- gsub("[^0-9]", "", basename(local_release_path)) |>
+    as.numeric()
   pkg_release <- gsub("[^0-9]", "", data_release) |> as.numeric()
 
-  if (length(local_release)==0) {
+  if (length(local_release) == 0) {
     return(cache_dir)
   }
 
-  if (is.na(local_release) | local_release==pkg_release) {
+  if (is.na(local_release) | local_release == pkg_release) {
     return(cache_dir)
   }
-
 
   if (local_release != pkg_release) {
-
     # deleta os dados do release local
     suppressMessages(
       geocodebr::deletar_pasta_cache()
-      )
+    )
 
     return(cache_dir)
   }
-
 }

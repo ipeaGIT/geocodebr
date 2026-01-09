@@ -69,29 +69,31 @@
 #' head(df)
 #'
 #' @export
-geocode <- function(enderecos,
-                    campos_endereco = definir_campos(),
-                    resultado_completo = FALSE,
-                    resolver_empates = TRUE,
-                    resultado_sf = FALSE,
-                    h3_res = NULL,
-                    padronizar_enderecos = TRUE,
-                    verboso = TRUE,
-                    cache = TRUE,
-                    n_cores = NULL ){
-
+geocode <- function(
+  enderecos,
+  campos_endereco = definir_campos(),
+  resultado_completo = FALSE,
+  resolver_empates = TRUE,
+  resultado_sf = FALSE,
+  h3_res = NULL,
+  padronizar_enderecos = TRUE,
+  verboso = TRUE,
+  cache = TRUE,
+  n_cores = NULL
+) {
   callr::r(
-    func = function(enderecos,
-                    campos_endereco,
-                    resultado_completo,
-                    resolver_empates,
-                    resultado_sf,
-                    h3_res,
-                    padronizar_enderecos,
-                    verboso,
-                    cache,
-                    n_cores) {
-
+    func = function(
+      enderecos,
+      campos_endereco,
+      resultado_completo,
+      resolver_empates,
+      resultado_sf,
+      h3_res,
+      padronizar_enderecos,
+      verboso,
+      cache,
+      n_cores
+    ) {
       # Run internal engine
       geocode_core(
         enderecos = enderecos,
@@ -101,11 +103,10 @@ geocode <- function(enderecos,
         resultado_sf = resultado_sf,
         h3_res = h3_res,
         padronizar_enderecos = padronizar_enderecos,
-        verboso =verboso,
+        verboso = verboso,
         cache = cache,
         n_cores = n_cores
       )
-
     },
     args = list(
       enderecos = enderecos,
@@ -115,32 +116,29 @@ geocode <- function(enderecos,
       resultado_sf = resultado_sf,
       h3_res = h3_res,
       padronizar_enderecos = padronizar_enderecos,
-      verboso =verboso,
+      verboso = verboso,
       cache = cache,
       n_cores = n_cores
     ),
     show = TRUE,
     package = TRUE
-
   )
-
 }
 
 
-
 #' @keywords internal
-geocode_core <- function(enderecos = parent.frame()$enderecos,
-                         campos_endereco = parent.frame()$campos_endereco,
-                         resultado_completo = parent.frame()$resultado_completo,
-                         resolver_empates = parent.frame()$resolver_empates,
-                         resultado_sf = parent.frame()$resultado_sf,
-                         h3_res = parent.frame()$h3_res,
-                         padronizar_enderecos = parent.frame()$padronizar_enderecos,
-                         verboso = parent.frame()$verboso,
-                         cache = parent.frame()$cache,
-                         n_cores = parent.frame()$n_cores){
-
-
+geocode_core <- function(
+  enderecos = parent.frame()$enderecos,
+  campos_endereco = parent.frame()$campos_endereco,
+  resultado_completo = parent.frame()$resultado_completo,
+  resolver_empates = parent.frame()$resolver_empates,
+  resultado_sf = parent.frame()$resultado_sf,
+  h3_res = parent.frame()$h3_res,
+  padronizar_enderecos = parent.frame()$padronizar_enderecos,
+  verboso = parent.frame()$verboso,
+  cache = parent.frame()$cache,
+  n_cores = parent.frame()$n_cores
+) {
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
   # .make_timer <- function(verbose = TRUE) {
   #   .marks <- list()
@@ -189,7 +187,6 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   # on.exit(timer$summary(), add = TRUE)
   # ## -----------------------------------------------------------------------
 
-
   # check input
   checkmate::assert_data_frame(enderecos)
   checkmate::assert_logical(resultado_completo, any.missing = FALSE, len = 1)
@@ -198,78 +195,90 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   checkmate::assert_logical(padronizar_enderecos, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
-  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
+  checkmate::assert_numeric(
+    h3_res,
+    null.ok = TRUE,
+    lower = 0,
+    upper = 15,
+    max.len = 16
+  )
 
-
-      # systime start 66666 ----------------
-      # timer$mark("Start")
-
+  # systime start 66666 ----------------
+  # timer$mark("Start")
 
   # normalize input data -------------------------------------------------------
   # standardizing the addresses table to increase the chances of finding a match
   # in the CNEFE data
 
-    if (isTRUE(padronizar_enderecos)) {
-
-      if (verboso) message_standardizing_addresses()
-
-      campos_endereco <- assert_and_assign_address_fields(
-        campos_endereco,
-        enderecos
-      )
-
-      input_padrao <- enderecobr::padronizar_enderecos(
-        enderecos = enderecos,
-        campos_do_endereco = enderecobr::correspondencia_campos(
-          logradouro = campos_endereco[["logradouro"]],
-          numero = campos_endereco[["numero"]],
-          cep = campos_endereco[["cep"]],
-          bairro = campos_endereco[["localidade"]],
-          municipio = campos_endereco[["municipio"]],
-          estado = campos_endereco[["estado"]]
-        ),
-        formato_estados = "sigla",
-        formato_numeros = 'integer'
-      )
-
+  if (isTRUE(padronizar_enderecos)) {
+    if (verboso) {
+      message_standardizing_addresses()
     }
+
+    campos_endereco <- assert_and_assign_address_fields(
+      campos_endereco,
+      enderecos
+    )
+
+    input_padrao <- enderecobr::padronizar_enderecos(
+      enderecos = enderecos,
+      campos_do_endereco = enderecobr::correspondencia_campos(
+        logradouro = campos_endereco[["logradouro"]],
+        numero = campos_endereco[["numero"]],
+        cep = campos_endereco[["cep"]],
+        bairro = campos_endereco[["localidade"]],
+        municipio = campos_endereco[["municipio"]],
+        estado = campos_endereco[["estado"]]
+      ),
+      formato_estados = "sigla",
+      formato_numeros = 'integer'
+    )
+  }
 
   if (isFALSE(padronizar_enderecos)) {
     input_padrao <- data.table::copy(enderecos)
   }
 
   # checa se input foi mesmo padronizado
-  all_cols_padr <- c("estado_padr", "municipio_padr", "logradouro_padr", "numero_padr", "cep_padr", "bairro_padr")
+  all_cols_padr <- c(
+    "estado_padr",
+    "municipio_padr",
+    "logradouro_padr",
+    "numero_padr",
+    "cep_padr",
+    "bairro_padr"
+  )
   check_padr <- all(all_cols_padr %in% names(input_padrao))
 
-  if (isFALSE(check_padr)) { error_input_nao_padronizado() }
-
-
+  if (isFALSE(check_padr)) {
+    error_input_nao_padronizado()
+  }
 
   # keep and rename colunms of input_padrao to use the
   # same column names used in cnefe data set
   data.table::setDT(input_padrao)
-  cols_to_keep <- names(input_padrao)[ names(input_padrao) %like% '_padr']
+  cols_to_keep <- names(input_padrao)[names(input_padrao) %like% '_padr']
   input_padrao <- input_padrao[, .SD, .SDcols = c(cols_to_keep)]
   names(input_padrao) <- c(gsub("_padr", "", names(input_padrao)))
 
   if ('bairro' %in% names(input_padrao)) {
     data.table::setnames(
-      x = input_padrao, old = 'bairro', new = 'localidade'
+      x = input_padrao,
+      old = 'bairro',
+      new = 'localidade'
     )
   }
 
   # systime padronizacao 66666 ----------------
   # timer$mark("Padronizacao")
 
-
   # create temp id
-  data.table::setDT(enderecos)[, tempidgeocodebr := 1:nrow(input_padrao) ]
-  input_padrao[, tempidgeocodebr := 1:nrow(input_padrao) ]
+  data.table::setDT(enderecos)[, tempidgeocodebr := 1:nrow(input_padrao)]
+  input_padrao[, tempidgeocodebr := 1:nrow(input_padrao)]
 
   # temp coluna de logradouro q sera usada no match probabilistico
-  input_padrao[, temp_lograd_determ := NA_character_ ]
-  input_padrao[, similaridade_logradouro := NA_real_ ]
+  input_padrao[, temp_lograd_determ := NA_character_]
+  input_padrao[, similaridade_logradouro := NA_real_]
 
   # # sort input data
   # input_padrao <- input_padrao[order(estado, municipio, logradouro, numero, cep, localidade)]
@@ -286,26 +295,27 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
 
   # register standardized input data
   input_padrao_arrw <- arrow::as_arrow_table(input_padrao)
-  DBI::dbWriteTableArrow(con, name = "input_padrao_db", input_padrao_arrw,
-                         overwrite = TRUE, temporary = TRUE)
-
+  DBI::dbWriteTableArrow(
+    con,
+    name = "input_padrao_db",
+    input_padrao_arrw,
+    overwrite = TRUE,
+    temporary = TRUE
+  )
 
   # systime register standardized 66666 ----------------
   # timer$mark("Register standardized input")
 
-
   # cria coluna "log_causa_confusao" identificando logradouros que geram confusao
   # issue https://github.com/ipeaGIT/geocodebr/issues/67
   cria_col_logradouro_confusao(con)
-
-
 
   # create an empty output table that will be populated -----------------------------------------------
 
   # Define schema
   schema_output_db <- arrow::schema(
     tempidgeocodebr = arrow::int32(),
-    lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
+    lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
     lon = arrow::float16(),
     endereco_encontrado = arrow::string(),
     logradouro_encontrado = arrow::string(),
@@ -314,14 +324,12 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
     desvio_metros = arrow::int32(),
     log_causa_confusao = arrow::boolean(),
     similaridade_logradouro = arrow::float16()
-
   )
 
   if (isTRUE(resultado_completo)) {
-
     schema_output_db <- arrow::schema(
       tempidgeocodebr = arrow::int32(),
-      lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
+      lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
       lon = arrow::float16(),
       endereco_encontrado = arrow::string(),
       logradouro_encontrado = arrow::string(),
@@ -340,11 +348,13 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   }
 
   output_db_arrow <- arrow::arrow_table(schema = schema_output_db)
-  DBI::dbWriteTableArrow(con, name = "output_db", output_db_arrow,
-                         overwrite = TRUE, temporary = TRUE)
-
-
-
+  DBI::dbWriteTableArrow(
+    con,
+    name = "output_db",
+    output_db_arrow,
+    overwrite = TRUE,
+    temporary = TRUE
+  )
 
   # START MATCHING -----------------------------------------------
 
@@ -358,23 +368,30 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   matched_rows <- 0
 
   # start matching
-  for (match_type in all_possible_match_types ) {
-
+  for (match_type in all_possible_match_types) {
     # get key cols
     key_cols <- get_key_cols(match_type)
 
-    if (verboso) update_progress_bar(matched_rows, match_type)
+    if (verboso) {
+      update_progress_bar(matched_rows, match_type)
+    }
 
     # somente busca essa categoria match_type se todas colunas estiverem na base
     # caso contrario, passa para proxima categoria
     if (all(key_cols %in% names(input_padrao))) {
-
       # select match function
       match_fun <-
-        if (match_type %in% c(number_exact_types, exact_types_no_number)) { match_cases
-        } else if (match_type %in% number_interpolation_types ) { match_weighted_cases
-        } else if (match_type %in% c(probabilistic_exact_types, probabilistic_types_no_number)) { match_cases_probabilistic
-        } else if (match_type %in% probabilistic_interpolation_types) { match_weighted_cases_probabilistic
+        if (match_type %in% c(number_exact_types, exact_types_no_number)) {
+          match_cases
+        } else if (match_type %in% number_interpolation_types) {
+          match_weighted_cases
+        } else if (
+          match_type %in%
+            c(probabilistic_exact_types, probabilistic_types_no_number)
+        ) {
+          match_cases_probabilistic
+        } else if (match_type %in% probabilistic_interpolation_types) {
+          match_weighted_cases_probabilistic
         }
 
       n_rows_affected <- match_fun(
@@ -389,18 +406,18 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
       # leave the loop early if we find all addresses before covering all cases
       if (matched_rows == n_rows) break
     }
-
   }
 
-  if (verboso) finish_progress_bar(matched_rows)
+  if (verboso) {
+    finish_progress_bar(matched_rows)
+  }
 
   # systime matching 66666 ----------------
   # timer$mark("Matching")
 
-
-  if (verboso) message_preparando_output()
-
-
+  if (verboso) {
+    message_preparando_output()
+  }
 
   # casos de empate -----------------------------------------------
 
@@ -411,43 +428,44 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
     verboso
   )
 
-
-
   # systime resolve empates 66666 ----------------
   # timer$mark("Resolve empates")
-
 
   # bring original input back -----------------------------------------------
 
   # output with all original columns
-  duckdb::dbWriteTable(con, "input_db", enderecos,
-                       temporary = TRUE, overwrite=TRUE)
+  duckdb::dbWriteTable(
+    con,
+    "input_db",
+    enderecos,
+    temporary = TRUE,
+    overwrite = TRUE
+  )
   # enderecos_arrw <- arrow::as_arrow_table(enderecos)
   # DBI::dbWriteTableArrow(con, name = "input_db", enderecos_arrw,
   #                        overwrite = TRUE, temporary = TRUE)
 
-
   # systime write original input back 66666 ----------------
   # timer$mark("Write original input back")
 
-
-
   # add precision column ----------------
-  output_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
+  output_table_to_use <- ifelse(
+    empates_resolvidos == 0,
+    'output_db',
+    'output_db2'
+  )
   add_precision_col(con, update_tb = output_table_to_use)
 
   # systime add precision 66666 ----------------
   # timer$mark("Add precision")
 
-
-
   x_columns <- names(enderecos)
 
   output_df <- merge_results_to_input(
     con,
-    x='input_db',
-    y= output_table_to_use,
-    key_column='tempidgeocodebr',
+    x = 'input_db',
+    y = output_table_to_use,
+    key_column = 'tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
   )
@@ -455,37 +473,30 @@ geocode_core <- function(enderecos = parent.frame()$enderecos,
   # systime merge results 66666 ----------------
   # timer$mark("Merge results")
 
-
-
   data.table::setDT(output_df)
-
 
   # drop geocodebr temp id column
   output_df[, tempidgeocodebr := NULL]
 
-
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
-
   # add H3
   if (!is.null(h3_res)) {
-
-    for (i in h3_res){
+    for (i in h3_res) {
       colname <- paste0(
         'h3_',
         formatC(h3_res, width = 2, flag = "0")
       )
 
-      output_df[!is.na(lat),
-                {{colname}} := h3r::latLngToCell(lat = lat,
-                                                 lng = lon,
-                                                 resolution = i)]
+      output_df[
+        !is.na(lat),
+        {{ colname }} := h3r::latLngToCell(lat = lat, lng = lon, resolution = i)
+      ]
     }
 
     # systime add h3 66666 ----------------
     # timer$mark("Add H3")
-
   }
 
   # remove data.table class

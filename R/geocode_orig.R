@@ -1,14 +1,16 @@
 #' @keywords internal
-geocode_orig <- function(enderecos,
-                    campos_endereco = definir_campos(),
-                    resultado_completo = FALSE,
-                    resolver_empates = TRUE,
-                    h3_res = NULL,
-                    resultado_sf = FALSE,
-                    verboso = TRUE,
-                    cache = TRUE,
-                    n_cores = NULL){ # nocov start
-
+geocode_orig <- function(
+  enderecos,
+  campos_endereco = definir_campos(),
+  resultado_completo = FALSE,
+  resolver_empates = TRUE,
+  h3_res = NULL,
+  resultado_sf = FALSE,
+  verboso = TRUE,
+  cache = TRUE,
+  n_cores = NULL
+) {
+  # nocov start
 
   # ## ---- tiny timing toolkit (self-contained) ------------------------------
   # .make_timer <- function(verbose = TRUE) {
@@ -58,7 +60,6 @@ geocode_orig <- function(enderecos,
   # on.exit(timer$summary(), add = TRUE)
   # ## -----------------------------------------------------------------------
 
-
   # check input
   checkmate::assert_data_frame(enderecos)
   checkmate::assert_logical(resultado_completo, any.missing = FALSE, len = 1)
@@ -66,7 +67,13 @@ geocode_orig <- function(enderecos,
   checkmate::assert_logical(resultado_sf, any.missing = FALSE, len = 1)
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
   checkmate::assert_logical(cache, any.missing = FALSE, len = 1)
-  checkmate::assert_numeric(h3_res, null.ok = TRUE, lower = 0, upper = 15, max.len = 16)
+  checkmate::assert_numeric(
+    h3_res,
+    null.ok = TRUE,
+    lower = 0,
+    upper = 15,
+    max.len = 16
+  )
   campos_endereco <- assert_and_assign_address_fields(
     campos_endereco,
     enderecos
@@ -77,11 +84,12 @@ geocode_orig <- function(enderecos,
   # standardizing the addresses table to increase the chances of finding a match
   # in the CNEFE data
 
-  if (verboso) message_standardizing_addresses()
+  if (verboso) {
+    message_standardizing_addresses()
+  }
 
   # systime start 66666 ----------------
   # timer$mark("Start")
-
 
   input_padrao <- enderecobr::padronizar_enderecos(
     enderecos,
@@ -97,31 +105,31 @@ geocode_orig <- function(enderecos,
     formato_numeros = 'integer'
   )
 
-
   # keep and rename colunms of input_padrao to use the
   # same column names used in cnefe data set
   data.table::setDT(input_padrao)
-  cols_to_keep <- names(input_padrao)[ names(input_padrao) %like% '_padr']
+  cols_to_keep <- names(input_padrao)[names(input_padrao) %like% '_padr']
   input_padrao <- input_padrao[, .SD, .SDcols = c(cols_to_keep)]
   names(input_padrao) <- c(gsub("_padr", "", names(input_padrao)))
 
   if ('bairro' %in% names(input_padrao)) {
     data.table::setnames(
-      x = input_padrao, old = 'bairro', new = 'localidade'
+      x = input_padrao,
+      old = 'bairro',
+      new = 'localidade'
     )
   }
 
   # systime padronizacao 66666 ----------------
   # timer$mark("Padronizacao")
 
-
   # create temp id
-  data.table::setDT(enderecos)[, tempidgeocodebr := 1:nrow(input_padrao) ]
-  input_padrao[, tempidgeocodebr := 1:nrow(input_padrao) ]
+  data.table::setDT(enderecos)[, tempidgeocodebr := 1:nrow(input_padrao)]
+  input_padrao[, tempidgeocodebr := 1:nrow(input_padrao)]
 
   # temp coluna de logradouro q sera usada no match probabilistico
-  input_padrao[, temp_lograd_determ := NA_character_ ]
-  input_padrao[, similaridade_logradouro := NA_real_ ]
+  input_padrao[, temp_lograd_determ := NA_character_]
+  input_padrao[, similaridade_logradouro := NA_real_]
 
   # # sort input data
   # input_padrao <- input_padrao[order(estado, municipio, logradouro, numero, cep, localidade)]
@@ -138,26 +146,27 @@ geocode_orig <- function(enderecos,
 
   # register standardized input data
   input_padrao_arrw <- arrow::as_arrow_table(input_padrao)
-  DBI::dbWriteTableArrow(con, name = "input_padrao_db", input_padrao_arrw,
-                         overwrite = TRUE, temporary = TRUE)
-
+  DBI::dbWriteTableArrow(
+    con,
+    name = "input_padrao_db",
+    input_padrao_arrw,
+    overwrite = TRUE,
+    temporary = TRUE
+  )
 
   # systime register standardized 66666 ----------------
   # timer$mark("Register standardized input")
 
-
   # cria coluna "log_causa_confusao" identificando logradouros que geram confusao
   # issue https://github.com/ipeaGIT/geocodebr/issues/67
   cria_col_logradouro_confusao(con)
-
-
 
   # create an empty output table that will be populated -----------------------------------------------
 
   # Define schema
   schema_output_db <- arrow::schema(
     tempidgeocodebr = arrow::int32(),
-    lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
+    lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
     lon = arrow::float16(),
     endereco_encontrado = arrow::string(),
     logradouro_encontrado = arrow::string(),
@@ -166,14 +175,12 @@ geocode_orig <- function(enderecos,
     desvio_metros = arrow::int32(),
     log_causa_confusao = arrow::boolean(),
     similaridade_logradouro = arrow::float16()
-
   )
 
   if (isTRUE(resultado_completo)) {
-
     schema_output_db <- arrow::schema(
       tempidgeocodebr = arrow::int32(),
-      lat = arrow::float16(),  # Equivalent to NUMERIC(8,6)
+      lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
       lon = arrow::float16(),
       endereco_encontrado = arrow::string(),
       logradouro_encontrado = arrow::string(),
@@ -192,11 +199,13 @@ geocode_orig <- function(enderecos,
   }
 
   output_db_arrow <- arrow::arrow_table(schema = schema_output_db)
-  DBI::dbWriteTableArrow(con, name = "output_db", output_db_arrow,
-                         overwrite = TRUE, temporary = TRUE)
-
-
-
+  DBI::dbWriteTableArrow(
+    con,
+    name = "output_db",
+    output_db_arrow,
+    overwrite = TRUE,
+    temporary = TRUE
+  )
 
   # START MATCHING -----------------------------------------------
 
@@ -210,23 +219,30 @@ geocode_orig <- function(enderecos,
   matched_rows <- 0
 
   # start matching
-  for (match_type in all_possible_match_types ) {
-
+  for (match_type in all_possible_match_types) {
     # get key cols
     key_cols <- get_key_cols(match_type)
 
-    if (verboso) update_progress_bar(matched_rows, match_type)
+    if (verboso) {
+      update_progress_bar(matched_rows, match_type)
+    }
 
     # somente busca essa categoria match_type se todas colunas estiverem na base
     # caso contrario, passa para proxima categoria
     if (all(key_cols %in% names(input_padrao))) {
-
       # select match function
       match_fun <-
-        if (match_type %in% c(number_exact_types, exact_types_no_number)) { match_cases
-        } else if (match_type %in% number_interpolation_types ) { match_weighted_cases
-        } else if (match_type %in% c(probabilistic_exact_types, probabilistic_types_no_number)) { match_cases_probabilistic
-        } else if (match_type %in% probabilistic_interpolation_types) { match_weighted_cases_probabilistic
+        if (match_type %in% c(number_exact_types, exact_types_no_number)) {
+          match_cases
+        } else if (match_type %in% number_interpolation_types) {
+          match_weighted_cases
+        } else if (
+          match_type %in%
+            c(probabilistic_exact_types, probabilistic_types_no_number)
+        ) {
+          match_cases_probabilistic
+        } else if (match_type %in% probabilistic_interpolation_types) {
+          match_weighted_cases_probabilistic
         }
 
       n_rows_affected <- match_fun(
@@ -241,18 +257,18 @@ geocode_orig <- function(enderecos,
       # leave the loop early if we find all addresses before covering all cases
       if (matched_rows == n_rows) break
     }
-
   }
 
-  if (verboso) finish_progress_bar(matched_rows)
+  if (verboso) {
+    finish_progress_bar(matched_rows)
+  }
 
   # systime matching 66666 ----------------
   # timer$mark("Matching")
 
-
-  if (verboso) message_preparando_output()
-
-
+  if (verboso) {
+    message_preparando_output()
+  }
 
   # casos de empate -----------------------------------------------
 
@@ -261,45 +277,46 @@ geocode_orig <- function(enderecos,
     resultado_completo,
     resolver_empates,
     verboso
-    )
-
-
+  )
 
   # systime resolve empates 66666 ----------------
   # timer$mark("Resolve empates")
 
-
   # bring original input back -----------------------------------------------
 
   # output with all original columns
-  duckdb::dbWriteTable(con, "input_db", enderecos,
-                       temporary = TRUE, overwrite=TRUE)
+  duckdb::dbWriteTable(
+    con,
+    "input_db",
+    enderecos,
+    temporary = TRUE,
+    overwrite = TRUE
+  )
   # enderecos_arrw <- arrow::as_arrow_table(enderecos)
   # DBI::dbWriteTableArrow(con, name = "input_db", enderecos_arrw,
   #                        overwrite = TRUE, temporary = TRUE)
 
-
   # systime write original input back 66666 ----------------
   # timer$mark("Write original input back")
 
-
-
   # add precision column ----------------
-  output_table_to_use <- ifelse(empates_resolvidos==0, 'output_db', 'output_db2')
+  output_table_to_use <- ifelse(
+    empates_resolvidos == 0,
+    'output_db',
+    'output_db2'
+  )
   add_precision_col(con, update_tb = output_table_to_use)
 
   # systime add precision 66666 ----------------
   # timer$mark("Add precision")
 
-
-
   x_columns <- names(enderecos)
 
   output_df <- merge_results_to_input(
     con,
-    x='input_db',
-    y= output_table_to_use,
-    key_column='tempidgeocodebr',
+    x = 'input_db',
+    y = output_table_to_use,
+    key_column = 'tempidgeocodebr',
     select_columns = x_columns,
     resultado_completo = resultado_completo
   )
@@ -307,43 +324,33 @@ geocode_orig <- function(enderecos,
   # systime merge results 66666 ----------------
   # timer$mark("Merge results")
 
-
-
-
-
   # drop geocodebr temp id column
   data.table::setDT(output_df)
   output_df[, tempidgeocodebr := NULL]
 
-
   # Disconnect from DuckDB when done
   duckdb::dbDisconnect(con)
 
-
   # add H3
   if (!is.null(h3_res)) {
-
-    for (i in h3_res){
+    for (i in h3_res) {
       colname <- paste0(
         'h3_',
         formatC(h3_res, width = 2, flag = "0")
       )
 
-      output_df[!is.na(lat),
-                {{colname}} := h3r::latLngToCell(lat = lat,
-                                                 lng = lon,
-                                                 resolution = i)]
+      output_df[
+        !is.na(lat),
+        {{ colname }} := h3r::latLngToCell(lat = lat, lng = lon, resolution = i)
+      ]
     }
 
     # drop data.table
     data.table::setDF(output_df)
 
-
     # systime add h3 66666 ----------------
     # timer$mark("Add H3")
-
   }
-
 
   # convert df to simple feature
   if (isTRUE(resultado_sf)) {
