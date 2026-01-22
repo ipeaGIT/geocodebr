@@ -103,6 +103,8 @@ gc(T,T,T)
 # v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
 # v0.6.0 dev      4.64m  4.64m   0.00359     916MB  0.00359     1     1      4.64m <df>
 
+ 1 cadgeo <- geocode(e… 5.17m  5.17m   0.00323    1014MB  0.00645     1     2      5.17m <df>
+
  # v0.5.0 CRAN     2.39m em paralelo
 
 
