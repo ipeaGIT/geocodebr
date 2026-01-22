@@ -94,12 +94,6 @@ gc(T,T,T)
     )
 )
 
-# process    real
-# 54.8s   13.7m
-# > 10000000/(13.7*60)
-# [1] 12165.45
-# > 10000000/(13.7)
-# [1] 729927
 
 # 10 milhoes
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
@@ -107,8 +101,9 @@ gc(T,T,T)
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
 # v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
-# v0.5.0 CRAN     2.39m em paralelo
+# v0.6.0 dev      4.64m  4.64m   0.00359     916MB  0.00359     1     1      4.64m <df>
 
+ # v0.5.0 CRAN     2.39m em paralelo
 
 
 # args: n_cores = 7, resultado_completo = F resolver_empates = T
@@ -126,6 +121,7 @@ gc(T,T,T)
 # v0.5.0 devcallr  21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
 # v0.5.0 devcallr  8.99m em paralelo por uf
 
+# v0.5.0 + Rust    16.9m  16.9m  0.000985    4.11GB 0.000985     1     1      16.9m <df>
 
 
 
