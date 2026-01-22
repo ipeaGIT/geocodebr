@@ -6,12 +6,14 @@
 # 3rd step: deterministic match to update output
 
 match_cases_probabilistic <- function(
-    con = con,
-    x = 'input_padrao_db',
-    output_tb = "output_db",
-    key_cols = key_cols,
-    match_type = match_type,
-    resultado_completo){ # nocov start
+  con = con,
+  x = 'input_padrao_db',
+  output_tb = "output_db",
+  key_cols = key_cols,
+  match_type = match_type,
+  resultado_completo
+) {
+  # nocov start
 
   # match_type = "pn01"
 
@@ -23,21 +25,14 @@ match_cases_probabilistic <- function(
   # write cnefe table to db
   register_cnefe_table(con, match_type)
 
-
   # 1st step: create small table with unique logradouros -----------------------
   unique_logradouros_tbl <- register_unique_logradouros_table(con, match_type)
-
-
-
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
 
   calculate_string_dist(con, match_type, unique_logradouros_tbl)
 
-
-
   # 3rd step: update output table com match deterministico --------------------------------------------------------
-
 
   # update join condition to use probable logradouro and deterministic number
   join_condition_match <- paste(
@@ -45,10 +40,14 @@ match_cases_probabilistic <- function(
     collapse = ' AND '
   )
 
-  join_condition_match <- gsub('input_padrao_db.logradouro', 'input_padrao_db.temp_lograd_determ', join_condition_match)
+  join_condition_match <- gsub(
+    'input_padrao_db.logradouro',
+    'input_padrao_db.temp_lograd_determ',
+    join_condition_match
+  )
 
   # update cols that cannot be null
-  cols_not_null <-  paste(
+  cols_not_null <- paste(
     glue::glue("{x}.{key_cols} IS NOT NULL"),
     collapse = ' AND '
   )
@@ -60,25 +59,39 @@ match_cases_probabilistic <- function(
   colunas_encontradas <- ""
   additional_cols <- ""
 
-
   if (isTRUE(resultado_completo)) {
-
     colunas_encontradas <- paste0(
       glue::glue("{key_cols}_encontrado"),
-      collapse = ', ')
+      collapse = ', '
+    )
 
-    colunas_encontradas <- gsub('localidade_encontrado', 'localidade_encontrada', colunas_encontradas)
+    colunas_encontradas <- gsub(
+      'localidade_encontrado',
+      'localidade_encontrada',
+      colunas_encontradas
+    )
     colunas_encontradas <- paste0(", ", colunas_encontradas)
-    colunas_encontradas <- paste0(colunas_encontradas, ", similaridade_logradouro")
+    colunas_encontradas <- paste0(
+      colunas_encontradas,
+      ", similaridade_logradouro"
+    )
 
     additional_cols <- paste0(
       glue::glue("{y}.{key_cols} AS {key_cols}_encontrado"),
-      collapse = ', ')
+      collapse = ', '
+    )
 
-    additional_cols <- gsub('localidade_encontrado', 'localidade_encontrada', additional_cols)
-    additional_cols <- paste0(", ", additional_cols, ", input_padrao_db.similaridade_logradouro AS similaridade_logradouro")
+    additional_cols <- gsub(
+      'localidade_encontrado',
+      'localidade_encontrada',
+      additional_cols
+    )
+    additional_cols <- paste0(
+      ", ",
+      additional_cols,
+      ", input_padrao_db.similaridade_logradouro AS similaridade_logradouro"
+    )
   }
-
 
   # summarize query
   query_update_db <- glue::glue(
@@ -93,18 +106,14 @@ match_cases_probabilistic <- function(
         {x}.log_causa_confusao,
         {y}.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
-      LEFT JOIN {y}
-      ON {join_condition_match}
-      WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
+      INNER JOIN {y}
+      ON {join_condition_match} AND {y}.lon IS NOT NULL
+      WHERE {cols_not_null};"
   )
-
-
 
   DBI::dbExecute(con, query_update_db)
   # DBI::dbExecute(con, query_update_db)
   # c <- DBI::dbReadTable(con, 'output_db')
-
-
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(

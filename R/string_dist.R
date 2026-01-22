@@ -1,6 +1,4 @@
-
-calculate_string_dist <- function(con, match_type, unique_logradouros_tbl){
-
+calculate_string_dist <- function(con, match_type, unique_logradouros_tbl) {
   # message("calculate_string_dist")
 
   # match_type = "pl01"
@@ -8,22 +6,23 @@ calculate_string_dist <- function(con, match_type, unique_logradouros_tbl){
   key_cols <- get_key_cols(match_type)
 
   # cols that cannot be null
-  cols_not_null <-  paste(
+  cols_not_null <- paste(
     glue::glue("input_padrao_db.{key_cols} IS NOT NULL"),
     collapse = ' AND '
   )
 
   # remove numero and logradouro from key cols to allow for the matching
-  key_cols_string_dist <- key_cols[!key_cols %in%  c("numero", "logradouro")]
+  key_cols_string_dist <- key_cols[!key_cols %in% c("numero", "logradouro")]
 
   join_condition_lookup <- paste(
-    glue::glue("{unique_logradouros_tbl}.{key_cols_string_dist} = input_padrao_db.{key_cols_string_dist}"),
+    glue::glue(
+      "{unique_logradouros_tbl}.{key_cols_string_dist} = input_padrao_db.{key_cols_string_dist}"
+    ),
     collapse = ' AND '
   )
 
   # min cutoff for string match
   min_cutoff <- get_prob_match_cutoff(match_type)
-
 
   #-----------------------------------------------------------------------------
 
@@ -64,11 +63,8 @@ calculate_string_dist <- function(con, match_type, unique_logradouros_tbl){
             AND computed.rank = 1;"
   )
 
-
   DBI::dbExecute(con, query_calc_dist)
   #-----------------------------------------------------------------------------
-
-
 
   # # query antigo
   # query_lookup <- glue::glue(
@@ -97,8 +93,6 @@ calculate_string_dist <- function(con, match_type, unique_logradouros_tbl){
   #     )
   #
   # DBI::dbExecute(con, query_lookup)
-
-
 
   # a <- DBI::dbReadTable(con, 'input_padrao_db')
   # sum(is.na(a$similaridade_logradouro))

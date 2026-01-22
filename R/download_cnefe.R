@@ -15,9 +15,8 @@
 #'
 #' @export
 download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
-
   all_files <- c(
-    "municipio_logradouro_numero_localidade.parquet",  # 4 largest files       ok 3
+    "municipio_logradouro_numero_localidade.parquet", # 4 largest files       ok 3
     "municipio_logradouro_numero_cep_localidade.parquet", # 4 largest files    ok 1
     "municipio.parquet",
     "municipio_cep.parquet",
@@ -26,12 +25,11 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
     # "municipio_logradouro.parquet",
     # "municipio_logradouro_numero_cep.parquet", # 4 largest files
     # "municipio_logradouro_cep.parquet",
-    "municipio_logradouro_cep_localidade.parquet",                          #  ok 1
+    "municipio_logradouro_cep_localidade.parquet", #  ok 1
     # "municipio_logradouro_numero.parquet", # 4 largest files
-    "municipio_logradouro_localidade.parquet"                               #  ok 3
+    "municipio_logradouro_localidade.parquet" #  ok 3
   )
   all_files_basename <- fs::path_ext_remove(all_files)
-
 
   # check input
   checkmate::assert_logical(verboso, any.missing = FALSE, len = 1)
@@ -39,10 +37,11 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
 
   # seleciona tabela
   if (tabela != "todas") {
-
-    if (!any(all_files %like% tabela)){
-      cli::cli_abort("A 'tabela' deve ser uma das seguintes op\u00e7\u00f5es: {all_files_basename}")
-      }
+    if (!any(all_files %like% tabela)) {
+      cli::cli_abort(
+        "A 'tabela' deve ser uma das seguintes op\u00e7\u00f5es: {all_files_basename}"
+      )
+    }
 
     all_files <- all_files_basename[all_files_basename == tabela]
     all_files <- paste0(all_files, ".parquet")
@@ -60,7 +59,6 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
     if (!dir.exists(data_dir)) {
       fs::dir_create(data_dir, recurse = TRUE)
     }
-
   } else {
     # apaga release antigo se houver
     apaga_data_release_antigo()
@@ -72,7 +70,6 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
     }
   }
 
-
   # we only need to download data that hasn't been downloaded yet. note that if
   # cache=FALSE data_dir is always empty, so we download all required data
 
@@ -82,11 +79,12 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
   files_to_download <- data_urls[all_files %in% files_to_download]
 
   if (length(files_to_download) == 0) {
-
-    if (verboso) { message_usando_cnefe_local() }
+    if (verboso) {
+      message_usando_cnefe_local()
+    }
 
     return(invisible(cache_dir))
-    }
+  }
 
   downloaded_files <- download_files(data_dir, files_to_download, verboso)
 
@@ -102,7 +100,6 @@ download_cnefe <- function(tabela = "todas", verboso = TRUE, cache = TRUE) {
 
 
 download_files <- function(data_dir, files_to_download, verboso) {
-
   requests <- lapply(files_to_download, httr2::request)
 
   dest_files <- fs::path(data_dir, basename(files_to_download))
@@ -114,7 +111,9 @@ download_files <- function(data_dir, files_to_download, verboso) {
     function(r) inherits(r, "error")
   )
 
-  if (any(response_errored)) error_cnefe_download_failed()
+  if (any(response_errored)) {
+    error_cnefe_download_failed()
+  }
 
   return(dest_files)
 }
@@ -130,7 +129,9 @@ perform_requests_in_parallel <- function(requests, dest_files, verboso) {
   # related help page:
   # https://testthat.r-lib.org/reference/local_mocked_bindings.html
 
-  if (verboso) { message_baixando_cnefe() }
+  if (verboso) {
+    message_baixando_cnefe()
+  }
 
   httr2::req_perform_parallel(
     requests,

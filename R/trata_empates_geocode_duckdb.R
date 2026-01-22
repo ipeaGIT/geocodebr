@@ -1,12 +1,9 @@
-
 trata_empates_geocode_duckdb <- function(
-    con = parent.frame()$con,
-    resultado_completo = parent.frame()$resultado_completo,
-    resolver_empates = parent.frame()$resolver_empates,
-    verboso = parent.frame()$verboso
-){
-
-
+  con = parent.frame()$con,
+  resultado_completo = parent.frame()$resultado_completo,
+  resolver_empates = parent.frame()$resolver_empates,
+  verboso = parent.frame()$verboso
+) {
   # 1) checa se tem empates --------------------------------------
 
   n_casos_empate <- DBI::dbGetQuery(
@@ -17,19 +14,19 @@ trata_empates_geocode_duckdb <- function(
                       FROM output_db
                       GROUP BY tempidgeocodebr
                       HAVING COUNT(*) > 1
-                    ) AS repeated;")[[1]]
-
-
+                    ) AS repeated;"
+  )[[1]]
 
   # 2) se nao tiver mais empates, termina aqui --------------------------------------
-  if (n_casos_empate == 0) { return(n_casos_empate) }
+  if (n_casos_empate == 0) {
+    return(n_casos_empate)
+  }
 
   # 3) se nao for para resolver empates: ------------------------------------------
   # - calcula / identifica casos de empate
   # - gera warning
   # - retorna resultado assim mesmo
   if (isFALSE(resolver_empates)) {
-
     # adicionar coluna de empate
     DBI::dbExecute(
       conn = con,
@@ -51,7 +48,9 @@ trata_empates_geocode_duckdb <- function(
   }
 
   # Haversine macro (kept for speed; consider spatial extension later)
-  DBI::dbExecute(con, "
+  DBI::dbExecute(
+    con,
+    "
     CREATE MACRO IF NOT EXISTS haversine(lat1, lon1, lat2, lon2) AS (
       6378137 * 2 * ASIN(
         SQRT(
@@ -61,9 +60,8 @@ trata_empates_geocode_duckdb <- function(
         )
       )
     );
-  ")
-
-
+  "
+  )
 
   # 3 se for para resolver empates, trata de 3 casos separados -----------------
   # D) nao empatados
@@ -75,12 +73,10 @@ trata_empates_geocode_duckdb <- function(
   #    contagem_cnefe
   # questao documentada no issue 37
 
-
   additional_cols_final <- ""
   cols_encontradas <- ""
 
-  if(isTRUE(resultado_completo)){
-
+  if (isTRUE(resultado_completo)) {
     additional_cols_final <- glue::glue(
       ", logradouro_encontrado, numero_encontrado, cep_encontrado,
         localidade_encontrada, municipio_encontrado, estado_encontrado,
@@ -92,7 +88,6 @@ trata_empates_geocode_duckdb <- function(
         localidade_encontrada, municipio_encontrado, estado_encontrado,
         similaridade_logradouro"
     )
-
   }
 
   sql_resolve <- glue::glue(
@@ -225,11 +220,8 @@ trata_empates_geocode_duckdb <- function(
 
   DBI::dbExecute(con, sql_resolve)
 
-
-
   if (verboso) {
-
-    plural <- ifelse(n_casos_empate==1, 'caso', 'casos')
+    plural <- ifelse(n_casos_empate == 1, 'caso', 'casos')
     message(glue::glue(
       "Foram encontrados e resolvidos {n_casos_empate} {plural} de empate."
     ))

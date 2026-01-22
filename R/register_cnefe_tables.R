@@ -1,7 +1,5 @@
-
-
-
-register_cnefe_table <- function(con, match_type){ # nocov start
+register_cnefe_table <- function(con, match_type) {
+  # nocov start
 
   # message("register_cnefe_table")
 
@@ -12,9 +10,7 @@ register_cnefe_table <- function(con, match_type){ # nocov start
 
   # build path to local file
   files <- geocodebr::listar_dados_cache()
-  path_to_parquet <- files[grepl( paste0(cnefe_table_name,".parquet"), files)]
-
-
+  path_to_parquet <- files[grepl(paste0(cnefe_table_name, ".parquet"), files)]
 
   # # ----------------------------------------------------------------------------
   # # check if table already exists
@@ -70,11 +66,9 @@ register_cnefe_table <- function(con, match_type){ # nocov start
           FROM read_parquet('{path_to_parquet}') m
           WHERE m.municipio IN (SELECT municipio FROM unique_munis)
                AND m.estado IN (SELECT estado FROM unique_states);"
-
   )
 
   DBI::dbExecute(con, query_filter_cnefe)
-
 
   # # create index
   # if (cnefe_table_name %in% c("municipio_logradouro_cep_localidade",
@@ -97,16 +91,13 @@ register_cnefe_table <- function(con, match_type){ # nocov start
   #     DBI::dbExecute(con, query_index)
   # }
 
-
   return(TRUE)
-
 } # nocov end
 
 
-
 # create small table with unique logradouros
-register_unique_logradouros_table <- function(con, match_type){ # nocov start
-
+register_unique_logradouros_table <- function(con, match_type) {
+  # nocov start
 
   # match_type = "pn03"
   # get_reference_table(match_type)
@@ -119,7 +110,7 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
     match_type %in% c("pn03", "pa03", "pl03"),
     "municipio_logradouro_localidade",
     "municipio_logradouro_cep_localidade"
-    )
+  )
 
   # create name of table with unique logradouros
   unique_logr_tbl_name <- paste0("unique_logr_", cnefe_table_name)
@@ -127,20 +118,19 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
   # cols to keep unique values
   select_cols <- key_cols[!key_cols %in% c("numero")]
 
-
   # path to parquet
-  unique_logr_tbl_parquet <- paste0(cnefe_table_name,".parquet")
+  unique_logr_tbl_parquet <- paste0(cnefe_table_name, ".parquet")
   files <- geocodebr::listar_dados_cache()
   path_to_parquet <- files[grepl(unique_logr_tbl_parquet, files)]
 
   # should use DISTINCT rows
   DISTINCT <- "DISTINCT"
-  if (cnefe_table_name=="municipio_logradouro_localidade" |
+  if (
+    cnefe_table_name == "municipio_logradouro_localidade" |
       all(c("localidade", "cep") %in% select_cols)
-      ){
+  ) {
     DISTINCT <- ""
-    }
-
+  }
 
   # # ----------------------------------------------------------------------------
   # # check if table already exists
@@ -191,11 +181,10 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
     return(unique_logr_tbl_name)
   }
 
- select_cols <- paste(select_cols, collapse = ', ')
+  select_cols <- paste(select_cols, collapse = ', ')
 
   # se tabela raiz ja existe, filtra dela
   if (duckdb::dbExistsTable(con, cnefe_table_name)) {
-
     query_unique_logradouros <- glue::glue(
       "CREATE TEMP TABLE IF NOT EXISTS {unique_logr_tbl_name} AS
           WITH unique_munis AS (
@@ -208,10 +197,8 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
             WHERE {cnefe_table_name}.municipio IN (SELECT municipio FROM unique_munis);"
     )
 
-
-  # caso contrario, leia o parquet
+    # caso contrario, leia o parquet
   } else {
-
     query_unique_logradouros <- glue::glue(
       "CREATE TEMP TABLE IF NOT EXISTS {unique_logr_tbl_name} AS
             WITH unique_munis AS (
@@ -226,19 +213,11 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
   }
   DBI::dbExecute(con, query_unique_logradouros)
 
-
-
-
   # set index ?
   # key_cols <- get_key_cols(match_type)
 
   return(unique_logr_tbl_name)
-
 } # nocov end
-
-
-
-
 
 
 # write_all_cnefe_tables_to_db <- function(con){
@@ -284,15 +263,13 @@ register_unique_logradouros_table <- function(con, match_type){ # nocov start
 #
 # }
 
-
-
 # register all geocodebr-cnefe tables
-register_geocodebr_tables <- function(con){ # nocov start
+register_geocodebr_tables <- function(con) {
+  # nocov start
 
   all_tables <- geocodebr::listar_dados_cache()
 
-  for(i in all_tables){
-
+  for (i in all_tables) {
     tb_name <- basename(i)
     tb_name <- fs::path_ext_remove(tb_name)
 
