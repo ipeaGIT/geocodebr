@@ -92,9 +92,9 @@ match_weighted_cases <- function(
              {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
       FROM {x}
-      LEFT JOIN {y}
-      ON {join_condition}
-      WHERE {cols_not_null} AND {y}.numero IS NOT NULL AND {y}.lon IS NOT NULL
+      INNER JOIN {y}
+      ON {join_condition} AND {y}.numero IS NOT NULL AND {y}.lon IS NOT NULL
+      WHERE {cols_not_null}
     )
 
     -- PART 2: aggregate and interpolate get aprox location

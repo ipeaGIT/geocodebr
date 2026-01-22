@@ -58,7 +58,6 @@ match_weighted_cases_probabilistic <- function(
     '.temp_lograd_determ',
     cols_not_null
   )
-  cols_not_null_match <- paste("AND ", cols_not_null_match)
 
   # whether to keep all columns in the result
   colunas_encontradas <- ""
@@ -119,9 +118,9 @@ match_weighted_cases_probabilistic <- function(
              {x}.log_causa_confusao,
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
           FROM {x}
-          LEFT JOIN {y}
-          ON {join_condition_determ}
-          WHERE lon IS NOT NULL {cols_not_null_match}
+          INNER JOIN {y}
+          ON {join_condition_determ} AND {y}.lon IS NOT NULL
+          WHERE {cols_not_null_match}
           )
 
   -- PART 2: aggregate and interpolate get aprox location

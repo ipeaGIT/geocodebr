@@ -73,9 +73,9 @@ match_cases <- function(
         {x}.log_causa_confusao,
         {y}.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
-      LEFT JOIN {y}
-      ON {join_condition}
-      WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
+      INNER JOIN {y}
+      ON {join_condition} AND {y}.lon IS NOT NULL
+      WHERE {cols_not_null};"
   )
 
   DBI::dbExecute(con, query_match)
