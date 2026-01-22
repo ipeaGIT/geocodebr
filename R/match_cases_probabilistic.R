@@ -107,8 +107,8 @@ match_cases_probabilistic <- function(
         {y}.n_casos AS contagem_cnefe {additional_cols}
       FROM {x}
       INNER JOIN {y}
-      ON {join_condition_match} AND {y}.lon IS NOT NULL
-      WHERE {cols_not_null};"
+      ON {join_condition_match}
+      WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
   )
 
   DBI::dbExecute(con, query_update_db)

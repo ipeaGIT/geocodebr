@@ -119,8 +119,8 @@ match_weighted_cases_probabilistic <- function(
              {y}.n_casos AS contagem_cnefe {additional_cols_first}
           FROM {x}
           INNER JOIN {y}
-          ON {join_condition_determ} AND {y}.lon IS NOT NULL
-          WHERE {cols_not_null_match}
+          ON {join_condition_determ}
+          WHERE {cols_not_null_match} AND {y}.lon IS NOT NULL
           )
 
   -- PART 2: aggregate and interpolate get aprox location
