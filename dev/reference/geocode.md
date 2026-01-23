@@ -341,16 +341,13 @@ df <- geocodebr::geocode(
 #> 
 
 head(df)
-#>       id            nm_logradouro Numero       Cep     Bairro    nm_municipio
-#>    <int>                   <char>  <int>    <char>     <char>          <char>
-#> 1:     1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
-#> 2:     2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
-#>    code_muni  nm_uf       lat       lon precisao tipo_resultado desvio_metros
-#>        <int> <char>     <num>     <num>   <char>         <char>         <int>
-#> 1:   3303500     RJ -22.69551 -43.47116   numero           dn01             9
-#> 2:   3301702     RJ -22.77917 -43.31132   numero           dn01             6
-#>                                                       endereco_encontrado
-#>                                                                    <char>
-#> 1: RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730
-#> 2:  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050
+#>   id            nm_logradouro Numero       Cep     Bairro    nm_municipio
+#> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
+#> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
+#>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros
+#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9
+#> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6
+#>                                                      endereco_encontrado
+#> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730
+#> 2  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050
 ```

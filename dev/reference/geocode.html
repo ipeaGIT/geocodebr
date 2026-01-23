@@ -17,7 +17,7 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.'><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.0.999</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.5.0.999</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -326,18 +326,15 @@ probabilistico, e de <code>0.90</code> nos demais casos.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       id            nm_logradouro Numero       Cep     Bairro    nm_municipio</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;int&gt;                   &lt;char&gt;  &lt;int&gt;    &lt;char&gt;     &lt;char&gt;          &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:     1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:     2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    code_muni  nm_uf       lat       lon precisao tipo_resultado desvio_metros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt; &lt;char&gt;     &lt;num&gt;     &lt;num&gt;   &lt;char&gt;         &lt;char&gt;         &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:   3303500     RJ -22.69551 -43.47116   numero           dn01             9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:   3301702     RJ -22.77917 -43.31132   numero           dn01             6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                       endereco_encontrado</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                    &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id            nm_logradouro Numero       Cep     Bairro    nm_municipio</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                      endereco_encontrado</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  RUA LEOPOLDINA TOME, 46 - CENTENARIO, DUQUE DE CAXIAS - RJ, 25030-050</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

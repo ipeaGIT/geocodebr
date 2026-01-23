@@ -84,7 +84,7 @@ head(df_enderecos)
 #>   id                                       endereco_completo estado municipio
 #> 1  1 CORREGO BOA VISTA, 32 - LAJINHA, PANCAS - ES, 29750-000     ES    PANCAS
 #>          logradouro numero       cep localidade distancia_metros
-#> 1 CORREGO BOA VISTA     32 29750-000    LAJINHA         560.6426
+#> 1 CORREGO BOA VISTA     32 29750-000    LAJINHA         560.6493
 #>                     geometry
 #> 1 POINT (-40.7334 -19.29416)
 ```
