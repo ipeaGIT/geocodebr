@@ -63,7 +63,7 @@ df <- cad_con |>
          cep,
          bairro) |>
   dplyr::compute() |>
-  dplyr::slice_sample(n = sample_size) |> # sample 20K
+   # dplyr::slice_sample(n = sample_size) |> # sample 20K
   dplyr::collect()
 
 df$id <- 1:nrow(df)
@@ -103,7 +103,7 @@ gc(T,T,T)
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
 # v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
-# v0.6.0 dev      5.10m  5.10m   0.00327     916MB        0     1     0       5.1m <df>
+# v0.6.0 dev      4.99m  4.99m   0.00334    1014MB  0.00669     1     2      4.99m <df>   <Rprofmem> <bench_tm> <tibble>
 
 # v0.5.0 CRAN     2.39m !!!! em paralelo
 # v0.6.0 dev      2.16m !!!! em paralelo
@@ -116,7 +116,7 @@ gc(T,T,T)
 # v0.3.0 CRAN        2h     2h  0.000139    79.3GB   0.0176     1   127         2h <dt>
 # v0.4.0 CRAN      3.3h   3.3h 0.0000843    34.5GB  0.00244     1    29       3.3h <dt>   <Rprofmem> <bench_tm> <tibble>
 # v0.5.0 CRAN     24.9m  24.9m  0.000670    4.12GB  0.00134     1     2      24.9m <df>
-# v0.6.0 dev      18.9m  18.9m  0.000881    4.11GB 0.000881     1     1      18.9m <df>
+# v0.6.0 dev      17.9m  17.9m  0.000931    4.05GB  0.00186     1     2      17.9m <df>   <Rprofmem> <bench_tm>
 
 
 

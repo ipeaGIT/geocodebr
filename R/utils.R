@@ -84,9 +84,11 @@ update_input_db <- function(con, update_tb = 'input_padrao_db', reference_tb) {
   # reference_tb = 'output_caso_1'
 
   query_remove_matched <- glue::glue(
-    "
-    DELETE FROM {update_tb}
-    WHERE tempidgeocodebr IN (SELECT tempidgeocodebr FROM {reference_tb});"
+    "DELETE FROM {update_tb}
+     WHERE tempidgeocodebr IN (
+      SELECT tempidgeocodebr
+      FROM {reference_tb}
+    );"
   )
 
   DBI::dbExecute(con, query_remove_matched)
