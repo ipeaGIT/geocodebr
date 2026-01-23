@@ -26,6 +26,7 @@ Useful links:
 Authors:
 \itemize{
   \item Daniel Herszenhut \email{dhersz@gmail.com} (\href{https://orcid.org/0000-0001-8066-1105}{ORCID})
+  \item Gabriel Garcia de Almeida (\href{https://orcid.org/0009-0003-3557-7328}{ORCID})
 }
 
 Other contributors:

@@ -1,3 +1,19 @@
+# geocodebr 0.6.0
+
+## Mudanças grandes (Major changes)
+
+- Dependência do pacote agora usa enderecobr (>= 0.5.0), que foi reescrito em 
+Rust. Isso traz grandes ganhos de performance para processamento de bases acima 
+de 10 milhõe
+- Nova atualização da da base de referência (CNEFE padronizado v0.4.0)
+
+## Outras novidades (Other news)
+
+- Novo co-autor do pacote: Gabriel Garcia de Almeida
+
+
+
+
 # geocodebr 0.5.0
 
 

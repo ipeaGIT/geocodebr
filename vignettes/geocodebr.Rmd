@@ -25,10 +25,12 @@ Sys.setenv(OMP_THREAD_LIMIT = 2)
 Geolocalização refere-se ao ato de encontrar um ponto no espaço, geralmente
 representado por um par de coordenadas, a partir de um determinado endereço. O
 **geocodebr** permite geolocalizar endereços brasileiros de forma simples e
-eficiente e sem limite de número de consultas, a partir de dados públicos de endereços do Brasil. A principal base de referência é o Cadastro Nacional de Endereços para Fins Estatísticos (CNEFE), um conjunto de dados coletado e
-[publicado](https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html)
-pelo Instituto Brasileiro de Geografia e Estatística (IBGE) que contém os
-endereços de mais de 110 milhões de domicílios e estabelecimentos do país.
+eficiente e sem limite de número de consultas, a partir de dados públicos de 
+endereços do Brasil. A principal base de referência é o Cadastro Nacional de 
+Endereços para Fins Estatísticos (CNEFE), um conjunto de dados coletado e
+[publicado](https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html) pelo Instituto Brasileiro de Geografia e Estatística 
+(IBGE) que contém os endereços de mais de 110 milhões de domicílios e 
+estabelecimentos do país.
 
 
 ## Instalação
@@ -99,7 +101,7 @@ df <- geocodebr::geocode(
 **Nota:** A função `geocode()` requer que os dados do CNEFE estejam armazenados
 localmente. A primeita vez que a função é executada, ela baixa os dados do CNEFE 
 e salva em um cache local na sua máquina. No total, esses dados somam cerca de 
-1.2 GB, o que pode fazer com que a primeira execução da função demore. Esses dados, 
+1.4 GB, o que pode fazer com que a primeira execução da função demore. Esses dados, 
 no entanto, são salvos de forma  persistente, logo eles são baixados uma única vez.
 Ver abaixo mais informações sobre o cache de dados.
 
