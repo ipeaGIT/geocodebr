@@ -37,7 +37,7 @@ Imports:
     DBI,
     dplyr,
     duckdb,
-    enderecobr (>= 0.4.1),
+    enderecobr (>= 0.5.0),
     fs,
     glue,
     h3r,

@@ -196,13 +196,12 @@ merge_results_to_input <- function(
 
   # Create SQL query
   query <- glue::glue(
-    "SELECT * FROM
-      (SELECT {select_clause}
+    "SELECT {select_clause}
         FROM {x}
         LEFT JOIN {y}
-        ON {join_condition})
+        ON {join_condition}
       ORDER BY
-        tempidgeocodebr;"
+        {x}.tempidgeocodebr;"
   )
 
   # Execute the query and fetch the merged data

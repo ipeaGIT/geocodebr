@@ -80,7 +80,7 @@ match_weighted_cases <- function(
 
   query_match <- glue::glue(
     "
-    -- PART 1) left join to get all cases that match
+    -- PART 1) inner join to get all cases that match
 
     WITH temp_db AS (
       SELECT {x}.tempidgeocodebr,
@@ -94,7 +94,7 @@ match_weighted_cases <- function(
       FROM {x}
       INNER JOIN {y}
       ON {join_condition}
-      WHERE {cols_not_null} AND {y}.lon IS NOT NULL
+      WHERE {cols_not_null}
     )
 
     -- PART 2: aggregate and interpolate get aprox location

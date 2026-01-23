@@ -1,4 +1,5 @@
 devtools::load_all('.')
+
 library(ipeadatalake)
 library(dplyr)
 library(data.table)
@@ -82,15 +83,16 @@ stop()
 gc(T,T,T)
 #bench::system_time(
  bench::mark(iterations = 1,
-  cadgeo <- geocode(
+  cadgeo <- geocodebr::geocode(
     enderecos  = df,
     campos_endereco = campos,
     n_cores = 7, # 7
     verboso = T,
     resultado_completo = F,
-    resolver_empates = T
+    resolver_empates = T,
     #resultado_sf = F
     #, h3_res = 9
+    padronizar_enderecos = T
     )
 )
 
@@ -101,16 +103,10 @@ gc(T,T,T)
 # v0.3.0 CRAN     29.7m  29.7m  0.000562    18.3GB   0.0725     1   129      29.7m <NULL> <Rprofmem>
 # v0.4.0 CRAN     33.5m  33.5m  0.000497    8.06GB  0.00746     1    15      33.5m <NULL> <Rprofmem>
 # v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
-# v0.6.0 dev      4.64m  4.64m   0.00359     916MB  0.00359     1     1      4.64m <df>
+# v0.6.0 dev      5.10m  5.10m   0.00327     916MB        0     1     0       5.1m <df>
 
- 1 cadgeo <- geocode(e… 5.17m  5.17m   0.00323    1014MB  0.00645     1     2      5.17m <df>
-
- # v0.5.0 CRAN     2.39m em paralelo
-
-
-# args: n_cores = 7, resultado_completo = F resolver_empates = T
-# v0.5.0 CRAN     6.04m  6.04m   0.00276     916MB  0.00276     1     1      6.04m <df>   <Rprofmem> <bench_tm> <tibble>
-# main            6.52m  6.52m   0.00256    1014MB  0.00767     1     3      6.52m <df>   <Rprofmem>
+# v0.5.0 CRAN     2.39m !!!! em paralelo
+# v0.6.0 dev      2.16m !!!! em paralelo
 
 
 
@@ -119,11 +115,13 @@ gc(T,T,T)
 # expression        min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # v0.3.0 CRAN        2h     2h  0.000139    79.3GB   0.0176     1   127         2h <dt>
 # v0.4.0 CRAN      3.3h   3.3h 0.0000843    34.5GB  0.00244     1    29       3.3h <dt>   <Rprofmem> <bench_tm> <tibble>
-# v0.5.0 dev
-# v0.5.0 devcallr  21.1m  21.1m  0.000791    4.12GB 0.000791     1     1      21.1m <dt>   <Rprofmem>
-# v0.5.0 devcallr  8.99m em paralelo por uf
+# v0.5.0 CRAN     24.9m  24.9m  0.000670    4.12GB  0.00134     1     2      24.9m <df>
+# v0.6.0 dev      18.9m  18.9m  0.000881    4.11GB 0.000881     1     1      18.9m <df>
 
-# v0.5.0 + Rust    16.9m  16.9m  0.000985    4.11GB 0.000985     1     1      16.9m <df>
+
+
+# v0.5.0 devcallr  8.99m  !!!! em paralelo por uf
+
 
 
 
@@ -132,17 +130,46 @@ gc(T,T,T)
 # [1] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - JARDIM ANGELA, SAO PAULO - SP, 04929-140"
 # [2] "RUA PAULO SIMOES DA COSTA, 32 (aprox) - ALTO DO RIVIERA, SAO PAULO - SP, 04929-140"
 
- # 10 milhoes com callr
-#                             step_sec total_sec step_relative
-#                       Start     0.06      0.06           0.0
-#                Padronizacao   139.62    139.68          49.2
-# Register standardized input    22.08    161.76           7.8
-#                    Matching    87.11    248.87          30.7
-#             Resolve empates     6.55    255.42           2.3
-#   Write original input back     4.19    259.61           1.5
-#               Add precision     0.34    259.95           0.1
-#               Merge results    23.80    283.75           8.4
 
+
+## cadunico cada passo ----------------
+
+gc(T,T,T)
+bench::bench_time(
+ #bench::mark(
+ callr::r(function(df, campos) {
+   rfiles <- list.files("R", full.names = TRUE)
+   invisible(lapply(rfiles, source))
+   library("data.table")
+   # library("geocodebr")
+   cadgeo <- geocode_core(
+     enderecos = df,
+     campos_endereco = campos,
+     n_cores = 7,
+     resultado_completo = F,
+     verboso = T,
+     resolver_empates = T,
+     resultado_sf = F,
+     padronizar_enderecos = T,
+     h3_res = NULL,
+     cache = T
+   )
+ },
+ args = list(df = df, campos = campos),
+ show = TRUE
+ )
+)
+# 10 milhoes
+# v0.6.0 dev
+#                             step_sec total_sec step_relative
+#                       Start     0.00      0.00           0.0
+#                Padronizacao    29.00     29.00          11.9
+# Register standardized input    22.14     51.14           9.1
+#                    Matching   159.42    210.56          65.2
+#             Resolve empates     7.39    217.95           3.0
+#   Write original input back     3.82    221.77           1.6
+#               Add precision     0.36    222.13           0.1
+#               Merge results    22.40    244.53           9.2
 
 
 
@@ -152,8 +179,7 @@ library(future.callr)
 library(future)
 library(furrr)
 
-future::plan(future.callr::callr)
-future::plan(future.callr::callr)
+future::plan(future::multisession)
 
 df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
 
@@ -233,174 +259,13 @@ fields <- geocodebr::definir_campos(
 
 
 
-rafa <- function(){ message('rafa')
-  rais_geo <- geocodebr::geocode(
+rais_geo <- geocodebr::geocode(
     addresses_table = rais,
     address_fields = fields,
     n_cores = 7,
     full_results =  T,
     progress = T
   )
-}
-
-table(rais_geo$precision) / nrow(rais_geo) *100
-
-
-mb <- microbenchmark::microbenchmark(
-  rafa = rafa(),
-  times  = 2
-)
-
-mb
-# 8.6 milhoes de linhas
-# Unit: seconds
-#       expr      min       lq     mean   median       uq      max neval
-#       dani 423.3079 423.3079 423.3079 423.3079 423.3079 423.3079     1
-#       rafa 542.9040 542.9040 542.9040 542.9040 542.9040 542.9040     1
-# rafa_arrow 260.3829 260.3829 260.3829 260.3829 260.3829 260.3829     1
-
-# com matched address e todas categorias
-# Unit: seconds
-# expr      min      lq    mean   median       uq      max neval
-# rafa 468.2382 835.071 1275.96 1286.295 1699.844 2090.351     5
-
-
-
-rafaF <- function(){ message('rafa F')
-  rais <- geocodebr::geocode(
-    addresses_table = rais,
-    address_fields = fields,
-    n_cores = 20, # 7
-    full_results = F,
-    progress = T
-  )
-  return(2+2)
-}
-
-
-
-rafaF_db <- function(){ message('rafa F')
-  df_rafaF <- geocodebr:::geocode_db(
-    addresses_table = rais,
-    address_fields = fields,
-    n_cores = 20, # 7
-    full_results = F,
-    progress = T
-  )
-  return(2+2)
-}
-
-rafaT_db <- function(){ message('rafa T')
-  df_rafaT <- geocodebr:::geocode_db(
-    addresses_table = rais,
-    address_fields = fields,
-    n_cores = 20, # 7
-    full_results = T,
-    progress = T
-  )
-  return(2+2)
-}
-
-rafaT <- function(){ message('rafa T')
-  df_rafaT <- geocodebr::geocode(
-    addresses_table = rais,
-    address_fields = fields,
-    n_cores = 20, # 7
-    full_results = T,
-    progress = T
-  )
-  return(2+2)
-}
-
-mb <- microbenchmark::microbenchmark(
-  rafa_drop = rafaF(),
-  rafa_keep = rafaT(),
-  rafa_drop_db = rafaF_db(),
-  rafa_keep_db = rafaT_db(),
-  times  = 5
-)
-mb
-
-
-bm <- bench::mark(
-  rafa_drop = rafaF(),
-  rafa_keep = rafaT(),
-  rafa_drop_db = rafaF_db(),
-  rafa_keep_db = rafaT_db(),
-  check = F,
-  iterations  = 1
-)
-bm
-
-
-# Unit: seconds
-#    expr       min        lq     mean    median       uq      max neval
-#    rafa_drop  320.9953  460.6672 1274.692  685.1642 2378.397 2528.236     5
-#    rafa_keep 1397.4498 2468.7379 2887.765 3072.3166 3670.223 3830.096     5
-# rafa_drop_db 2387.5650 2449.5906 2527.181 2569.6456 2584.436 2644.668     5
-# rafa_keep_db 2060.3775 2823.0493 3194.852 3383.1116 3485.412 4222.308     5
-
-
-
-
-
-
-
-data.table::setnames(rais, old = 'match_type', new = 'match_type_equal')
-data.table::setnames(rais, old = 'lon', new = 'lon_equal')
-data.table::setnames(rais, old = 'lat', new = 'lat_equal')
-
-rais_like <- geocodebr:::geocode_like(
-  addresses_table = rais,
-  address_fields = fields,
-  n_cores = 20, # 7
-  progress = F
-)
-
-tictoc::toc()
-
-table(rais_like$match_type_equal, rais_like$match_type)
-
-result_arcgis <- table(rais_like$Addr_type) / nrow(rais_like) *100
-result_geocodebr <- table(rais_like$match_type) / nrow(rais_like) *100
-
-aaaa <- table(rais_like$match_type, rais_like$Addr_type) / nrow(rais_like) *100
-aaaa <- as.data.frame(aaaa)
-aaaa <- subset(aaaa, Freq>0)
-
-
-data.table::fwrite(aaaa, 'rais.csv', dec = ',', sep = '-')
-
-
-
-t <- subset(rais_like, match_type=='case_09' & Addr_type==	'PointAddress')
-
-t_arc <- sfheaders::sf_point(t[1,], x = 'lon_arcgis', y = 'lat_arcgis',keep = T)
-t_geo <- sfheaders::sf_point(t[1,], x = 'lon', y = 'lat',keep = T)
-
-st_crs(t_arc) <- 4674
-st_crs(t_geo) <- 4674
-
-mapview::mapviewOptions(platform = 'mapdeck', )
-
-mapview(t_arc) + t_geo
-sf::st_distance(t_geo, t_arc)
-
-
-
-jp <- geocodebr::get_cache_dir() |>
-  geocodebr:::arrow_open_dataset()  |>
-  filter(estado=="PB") |>
-  filter(municipio == "JOAO PESSOA") |>
-  collect()
-
-head(jp)
-
-subset(jp , logradouro_sem_numero %like% "DESEMBARGADOR SOUTO MAIOR")
-subset(t , logradouro_no_numbers %like% "DESEMBARGADOR SOUTO MAIOR")
-
-
-
 
 
 

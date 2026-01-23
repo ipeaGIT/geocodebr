@@ -108,7 +108,7 @@ match_cases_probabilistic <- function(
       FROM {x}
       INNER JOIN {y}
       ON {join_condition_match}
-      WHERE {cols_not_null} AND {y}.lon IS NOT NULL;"
+      WHERE {cols_not_null};"
   )
 
   DBI::dbExecute(con, query_update_db)

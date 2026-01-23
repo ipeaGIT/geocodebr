@@ -64,8 +64,8 @@ register_cnefe_table <- function(con, match_type) {
           )
           SELECT *
           FROM read_parquet('{path_to_parquet}') m
-          WHERE m.municipio IN (SELECT municipio FROM unique_munis)
-               AND m.estado IN (SELECT estado FROM unique_states);"
+          WHERE m.estado IN (SELECT estado FROM unique_states)
+               AND m.municipio IN (SELECT municipio FROM unique_munis);"
   )
 
   DBI::dbExecute(con, query_filter_cnefe)
@@ -190,12 +190,17 @@ register_unique_logradouros_table <- function(con, match_type) {
           WITH unique_munis AS (
               SELECT DISTINCT municipio
               FROM input_padrao_db
+          ),
+          unique_states AS (
+              SELECT DISTINCT estado
+              FROM input_padrao_db
           )
 
           SELECT {DISTINCT} {select_cols}
             FROM {cnefe_table_name}
-            WHERE {cnefe_table_name}.municipio IN (SELECT municipio FROM unique_munis);"
-    )
+            WHERE {cnefe_table_name}.estado IN (SELECT estado FROM unique_states)
+              AND {cnefe_table_name}.municipio IN (SELECT municipio FROM unique_munis);"
+      )
 
     # caso contrario, leia o parquet
   } else {

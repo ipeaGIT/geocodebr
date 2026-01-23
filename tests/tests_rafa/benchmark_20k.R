@@ -18,17 +18,19 @@ campos <- geocodebr::definir_campos(
 )
 
 
-bench::mark(
-  v3 <- geocode(
+bench::mark(iterations = 5,
+  a <- geocodebr::geocode(
     enderecos = input_df,
     campos_endereco = campos,
     n_cores = 7,
     resultado_completo = F,
     verboso = T,
-    # resultado_sf = T,
+    resultado_sf = F,
     resolver_empates = T,
-    # h3_res = 9,
-    cache = T,
-    padronizar_enderecos = T
+    cache = T
   )
 )
+
+#          expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
+# streetmap 0.6.0 dev  7.51s  7.96s     0.127    2.03MB   0.0317     4     1      31.5s <df>   <Rprofmem>
+

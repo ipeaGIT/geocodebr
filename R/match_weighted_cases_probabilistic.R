@@ -10,8 +10,8 @@ match_weighted_cases_probabilistic <- function(
   output_tb = "output_db",
   key_cols = key_cols,
   match_type = match_type,
-  resultado_completo
-) {
+  resultado_completo) {
+
   # match_type = "pn01"
 
   # get corresponding parquet table
@@ -26,7 +26,6 @@ match_weighted_cases_probabilistic <- function(
   unique_logradouros_tbl <- register_unique_logradouros_table(con, match_type)
 
   # 2nd step: update input_padrao_db with the most probable logradouro ---------
-
   calculate_string_dist(con, match_type, unique_logradouros_tbl)
 
   # 3rd step: match deterministico --------------------------------------------------------
@@ -106,7 +105,7 @@ match_weighted_cases_probabilistic <- function(
 
   query_match <- glue::glue(
     "
-  -- PART 1) left join to get all cases that match
+  -- PART 1) inner join to get all cases that match
   WITH temp_db AS (
       SELECT {x}.tempidgeocodebr,
              {x}.numero,
@@ -120,7 +119,7 @@ match_weighted_cases_probabilistic <- function(
           FROM {x}
           INNER JOIN {y}
           ON {join_condition_determ}
-          WHERE {cols_not_null_match} AND {y}.lon IS NOT NULL
+          WHERE {cols_not_null_match}
           )
 
   -- PART 2: aggregate and interpolate get aprox location
