@@ -32,6 +32,9 @@ Authors:
 - Daniel Herszenhut <dhersz@gmail.com>
   ([ORCID](https://orcid.org/0000-0001-8066-1105))
 
+- Gabriel Garcia de Almeida
+  ([ORCID](https://orcid.org/0009-0003-3557-7328))
+
 Other contributors:
 
 - Arthur Bazolli <baz.arthur@gmail.com> \[contributor\]

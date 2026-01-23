@@ -8,6 +8,9 @@
 - **Daniel Herszenhut**. Author.
   [](https://orcid.org/0000-0001-8066-1105)
 
+- **Gabriel Garcia de Almeida**. Author.
+  [](https://orcid.org/0009-0003-3557-7328)
+
 - **Arthur Bazolli**. Contributor.
 
 - **Pedro Milreu Cunha**. Contributor.

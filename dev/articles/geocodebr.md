@@ -93,7 +93,7 @@ df <- geocodebr::geocode(
 [`geocode()`](https://ipeagit.github.io/geocodebr/dev/reference/geocode.md)
 requer que os dados do CNEFE estejam armazenados localmente. A primeita
 vez que a função é executada, ela baixa os dados do CNEFE e salva em um
-cache local na sua máquina. No total, esses dados somam cerca de 1.2 GB,
+cache local na sua máquina. No total, esses dados somam cerca de 1.4 GB,
 o que pode fazer com que a primeira execução da função demore. Esses
 dados, no entanto, são salvos de forma persistente, logo eles são
 baixados uma única vez. Ver abaixo mais informações sobre o cache de
