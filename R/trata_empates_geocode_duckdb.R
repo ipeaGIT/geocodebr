@@ -80,13 +80,13 @@ trata_empates_geocode_duckdb <- function(
     additional_cols_final <- glue::glue(
       ", logradouro_encontrado, numero_encontrado, cep_encontrado,
         localidade_encontrada, municipio_encontrado, estado_encontrado,
-        similaridade_logradouro, contagem_cnefe, empate"
+        similaridade_logradouro, contagem_cnefe, empate, cod_setor"
     )
 
     cols_encontradas <- glue::glue(
       ", logradouro_encontrado, numero_encontrado, cep_encontrado,
         localidade_encontrada, municipio_encontrado, estado_encontrado,
-        similaridade_logradouro"
+        similaridade_logradouro, cod_setor"
     )
   }
 

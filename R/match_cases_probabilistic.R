@@ -91,6 +91,11 @@ match_cases_probabilistic <- function(
       additional_cols,
       ", input_padrao_db.similaridade_logradouro AS similaridade_logradouro"
     )
+
+    # adiciona codigo do setor censitario
+    additional_cols <- paste0(additional_cols, glue::glue(", {y}.cod_setor AS cod_setor"))
+    colunas_encontradas <- paste0(colunas_encontradas, ", cod_setor")
+
   }
 
   # summarize query
@@ -113,7 +118,7 @@ match_cases_probabilistic <- function(
 
   DBI::dbExecute(con, query_update_db)
   # DBI::dbExecute(con, query_update_db)
-  # c <- DBI::dbReadTable(con, 'output_db')
+  # b <- DBI::dbReadTable(con, 'output_db')
 
   # UPDATE input_padrao_db: Remove observations found in previous step
   temp_n <- update_input_db(

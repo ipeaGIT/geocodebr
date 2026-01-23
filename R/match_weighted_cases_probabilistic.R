@@ -99,6 +99,12 @@ match_weighted_cases_probabilistic <- function(
       additional_cols_second
     )
     additional_cols_second <- paste0(", ", additional_cols_second)
+
+    # adiciona codigo do setor censitario
+    additional_cols_first <- paste0(additional_cols_first, glue::glue(", {y}.cod_setor AS cod_setor"))
+    additional_cols_second <- paste0(additional_cols_second, glue::glue(", FIRST(cod_setor)"))
+    colunas_encontradas <- paste0(colunas_encontradas, ", cod_setor")
+
   }
 
   # Match query  --------------------------------------------------------

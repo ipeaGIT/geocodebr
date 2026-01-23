@@ -58,7 +58,14 @@ match_cases <- function(
       additional_cols
     )
     additional_cols <- paste0(", ", additional_cols)
+
+    # adiciona codigo do setor censitario
+    additional_cols <- paste0(additional_cols, glue::glue(", {y}.cod_setor AS cod_setor"))
+    colunas_encontradas <- paste0(colunas_encontradas, ", cod_setor")
+
   }
+
+
 
   # summarize query
   query_match <- glue::glue(

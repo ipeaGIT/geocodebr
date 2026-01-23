@@ -313,23 +313,27 @@ geocode_core <- function(
   # create an empty output table that will be populated -----------------------------------------------
 
   # Define schema
-  schema_output_db <- arrow::schema(
-    tempidgeocodebr = arrow::int32(),
-    lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
-    lon = arrow::float16(),
-    endereco_encontrado = arrow::string(),
-    logradouro_encontrado = arrow::string(),
-    tipo_resultado = arrow::string(),
-    contagem_cnefe = arrow::int32(),
-    desvio_metros = arrow::int32(),
-    log_causa_confusao = arrow::boolean(),
-    similaridade_logradouro = arrow::float16()
-  )
+  if (isFALSE(resultado_completo)) {
 
-  if (isTRUE(resultado_completo)) {
     schema_output_db <- arrow::schema(
       tempidgeocodebr = arrow::int32(),
-      lat = arrow::float16(), # Equivalent to NUMERIC(8,6)
+      lat = arrow::float16(),
+      # Equivalent to NUMERIC(8,6)
+      lon = arrow::float16(),
+      endereco_encontrado = arrow::string(),
+      logradouro_encontrado = arrow::string(),
+      tipo_resultado = arrow::string(),
+      contagem_cnefe = arrow::int32(),
+      desvio_metros = arrow::int32(),
+      log_causa_confusao = arrow::boolean(),
+      similaridade_logradouro = arrow::float16()
+    )
+
+  } else {
+    schema_output_db <- arrow::schema(
+      tempidgeocodebr = arrow::int32(),
+      lat = arrow::float16(),
+      # Equivalent to NUMERIC(8,6)
       lon = arrow::float16(),
       endereco_encontrado = arrow::string(),
       logradouro_encontrado = arrow::string(),
@@ -343,7 +347,8 @@ geocode_core <- function(
       cep_encontrado = arrow::string(),
       municipio_encontrado = arrow::string(),
       estado_encontrado = arrow::string(),
-      similaridade_logradouro = arrow::float16()
+      similaridade_logradouro = arrow::float16(),
+      cod_setor = arrow::string()
     )
   }
 

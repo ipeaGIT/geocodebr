@@ -168,7 +168,8 @@ merge_results_to_input <- function(
       'estado_encontrado',
       'similaridade_logradouro',
       'contagem_cnefe',
-      'empate'
+      'empate',
+      'cod_setor'
     )
 
     # relace NULL similaridade_logradouro as 1 because they were found deterministically
