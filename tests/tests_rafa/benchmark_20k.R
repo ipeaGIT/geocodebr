@@ -33,3 +33,4 @@ bench::mark(iterations = 5,
 
 #          expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
 # streetmap 0.6.0 dev  7.10s  7.26s     0.136    5.47MB        0     5     0      36.7s <df>   <Rprofmem>
+# laptop    0.6.0 CRAN  5.2s  5.53s     0.174    7.46MB        0     5     0      28.8s <df>
