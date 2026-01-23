@@ -125,3 +125,13 @@
 #' determinístico em ao menos um dos campos "cep" e "localidade".
 #' O geocodebr utiliza uma semelhança mínima de `0.85` nos casos de match
 #' probabilistico, e de `0.90` nos demais casos.
+#'
+#' # Código do setor censitário
+#'
+#' Quando o usuário passa o argumento `resultado_completo = TRUE`, a função
+#' `geocode()` também retorna a coluna `cod_setor` com o código do setor
+#' censitário do endereço encontrado. Atualmente, a função somente retorna o
+#' código do setor dos casos em todos os pontos do CNEFE correspondentes estão
+#' 100% dentro de um único setor censitário. Quanto os dados do CNEFE
+#' correspondentes ao endereço buscado estão em mais de um setor, o resultado da
+#' coluna `cod_setor` é `NA`.
