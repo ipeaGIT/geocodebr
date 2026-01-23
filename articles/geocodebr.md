@@ -93,7 +93,7 @@ df <- geocodebr::geocode(
 [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
 requer que os dados do CNEFE estejam armazenados localmente. A primeita
 vez que a função é executada, ela baixa os dados do CNEFE e salva em um
-cache local na sua máquina. No total, esses dados somam cerca de 1.2 GB,
+cache local na sua máquina. No total, esses dados somam cerca de 1.4 GB,
 o que pode fazer com que a primeira execução da função demore. Esses
 dados, no entanto, são salvos de forma persistente, logo eles são
 baixados uma única vez. Ver abaixo mais informações sobre o cache de
@@ -185,12 +185,12 @@ geocodebr::listar_pasta_cache()
 #> [1] "/home/runner/.cache/R/geocodebr"
 
 geocodebr::listar_dados_cache()
-#> [1] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_cep_localidade.parquet"                  
-#> [2] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_cep.parquet"                             
-#> [3] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_localidade.parquet"                      
-#> [4] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_cep_localidade.parquet"       
-#> [5] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_localidade.parquet"           
-#> [6] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_numero_cep_localidade.parquet"
-#> [7] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio_logradouro_numero_localidade.parquet"    
-#> [8] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.3.0/municipio.parquet"
+#> [1] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_cep_localidade.parquet"                  
+#> [2] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_cep.parquet"                             
+#> [3] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_localidade.parquet"                      
+#> [4] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_logradouro_cep_localidade.parquet"       
+#> [5] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_logradouro_localidade.parquet"           
+#> [6] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_logradouro_numero_cep_localidade.parquet"
+#> [7] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio_logradouro_numero_localidade.parquet"    
+#> [8] "/home/runner/.cache/R/geocodebr/geocodebr_data_release_v0.4.0/municipio.parquet"
 ```

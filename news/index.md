@@ -1,5 +1,30 @@
 # Changelog
 
+## geocodebr 0.6.0
+
+CRAN release: 2026-01-23
+
+### Mudanças grandes (Major changes)
+
+- A função
+  [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
+  agora retorna o codigo do setor censitário do endereço encontrado
+  quando `resultado_completo = TRUE`. Essa alteração atende parcialmente
+  ao [issue](https://github.com/ipeaGIT/geocodebr/issues/66)
+  [\#66](https://github.com/ipeaGIT/geocodebr/issues/66) porque ela
+  somente retorna o código do setor dos casos em que o endeço encontrado
+  está 100% dentro de um único setor censitário. Quanto os dados do
+  CNEFE correspondentes ao endereço buscado estão em mais de um setor, o
+  resultado da coluna `cod_setor` é `NA`.
+- Dependência do pacote agora usa enderecobr (\>= 0.5.0), que foi
+  reescrito em Rust. Isso traz grandes ganhos de performance para
+  processamento de bases acima de 10 milhões
+- Nova atualização da da base de referência (CNEFE padronizado v0.4.0)
+
+### Outras novidades (Other news)
+
+- Novo co-autor do pacote: Gabriel Garcia de Almeida
+
 ## geocodebr 0.5.0
 
 CRAN release: 2025-12-09

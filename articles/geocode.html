@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.svg" class="logo" alt=""><h1>Geocode</h1>
             
-            <h4 data-toc-skip class="date">2026-01-22</h4>
+            <h4 data-toc-skip class="date">2026-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/vignettes/geocode.Rmd" class="external-link"><code>vignettes/geocode.Rmd</code></a></small>
       <div class="d-none name"><code>geocode.Rmd</code></div>
@@ -144,16 +144,16 @@ entanto, são salvos de forma persistente, logo eles são baixados uma
 <span><span class="co">#&gt; 6  6      Rua Princesa Isabel    263           Estacao Experimental</span></span>
 <span><span class="co">#&gt;      nm_municipio code_muni nm_uf        lat       lon   precisao</span></span>
 <span><span class="co">#&gt; 1     Nova Iguacu   3303500    RJ -22.695509 -43.47116     numero</span></span>
-<span><span class="co">#&gt; 2 Duque de Caxias   3301702    RJ -22.779175 -43.31132     numero</span></span>
-<span><span class="co">#&gt; 3  Angra dos Reis   3300100    RJ -22.978800 -44.20847 logradouro</span></span>
+<span><span class="co">#&gt; 2 Duque de Caxias   3301702    RJ -22.779174 -43.31132     numero</span></span>
+<span><span class="co">#&gt; 3  Angra dos Reis   3300100    RJ -22.978800 -44.20846 logradouro</span></span>
 <span><span class="co">#&gt; 4  Rio de Janeiro   3304557    RJ -22.869117 -43.51140 logradouro</span></span>
-<span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.929865 -43.97214     numero</span></span>
+<span><span class="co">#&gt; 5     Mangaratiba   3302601    RJ -22.929864 -43.97214     numero</span></span>
 <span><span class="co">#&gt; 6      Rio Branco   1200401    AC  -9.963438 -67.83559     numero</span></span>
 <span><span class="co">#&gt;   tipo_resultado desvio_metros</span></span>
 <span><span class="co">#&gt; 1           dn01             9</span></span>
 <span><span class="co">#&gt; 2           dn01             6</span></span>
-<span><span class="co">#&gt; 3           dl01            59</span></span>
-<span><span class="co">#&gt; 4           dl01           300</span></span>
+<span><span class="co">#&gt; 3           dl01            57</span></span>
+<span><span class="co">#&gt; 4           dl01           268</span></span>
 <span><span class="co">#&gt; 5           dn01             6</span></span>
 <span><span class="co">#&gt; 6           dn03             6</span></span>
 <span><span class="co">#&gt;                                                           endereco_encontrado</span></span>
@@ -400,6 +400,21 @@ edifício. Nesses casos, o valor do <code>desvio_metros</code> tende a
 ser bem pequeno.</p>
 </div>
 </div>
+<div class="section level2">
+<h2 id="código-do-setor-censitário">Código do setor censitário<a class="anchor" aria-label="anchor" href="#c%C3%B3digo-do-setor-censit%C3%A1rio"></a>
+</h2>
+<ul>
+<li>Quando o usuário passa o argumento
+<code>resultado_completo = TRUE</code>, a função <code><a href="../reference/geocode.html">geocode()</a></code>
+também retorna a coluna <code>cod_setor</code> com o código do setor
+censitário do endereço encontrado. Atualmente, a função somente retorna
+o código do setor dos casos em que todos os pontos do CNEFE
+correspondentes estão 100% dentro de um único setor censitário. Quando
+os dados do CNEFE correspondentes ao endereço buscado estão em mais de
+um setor, o resultado da coluna <code>cod_setor</code> é
+<code>NA</code>.</li>
+</ul>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
@@ -407,7 +422,7 @@ ser bem pequeno.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Gabriel Garcia de Almeida, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,6 +43,19 @@
       <small>Source: <a href="https://github.com/ipeaGIT/geocodebr/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="geocodebr-060">geocodebr 0.6.0<a class="anchor" aria-label="anchor" href="#geocodebr-060"></a></h2><p class="text-muted">CRAN release: 2026-01-23</p>
+<div class="section level3">
+<h3 id="mudanças-grandes-major-changes-0-6-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-6-0"></a></h3>
+<ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora retorna o codigo do setor censitário do endereço encontrado quando <code>resultado_completo = TRUE</code>. Essa alteração atende parcialmente ao <a href="https://github.com/ipeaGIT/geocodebr/issues/66" class="external-link">issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/66" class="external-link">#66</a> porque ela somente retorna o código do setor dos casos em que o endeço encontrado está 100% dentro de um único setor censitário. Quanto os dados do CNEFE correspondentes ao endereço buscado estão em mais de um setor, o resultado da coluna <code>cod_setor</code> é <code>NA</code>.</li>
+<li>Dependência do pacote agora usa enderecobr (&gt;= 0.5.0), que foi reescrito em Rust. Isso traz grandes ganhos de performance para processamento de bases acima de 10 milhões</li>
+<li>Nova atualização da da base de referência (CNEFE padronizado v0.4.0)</li>
+</ul></div>
+<div class="section level3">
+<h3 id="outras-novidades-other-news-0-6-0">Outras novidades (Other news)<a class="anchor" aria-label="anchor" href="#outras-novidades-other-news-0-6-0"></a></h3>
+<ul><li>Novo co-autor do pacote: Gabriel Garcia de Almeida</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="geocodebr-050">geocodebr 0.5.0<a class="anchor" aria-label="anchor" href="#geocodebr-050"></a></h2><p class="text-muted">CRAN release: 2025-12-09</p>
 <div class="section level3">
@@ -144,7 +157,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Gabriel Garcia de Almeida, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -51,9 +51,9 @@ head(df_enderecos)
 #> 2     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA
 #> 3     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13
 #>   distancia_metros                    geometry
-#> 1         560.6426  POINT (-40.7334 -19.29416)
-#> 2         364.7792 POINT (-51.49634 0.3649148)
-#> 3         373.7936 POINT (-39.92601 -18.69095)
+#> 1         560.6493  POINT (-40.7334 -19.29416)
+#> 2         364.7801 POINT (-51.49634 0.3649148)
+#> 3         373.7088 POINT (-39.92601 -18.69095)
 ```
 
 Por padrão, a função busca pelo endereço mais próximo num raio

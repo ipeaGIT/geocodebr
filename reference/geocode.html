@@ -17,7 +17,7 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.'><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -293,6 +293,16 @@ determinístico em ao menos um dos campos "cep" e "localidade".
 O geocodebr utiliza uma semelhança mínima de <code>0.85</code> nos casos de match
 probabilistico, e de <code>0.90</code> nos demais casos.</p>
     </div>
+    <div class="section level2">
+    <h2 id="c-digo-do-setor-censit-rio">Código do setor censitário<a class="anchor" aria-label="anchor" href="#c-digo-do-setor-censit-rio"></a></h2>
+    <p>Quando o usuário passa o argumento <code>resultado_completo = TRUE</code>, a função
+<code>geocode()</code> também retorna a coluna <code>cod_setor</code> com o código do setor
+censitário do endereço encontrado. Atualmente, a função somente retorna o
+código do setor dos casos em todos os pontos do CNEFE correspondentes estão
+100% dentro de um único setor censitário. Quanto os dados do CNEFE
+correspondentes ao endereço buscado estão em mais de um setor, o resultado da
+coluna <code>cod_setor</code> é <code>NA</code>.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -342,7 +352,7 @@ probabilistico, e de <code>0.90</code> nos demais casos.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
+  <p>Developed by Rafael H. M. Pereira, Daniel Herszenhut, Gabriel Garcia de Almeida, ITpS - Instituto Todos pela Saúde, Ipea - Instituto de Pesquisa Econômica Aplicada.</p>
 </div>
 
 <div class="pkgdown-footer-right">

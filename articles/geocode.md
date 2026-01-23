@@ -76,16 +76,16 @@ head(ends_geo)
 #> 6  6      Rua Princesa Isabel    263           Estacao Experimental
 #>      nm_municipio code_muni nm_uf        lat       lon   precisao
 #> 1     Nova Iguacu   3303500    RJ -22.695509 -43.47116     numero
-#> 2 Duque de Caxias   3301702    RJ -22.779175 -43.31132     numero
-#> 3  Angra dos Reis   3300100    RJ -22.978800 -44.20847 logradouro
+#> 2 Duque de Caxias   3301702    RJ -22.779174 -43.31132     numero
+#> 3  Angra dos Reis   3300100    RJ -22.978800 -44.20846 logradouro
 #> 4  Rio de Janeiro   3304557    RJ -22.869117 -43.51140 logradouro
-#> 5     Mangaratiba   3302601    RJ -22.929865 -43.97214     numero
+#> 5     Mangaratiba   3302601    RJ -22.929864 -43.97214     numero
 #> 6      Rio Branco   1200401    AC  -9.963438 -67.83559     numero
 #>   tipo_resultado desvio_metros
 #> 1           dn01             9
 #> 2           dn01             6
-#> 3           dl01            59
-#> 4           dl01           300
+#> 3           dl01            57
+#> 4           dl01           268
 #> 5           dn01             6
 #> 6           dn03             6
 #>                                                           endereco_encontrado
@@ -270,3 +270,15 @@ gerar resultados com altíssimo grau de incerteza. Em várias cidades, no
 entanto, um CEP pode ser circunscrito a uma área muito pequena e as
 vezes até um único edifício. Nesses casos, o valor do `desvio_metros`
 tende a ser bem pequeno.
+
+## Código do setor censitário
+
+- Quando o usuário passa o argumento `resultado_completo = TRUE`, a
+  função
+  [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
+  também retorna a coluna `cod_setor` com o código do setor censitário
+  do endereço encontrado. Atualmente, a função somente retorna o código
+  do setor dos casos em que todos os pontos do CNEFE correspondentes
+  estão 100% dentro de um único setor censitário. Quando os dados do
+  CNEFE correspondentes ao endereço buscado estão em mais de um setor, o
+  resultado da coluna `cod_setor` é `NA`.
