@@ -10,7 +10,7 @@ de um único setor censitário. Quanto os dados do CNEFE correspondentes ao ende
 buscado estão em mais de um setor, o resultado da coluna `cod_setor` é `NA`.
 - Dependência do pacote agora usa enderecobr (>= 0.5.0), que foi reescrito em 
 Rust. Isso traz grandes ganhos de performance para processamento de bases acima 
-de 10 milhõe
+de 10 milhões
 - Nova atualização da da base de referência (CNEFE padronizado v0.4.0)
 
 ## Outras novidades (Other news)

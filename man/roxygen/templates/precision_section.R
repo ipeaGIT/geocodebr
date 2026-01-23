@@ -131,7 +131,7 @@
 #' Quando o usuário passa o argumento `resultado_completo = TRUE`, a função
 #' `geocode()` também retorna a coluna `cod_setor` com o código do setor
 #' censitário do endereço encontrado. Atualmente, a função somente retorna o
-#' código do setor dos casos em todos os pontos do CNEFE correspondentes estão
-#' 100% dentro de um único setor censitário. Quanto os dados do CNEFE
+#' código do setor dos casos em que todos os pontos do CNEFE correspondentes estão
+#' 100% dentro de um único setor censitário. Quando os dados do CNEFE
 #' correspondentes ao endereço buscado estão em mais de um setor, o resultado da
 #' coluna `cod_setor` é `NA`.
