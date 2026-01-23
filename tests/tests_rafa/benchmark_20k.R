@@ -32,4 +32,4 @@ bench::mark(iterations = 5,
 )
 
 #          expression    min median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc total_time result memory
-# streetmap 0.6.0 dev  7.30s  7.83s     0.127    3.03MB   0.0318     4     1      31.4s <df>   <Rprofmem> <bench_tm>
+# streetmap 0.6.0 dev  7.10s  7.26s     0.136    5.47MB        0     5     0      36.7s <df>   <Rprofmem>

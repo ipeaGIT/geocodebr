@@ -56,7 +56,7 @@ test_that("expected output", {
     "desvio_metros", "endereco_encontrado", "logradouro_encontrado",
     "numero_encontrado", "cep_encontrado", "localidade_encontrada",
     "municipio_encontrado", "estado_encontrado", "similaridade_logradouro",
-    "contagem_cnefe", "empate")
+    "contagem_cnefe", "empate", "cod_setor")
 
   testthat::expect_true(all(all_cols_completas %in% names(full_output)))
 

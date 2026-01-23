@@ -108,6 +108,7 @@ input_df <- arrow::read_parquet(data_path)
 #   municipio = 'municipio',
 #   estado = 'uf')
 # resolver_empates = T
+# padronizar_enderecos = T
 # h3_res = NULL
 
 # benchmark different approaches ------------------------------------------------------------------
