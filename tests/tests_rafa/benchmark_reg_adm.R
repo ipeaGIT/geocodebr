@@ -120,9 +120,12 @@ gc(T,T,T)
 
 
 
-# v0.5.0 devcallr  8.99m  !!!! em paralelo por uf
+ # v0.5.0  8.99m  !!!! em paralelo por uf
+ # v0.6.0  7.24m  !!!! em paralelo por uf
 
-
+# encontra setor censitario para % do cad unico
+1- sum(is.na(cadgeo$cod_setor)) / nrow(cadgeo)
+# v0.6.0: 0.6438606
 
 
 # nao era para ser empate
@@ -190,13 +193,15 @@ bench::bench_time(
 
 ## cadunico parallel callr ----------------
 
-library(future.callr)
+# library(future.callr)
 library(future)
 library(furrr)
 
+df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
+df$code_muni <- enderecobr::padronizar_municipios(df$code_muni)
+
 future::plan(future::multisession)
 
-df$abbrev_state <- enderecobr::padronizar_estados(df$abbrev_state)
 
 gc(T,T,T)
 bench::bench_time(
