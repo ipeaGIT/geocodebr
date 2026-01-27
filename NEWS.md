@@ -1,4 +1,13 @@
-# geocodebr 0.6.0
+# geocodebr v0.6.1
+
+## Correção de bugs (Bug fixes)
+
+- Essa versão corrige um erro que havia nas coordenadas co CNEFE utilizadas na 
+v0.6.0.
+
+
+
+# geocodebr v0.6.0
 
 ## Mudanças grandes (Major changes)
 
@@ -20,7 +29,7 @@ de 10 milhões
 
 
 
-# geocodebr 0.5.0
+# geocodebr v0.5.0
 
 
 ## Mudanças grandes (Major changes)
@@ -55,7 +64,7 @@ memória RAM e não tem vazamento de memória. [#48](https://github.com/ipeaGIT/
 
 
 
-# geocodebr 0.4.0
+# geocodebr v0.4.0
 
 ## Mudanças grandes (Major changes)
 
@@ -82,7 +91,7 @@ dentro do DuckDB.
 
 
 
-# geocodebr 0.3.0
+# geocodebr v0.3.0
 
 ## Mudanças grandes (Major changes)
 
@@ -110,7 +119,7 @@ data release. [Encerra issue #64](https://github.com/ipeaGIT/geocodebr/issues/64
 Mas os dados das versões anteriores `v0.2.0` devem ser apagados manualmente com
 a função `deletar_pasta_cache()`.
 
-# geocodebr 0.2.1
+# geocodebr v0.2.1
 
 ## Correção de bugs (Bug fixes)
 
@@ -118,7 +127,7 @@ a função `deletar_pasta_cache()`.
 a partir do match case `"pl01"`. [Encerra issue #56](https://github.com/ipeaGIT/geocodebr/issues/56).
 
 
-# geocodebr 0.2.0
+# geocodebr v0.2.0
 
 ## Mudanças grandes (Major changes)
 
@@ -141,13 +150,13 @@ a partir do match case `"pl01"`. [Encerra issue #56](https://github.com/ipeaGIT/
 
 - Arthur Bazzolli
 
-# geocodebr 0.1.1
+# geocodebr v0.1.1
 
 ## Correção de bugs
 
 - Corrigido bug na organização de pastas do cache de dados. Fecha o [issue 29](https://github.com/ipeaGIT/geocodebr/issues/29).
 
 
-# geocodebr 0.1.0
+# geocodebr v0.1.0
 
 - Primeira versão.

@@ -251,8 +251,8 @@ probabilistico, e de \code{0.90} nos demais casos.
 Quando o usuário passa o argumento \code{resultado_completo = TRUE}, a função
 \code{geocode()} também retorna a coluna \code{cod_setor} com o código do setor
 censitário do endereço encontrado. Atualmente, a função somente retorna o
-código do setor dos casos em todos os pontos do CNEFE correspondentes estão
-100\% dentro de um único setor censitário. Quanto os dados do CNEFE
+código do setor dos casos em que todos os pontos do CNEFE correspondentes estão
+100\% dentro de um único setor censitário. Quando os dados do CNEFE
 correspondentes ao endereço buscado estão em mais de um setor, o resultado da
 coluna \code{cod_setor} é \code{NA}.
 }
