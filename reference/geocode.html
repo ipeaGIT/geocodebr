@@ -17,7 +17,7 @@ utilizam o sistema de coordenadas geográficas SIRGAS 2000, EPSG 4674.'><meta pr
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -298,8 +298,8 @@ probabilistico, e de <code>0.90</code> nos demais casos.</p>
     <p>Quando o usuário passa o argumento <code>resultado_completo = TRUE</code>, a função
 <code>geocode()</code> também retorna a coluna <code>cod_setor</code> com o código do setor
 censitário do endereço encontrado. Atualmente, a função somente retorna o
-código do setor dos casos em todos os pontos do CNEFE correspondentes estão
-100% dentro de um único setor censitário. Quanto os dados do CNEFE
+código do setor dos casos em que todos os pontos do CNEFE correspondentes estão
+100% dentro de um único setor censitário. Quando os dados do CNEFE
 correspondentes ao endereço buscado estão em mais de um setor, o resultado da
 coluna <code>cod_setor</code> é <code>NA</code>.</p>
     </div>
@@ -340,7 +340,7 @@ coluna <code>cod_setor</code> é <code>NA</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                      endereco_encontrado</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730</span>

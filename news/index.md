@@ -1,6 +1,15 @@
 # Changelog
 
-## geocodebr 0.6.0
+## geocodebr v0.6.1
+
+CRAN release: 2026-01-27
+
+### Correção de bugs (Bug fixes)
+
+- Essa versão corrige um erro que havia nas coordenadas co CNEFE
+  utilizadas na v0.6.0.
+
+## geocodebr v0.6.0
 
 CRAN release: 2026-01-23
 
@@ -25,7 +34,7 @@ CRAN release: 2026-01-23
 
 - Novo co-autor do pacote: Gabriel Garcia de Almeida
 
-## geocodebr 0.5.0
+## geocodebr v0.5.0
 
 CRAN release: 2025-12-09
 
@@ -78,7 +87,7 @@ CRAN release: 2025-12-09
   não tem vazamento de memória.
   [\#48](https://github.com/ipeaGIT/geocodebr/issues/48)
 
-## geocodebr 0.4.0
+## geocodebr v0.4.0
 
 CRAN release: 2025-11-18
 
@@ -120,7 +129,7 @@ CRAN release: 2025-11-18
 
 - Pedro Milreu Cunha
 
-## geocodebr 0.3.0
+## geocodebr v0.3.0
 
 CRAN release: 2025-10-08
 
@@ -165,7 +174,7 @@ CRAN release: 2025-10-08
   função
   [`deletar_pasta_cache()`](https://ipeagit.github.io/geocodebr/reference/deletar_pasta_cache.md).
 
-## geocodebr 0.2.1
+## geocodebr v0.2.1
 
 CRAN release: 2025-07-07
 
@@ -176,7 +185,7 @@ CRAN release: 2025-07-07
   issue](https://github.com/ipeaGIT/geocodebr/issues/56)
   [\#56](https://github.com/ipeaGIT/geocodebr/issues/56).
 
-## geocodebr 0.2.0
+## geocodebr v0.2.0
 
 CRAN release: 2025-05-07
 
@@ -225,7 +234,7 @@ CRAN release: 2025-05-07
 
 - Arthur Bazzolli
 
-## geocodebr 0.1.1
+## geocodebr v0.1.1
 
 CRAN release: 2025-02-17
 
@@ -234,7 +243,7 @@ CRAN release: 2025-02-17
 - Corrigido bug na organização de pastas do cache de dados. Fecha o
   [issue 29](https://github.com/ipeaGIT/geocodebr/issues/29).
 
-## geocodebr 0.1.0
+## geocodebr v0.1.0
 
 CRAN release: 2025-02-12
 

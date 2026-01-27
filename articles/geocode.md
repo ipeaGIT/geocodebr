@@ -82,10 +82,10 @@ head(ends_geo)
 #> 5     Mangaratiba   3302601    RJ -22.929864 -43.97214     numero
 #> 6      Rio Branco   1200401    AC  -9.963438 -67.83559     numero
 #>   tipo_resultado desvio_metros
-#> 1           dn01             9
+#> 1           dn01             8
 #> 2           dn01             6
-#> 3           dl01            57
-#> 4           dl01           268
+#> 3           dl01            59
+#> 4           dl01           300
 #> 5           dn01             6
 #> 6           dn03             6
 #>                                                           endereco_encontrado

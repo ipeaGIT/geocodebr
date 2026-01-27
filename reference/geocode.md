@@ -313,10 +313,10 @@ casos de match probabilistico, e de `0.90` nos demais casos.
 Quando o usuário passa o argumento `resultado_completo = TRUE`, a função
 `geocode()` também retorna a coluna `cod_setor` com o código do setor
 censitário do endereço encontrado. Atualmente, a função somente retorna
-o código do setor dos casos em todos os pontos do CNEFE correspondentes
-estão 100% dentro de um único setor censitário. Quanto os dados do CNEFE
-correspondentes ao endereço buscado estão em mais de um setor, o
-resultado da coluna `cod_setor` é `NA`.
+o código do setor dos casos em que todos os pontos do CNEFE
+correspondentes estão 100% dentro de um único setor censitário. Quando
+os dados do CNEFE correspondentes ao endereço buscado estão em mais de
+um setor, o resultado da coluna `cod_setor` é `NA`.
 
 ## Examples
 
@@ -355,7 +355,7 @@ head(df)
 #> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
 #> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
 #>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros
-#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9
+#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             8
 #> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6
 #>                                                      endereco_encontrado
 #> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730

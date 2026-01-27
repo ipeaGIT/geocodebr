@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">geocodebr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.6.0" id="geocodebr-060">geocodebr 0.6.0<a class="anchor" aria-label="anchor" href="#geocodebr-060"></a></h2><p class="text-muted">CRAN release: 2026-01-23</p>
+<h2 class="pkg-version" data-toc-text="0.6.1" id="geocodebr-v061">geocodebr v0.6.1<a class="anchor" aria-label="anchor" href="#geocodebr-v061"></a></h2><p class="text-muted">CRAN release: 2026-01-27</p>
+<div class="section level3">
+<h3 id="correção-de-bugs-bug-fixes-0-6-1">Correção de bugs (Bug fixes)<a class="anchor" aria-label="anchor" href="#corre%C3%A7%C3%A3o-de-bugs-bug-fixes-0-6-1"></a></h3>
+<ul><li>Essa versão corrige um erro que havia nas coordenadas co CNEFE utilizadas na v0.6.0.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="geocodebr-v060">geocodebr v0.6.0<a class="anchor" aria-label="anchor" href="#geocodebr-v060"></a></h2><p class="text-muted">CRAN release: 2026-01-23</p>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-6-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-6-0"></a></h3>
 <ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora retorna o codigo do setor censitário do endereço encontrado quando <code>resultado_completo = TRUE</code>. Essa alteração atende parcialmente ao <a href="https://github.com/ipeaGIT/geocodebr/issues/66" class="external-link">issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/66" class="external-link">#66</a> porque ela somente retorna o código do setor dos casos em que o endeço encontrado está 100% dentro de um único setor censitário. Quanto os dados do CNEFE correspondentes ao endereço buscado estão em mais de um setor, o resultado da coluna <code>cod_setor</code> é <code>NA</code>.</li>
@@ -57,7 +64,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.5.0" id="geocodebr-050">geocodebr 0.5.0<a class="anchor" aria-label="anchor" href="#geocodebr-050"></a></h2><p class="text-muted">CRAN release: 2025-12-09</p>
+<h2 class="pkg-version" data-toc-text="0.5.0" id="geocodebr-v050">geocodebr v0.5.0<a class="anchor" aria-label="anchor" href="#geocodebr-v050"></a></h2><p class="text-muted">CRAN release: 2025-12-09</p>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-5-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-5-0"></a></h3>
 <ul><li>Novas versões da funções <code><a href="../reference/geocode.html">geocode()</a></code>, <code><a href="../reference/geocode_reverso.html">geocode_reverso()</a></code> e <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code> são significamente mais rápidas e usam menos memória RAM. O ganho de eficiência é relativamente maior em consultas pequenas. Ver ganhos de performance no issues encerrados: <a href="https://github.com/ipeaGIT/geocodebr/issues/82" class="external-link">#82</a>, <a href="https://github.com/ipeaGIT/geocodebr/issues/81" class="external-link">#81</a> e <a href="https://github.com/ipeaGIT/geocodebr/issues/83" class="external-link">#83</a>
@@ -79,7 +86,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.4.0" id="geocodebr-040">geocodebr 0.4.0<a class="anchor" aria-label="anchor" href="#geocodebr-040"></a></h2><p class="text-muted">CRAN release: 2025-11-18</p>
+<h2 class="pkg-version" data-toc-text="0.4.0" id="geocodebr-v040">geocodebr v0.4.0<a class="anchor" aria-label="anchor" href="#geocodebr-v040"></a></h2><p class="text-muted">CRAN release: 2025-11-18</p>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-4-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-4-0"></a></h3>
 <ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora não aplica match probabilístico em lograouros cujo nome são só uma letra (e.g. RUA A, RUA B, RUA C) ou compostos só por dígitos (RUA 1, RUA 10, RUA 20). <a href="https://github.com/ipeaGIT/geocodebr/issues/67" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/67" class="external-link">#67</a>. Isso diminui muito os casos de falso positivo no match probabilístico.</li>
@@ -99,7 +106,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.0" id="geocodebr-030">geocodebr 0.3.0<a class="anchor" aria-label="anchor" href="#geocodebr-030"></a></h2><p class="text-muted">CRAN release: 2025-10-08</p>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="geocodebr-v030">geocodebr v0.3.0<a class="anchor" aria-label="anchor" href="#geocodebr-v030"></a></h2><p class="text-muted">CRAN release: 2025-10-08</p>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-3-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-3-0"></a></h3>
 <ul><li>Novo parâmetro <code>h3_res</code> nas funções <code><a href="../reference/geocode.html">geocode()</a></code> e <code><a href="../reference/busca_por_cep.html">busca_por_cep()</a></code>, que permite o usuário inserir uma coluna no output indicando o id da célula H3 na resolução espacial desejada. <a href="https://github.com/ipeaGIT/geocodebr/issues/43" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/43" class="external-link">#43</a>.</li>
@@ -110,14 +117,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.1" id="geocodebr-021">geocodebr 0.2.1<a class="anchor" aria-label="anchor" href="#geocodebr-021"></a></h2><p class="text-muted">CRAN release: 2025-07-07</p>
+<h2 class="pkg-version" data-toc-text="0.2.1" id="geocodebr-v021">geocodebr v0.2.1<a class="anchor" aria-label="anchor" href="#geocodebr-v021"></a></h2><p class="text-muted">CRAN release: 2025-07-07</p>
 <div class="section level3">
 <h3 id="correção-de-bugs-bug-fixes-0-2-1">Correção de bugs (Bug fixes)<a class="anchor" aria-label="anchor" href="#corre%C3%A7%C3%A3o-de-bugs-bug-fixes-0-2-1"></a></h3>
 <ul><li>Resolvido bug que retornava erro se o input to usuario comecava o geocode direto a partir do match case <code>"pl01"</code>. <a href="https://github.com/ipeaGIT/geocodebr/issues/56" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/56" class="external-link">#56</a>.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="geocodebr-020">geocodebr 0.2.0<a class="anchor" aria-label="anchor" href="#geocodebr-020"></a></h2><p class="text-muted">CRAN release: 2025-05-07</p>
+<h2 class="pkg-version" data-toc-text="0.2.0" id="geocodebr-v020">geocodebr v0.2.0<a class="anchor" aria-label="anchor" href="#geocodebr-v020"></a></h2><p class="text-muted">CRAN release: 2025-05-07</p>
 <div class="section level3">
 <h3 id="mudanças-grandes-major-changes-0-2-0">Mudanças grandes (Major changes)<a class="anchor" aria-label="anchor" href="#mudan%C3%A7as-grandes-major-changes-0-2-0"></a></h3>
 <ul><li>A função <code><a href="../reference/geocode.html">geocode()</a></code> agora inclui busca com match probabilistico. <a href="https://github.com/ipeaGIT/geocodebr/issues/34" class="external-link">Encerra issue </a><a href="https://github.com/ipeaGIT/geocodebr/issues/34" class="external-link">#34</a>.</li>
@@ -142,14 +149,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="geocodebr-011">geocodebr 0.1.1<a class="anchor" aria-label="anchor" href="#geocodebr-011"></a></h2><p class="text-muted">CRAN release: 2025-02-17</p>
+<h2 class="pkg-version" data-toc-text="0.1.1" id="geocodebr-v011">geocodebr v0.1.1<a class="anchor" aria-label="anchor" href="#geocodebr-v011"></a></h2><p class="text-muted">CRAN release: 2025-02-17</p>
 <div class="section level3">
 <h3 id="correção-de-bugs-0-1-1">Correção de bugs<a class="anchor" aria-label="anchor" href="#corre%C3%A7%C3%A3o-de-bugs-0-1-1"></a></h3>
 <ul><li>Corrigido bug na organização de pastas do cache de dados. Fecha o <a href="https://github.com/ipeaGIT/geocodebr/issues/29" class="external-link">issue 29</a>.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.0" id="geocodebr-010">geocodebr 0.1.0<a class="anchor" aria-label="anchor" href="#geocodebr-010"></a></h2><p class="text-muted">CRAN release: 2025-02-12</p>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="geocodebr-v010">geocodebr v0.1.0<a class="anchor" aria-label="anchor" href="#geocodebr-v010"></a></h2><p class="text-muted">CRAN release: 2025-02-12</p>
 <ul><li>Primeira versão.</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
