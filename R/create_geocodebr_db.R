@@ -38,6 +38,10 @@ create_geocodebr_db <- function(
   # Silence progress bar from duckdb
   DBI::dbExecute(con, "SET enable_progress_bar = false")
 
+  # load parquet extension
+  # DBI::dbExecute(con, "INSTALL parquet; LOAD parquet;")
+
+
   # Set Memory limit
   # DBI::dbExecute(con, "SET memory_limit = '8GB'")
 
