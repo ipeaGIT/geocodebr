@@ -45,7 +45,8 @@ geocode_reverso <- function(
   verboso = TRUE,
   cache = TRUE,
   n_cores = NULL
-) {
+  ){
+
   # check input
   checkmate::assert_class(pontos, 'sf')
   checkmate::assert_number(dist_max, lower = 500, upper = 100000) # max 100 Km
@@ -141,11 +142,10 @@ geocode_reverso <- function(
     temp <- coords[i, ]
     potential_muni <- dplyr::filter(
       bbox_munis,
-      xmin <= temp$lon_min &
-        xmax >= temp$lon_max &
-        ymin <= temp$lat_min &
-        ymax >= temp$lat_max
+      (xmin <= temp$lon & xmax >= temp$lon) &
+      (ymin <= temp$lat & ymax >= temp$lat)
     )$code_muni
+
     return(potential_muni)
   }
 
