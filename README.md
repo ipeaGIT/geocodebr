@@ -155,8 +155,9 @@ Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o
 pacote também tem sido utilizado por algumas instituições públicas no
 planejamento e avaliação de políticas públicas. Entre elas:
 
-- Instituto Brasileiro de Geografia e Estatistica (IBGE)
 - Banco Central do Brasil (BCB)
+- Fundação Oswaldo Cruz (Fiocruz)
+- Instituto Brasileiro de Geografia e Estatistica (IBGE)
 - Ministério do Desenvolvimento Social e Combate à Fome (MDS)
 
 ## Projetos relacionados
