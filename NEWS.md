@@ -1,3 +1,10 @@
+# geocodebr v0.6.2
+
+## Correção de bugs (Bug fixes)
+
+- Bug corrigido para garantir que o pacote utiliza apenas os dados em cache do data release corrente, e ignora eventuais dados de releases antigos que estejam na pasta. [Encerra #90](https://github.com/ipeaGIT/geocodebr/issues/90) 
+- Incluido 'Language: pt' na DESCRIPTION
+
 # geocodebr v0.6.1
 
 ## Correção de bugs (Bug fixes)
