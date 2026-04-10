@@ -167,6 +167,7 @@ message_removed_cache_dir <- function(cache_dir) {
 #'
 #' @keywords internal
 apaga_data_release_antigo <- function() {
+
   # list cache local
   cache_dir <- geocodebr::listar_pasta_cache()
 
@@ -195,11 +196,13 @@ apaga_data_release_antigo <- function() {
     return(cache_dir)
   }
 
-  if (is.na(local_release) | local_release == pkg_release) {
+  check1 <- is.na(local_release)
+  check2 <- local_release == pkg_release
+  if (all(check1, check2)) {
     return(cache_dir)
   }
 
-  if (local_release != pkg_release) {
+  if (any(local_release != pkg_release)) {
     # deleta os dados do release local
     suppressMessages(
       geocodebr::deletar_pasta_cache()
