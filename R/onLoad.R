@@ -1,5 +1,5 @@
 .onLoad <- function(libname, pkgname){ # nocov start
 
-  requireNamespace("geoarrow")
+  loadNamespace("geoarrow")
 
 } # nocov end
