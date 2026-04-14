@@ -46,6 +46,10 @@ create_geocodebr_db <- function(
   }
 
 
+  # load parquet extension
+  # DBI::dbExecute(con, "INSTALL parquet; LOAD parquet;")
+
+
   # Set Memory limit
   # DBI::dbExecute(con, "SET memory_limit = '8GB'")
 

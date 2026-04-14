@@ -45,7 +45,8 @@ geocode_reverso <- function(
     verboso = TRUE,
     cache = TRUE,
     n_cores = NULL
-) {
+  ){
+
   # check input
   checkmate::assert_class(pontos, 'sf')
   checkmate::assert_number(dist_max, lower = 500, upper = 100000) # max 100 Km
