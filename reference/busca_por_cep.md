@@ -4,7 +4,7 @@ Busca endereços e suas coordenadas geográficas a partir de um CEP. As
 coordenadas de output utilizam o sistema de coordenadas geográficas
 SIRGAS 2000, EPSG 4674.
 
-## Usage
+## Uso
 
 ``` r
 busca_por_cep(
@@ -16,7 +16,7 @@ busca_por_cep(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - cep:
 
@@ -48,14 +48,14 @@ busca_por_cep(
   padrão é `TRUE`. Quando `FALSE`, os dados do CNEFE são baixados para
   um diretório temporário.
 
-## Value
+## Valor
 
 Retorna um `data.frame` com os CEPs de input e os endereços presentes
 naquele CEP com suas coordenadas geográficas de latitude (`lat`) e
 longitude (`lon`). Alternativamente, o resultado pode ser um objeto
 `sf`.
 
-## Examples
+## Exemplos
 
 ``` r
 library(geocodebr)

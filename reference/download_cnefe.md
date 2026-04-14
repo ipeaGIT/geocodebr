@@ -4,13 +4,13 @@ Faz o download de uma versão pre-processada e enriquecida do CNEFE
 (Cadastro Nacional de Endereços para Fins Estatísticos) que foi criada
 para o uso deste pacote.
 
-## Usage
+## Uso
 
 ``` r
 download_cnefe(tabela = "todas", verboso = TRUE, cache = TRUE)
 ```
 
-## Arguments
+## Argumentos
 
 - tabela:
 
@@ -29,11 +29,11 @@ download_cnefe(tabela = "todas", verboso = TRUE, cache = TRUE)
   padrão é `TRUE`. Quando `FALSE`, os dados do CNEFE são baixados para
   um diretório temporário.
 
-## Value
+## Valor
 
 Retorna o caminho para o diretório onde os dados foram salvos.
 
-## Examples
+## Exemplos
 
 ``` r
 download_cnefe(verboso = FALSE)

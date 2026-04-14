@@ -2,13 +2,13 @@
 
 Add a column with info of geocode match_type
 
-## Usage
+## Uso
 
 ``` r
 add_precision_col(con, update_tb = NULL)
 ```
 
-## Arguments
+## Argumentos
 
 - con:
 
@@ -18,6 +18,6 @@ add_precision_col(con, update_tb = NULL)
 
   String. Name of a table to be updated in con
 
-## Value
+## Valor
 
 Adds a new column to a table in con

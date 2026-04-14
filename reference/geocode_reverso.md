@@ -4,7 +4,7 @@ Geocode reverso de coordenadas geográficas para endereços. A função
 recebe um `sf data frame` com pontos e retorna o endereço mais próximo
 dando uma distância máxima de busca.
 
-## Usage
+## Uso
 
 ``` r
 geocode_reverso(
@@ -16,7 +16,7 @@ geocode_reverso(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - pontos:
 
@@ -47,13 +47,13 @@ geocode_reverso(
   processamento dos dados. Por padrão, `n_cores = NULL` e o pacote
   utiliza o número máximo de cores físicos disponíveis.
 
-## Value
+## Valor
 
 Retorna o `sf data.frame` de input adicionado das colunas do endereço
 encontrado. O output inclui uma coluna "distancia_metros" que indica a
 distância entre o ponto de input e o endereço mais próximo encontrado.
 
-## Examples
+## Exemplos
 
 ``` r
 library(geocodebr)
@@ -65,26 +65,25 @@ pontos <- readRDS(
     system.file("extdata/pontos.rds", package = "geocodebr")
     )
 
-ponto <- pontos[1,]
+pontos <- pontos[1:3,]
 
 # geocode reverso
 df_enderecos <- geocodebr::geocode_reverso(
-  pontos = ponto,
+  pontos = pontos,
   dist_max = 800,
   verboso = TRUE
   )
 #> ℹ Utilizando dados do CNEFE armazenados localmente
 
 head(df_enderecos)
-#> Simple feature collection with 1 feature and 9 fields
+#> Simple feature collection with 1 feature and 8 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -40.7334 ymin: -19.29416 xmax: -40.7334 ymax: -19.29416
 #> Geodetic CRS:  SIRGAS 2000
-#>   id                                       endereco_completo estado municipio
-#> 1  1 CORREGO BOA VISTA, 32 - LAJINHA, PANCAS - ES, 29750-000     ES    PANCAS
-#>          logradouro numero       cep localidade distancia_metros
-#> 1 CORREGO BOA VISTA     32 29750-000    LAJINHA         560.6493
-#>                     geometry
-#> 1 POINT (-40.7334 -19.29416)
+#> # A tibble: 1 × 9
+#>      id estado municipio logradouro     numero cep   localidade distancia_metros
+#>   <int> <chr>  <chr>     <chr>           <int> <chr> <chr>                 <dbl>
+#> 1     1 ES     PANCAS    CORREGO BOA V…     32 2975… LAJINHA                561.
+#> # ℹ 1 more variable: geometry <POINT [°]>
 ```

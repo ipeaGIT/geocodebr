@@ -1,8 +1,33 @@
 # Changelog
 
+## geocodebr v0.6.2
+
+Lançamento CRAN: 2026-04-14
+
+### Correção de bugs (Bug fixes)
+
+- Bug corrigido para garantir que o pacote utiliza apenas os dados em
+  cache do data release corrente, e ignora eventuais dados de releases
+  antigos que estejam na pasta.
+  [Encerra](https://github.com/ipeaGIT/geocodebr/issues/90)
+  [\#90](https://github.com/ipeaGIT/geocodebr/issues/90)
+- A função
+  [`geocode()`](https://ipeagit.github.io/geocodebr/reference/geocode.md)
+  agora retorna erro informativo quando alguma coluna na tabela de input
+  tem nome com algum caractere não alfanumérico, como . , ? ^ - ! ~. Não
+  há problema com o sublinhado \_, como em “name_muni”. Fecha
+  [issue](https://github.com/ipeaGIT/geocodebr/issues/92)
+  [\#92](https://github.com/ipeaGIT/geocodebr/issues/92)
+- Corrigido erro na função de
+  [`geocode_reverso()`](https://ipeagit.github.io/geocodebr/reference/geocode_reverso.md)
+  que impedia usar valores muito altos de `dist_max`.
+  [Encerra](https://github.com/ipeaGIT/geocodebr/issues/88)
+  [\#88](https://github.com/ipeaGIT/geocodebr/issues/88)
+- Incluido ‘Language: pt’ na DESCRIPTION
+
 ## geocodebr v0.6.1
 
-CRAN release: 2026-01-27
+Lançamento CRAN: 2026-01-27
 
 ### Correção de bugs (Bug fixes)
 
@@ -11,7 +36,7 @@ CRAN release: 2026-01-27
 
 ## geocodebr v0.6.0
 
-CRAN release: 2026-01-23
+Lançamento CRAN: 2026-01-23
 
 ### Mudanças grandes (Major changes)
 
@@ -36,7 +61,7 @@ CRAN release: 2026-01-23
 
 ## geocodebr v0.5.0
 
-CRAN release: 2025-12-09
+Lançamento CRAN: 2025-12-09
 
 ### Mudanças grandes (Major changes)
 
@@ -89,7 +114,7 @@ CRAN release: 2025-12-09
 
 ## geocodebr v0.4.0
 
-CRAN release: 2025-11-18
+Lançamento CRAN: 2025-11-18
 
 ### Mudanças grandes (Major changes)
 
@@ -131,7 +156,7 @@ CRAN release: 2025-11-18
 
 ## geocodebr v0.3.0
 
-CRAN release: 2025-10-08
+Lançamento CRAN: 2025-10-08
 
 ### Mudanças grandes (Major changes)
 
@@ -176,7 +201,7 @@ CRAN release: 2025-10-08
 
 ## geocodebr v0.2.1
 
-CRAN release: 2025-07-07
+Lançamento CRAN: 2025-07-07
 
 ### Correção de bugs (Bug fixes)
 
@@ -187,7 +212,7 @@ CRAN release: 2025-07-07
 
 ## geocodebr v0.2.0
 
-CRAN release: 2025-05-07
+Lançamento CRAN: 2025-05-07
 
 ### Mudanças grandes (Major changes)
 
@@ -236,7 +261,7 @@ CRAN release: 2025-05-07
 
 ## geocodebr v0.1.1
 
-CRAN release: 2025-02-17
+Lançamento CRAN: 2025-02-17
 
 ### Correção de bugs
 
@@ -245,6 +270,6 @@ CRAN release: 2025-02-17
 
 ## geocodebr v0.1.0
 
-CRAN release: 2025-02-12
+Lançamento CRAN: 2025-02-12
 
 - Primeira versão.

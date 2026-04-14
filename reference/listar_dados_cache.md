@@ -2,24 +2,24 @@
 
 Lista os dados salvos localmente na pasta de cache
 
-## Usage
+## Uso
 
 ``` r
 listar_dados_cache(print_tree = FALSE)
 ```
 
-## Arguments
+## Argumentos
 
 - print_tree:
 
   Um valor lógico. Indica se o conteúdo da pasta de cache deve ser
   exibido em um formato de árvore. O padrão é `FALSE`.
 
-## Value
+## Valor
 
 O caminho para os arquivos em cache
 
-## Examples
+## Exemplos
 
 ``` r
 listar_dados_cache()

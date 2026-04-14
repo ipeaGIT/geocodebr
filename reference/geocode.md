@@ -8,7 +8,7 @@ precisão. Consulte abaixo a seção "Detalhes" para mais informações. As
 coordenadas de output utilizam o sistema de coordenadas geográficas
 SIRGAS 2000, EPSG 4674.
 
-## Usage
+## Uso
 
 ``` r
 geocode(
@@ -25,7 +25,7 @@ geocode(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - enderecos:
 
@@ -99,14 +99,14 @@ geocode(
   processamento dos dados. Por padrão, `n_cores = NULL` e o pacote
   utiliza o número máximo de cores físicos disponíveis.
 
-## Value
+## Valor
 
 Retorna o `data.frame` de input `enderecos` adicionado das colunas de
 latitude (`lat`) e longitude (`lon`), bem como as colunas (`precisao` e
 `tipo_resultado`) que indicam o nível de precisão e o tipo de resultado.
 Alternativamente, o resultado pode ser um objeto `sf`.
 
-## Details
+## Detalhes
 
 Precisão dos resultados:
 
@@ -318,7 +318,7 @@ correspondentes estão 100% dentro de um único setor censitário. Quando
 os dados do CNEFE correspondentes ao endereço buscado estão em mais de
 um setor, o resultado da coluna `cod_setor` é `NA`.
 
-## Examples
+## Exemplos
 
 ``` r
 library(geocodebr)

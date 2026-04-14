@@ -2,7 +2,7 @@
 
 Message when caching file
 
-## Usage
+## Uso
 
 ``` r
 cache_message(
@@ -11,7 +11,7 @@ cache_message(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - local_file:
 
@@ -21,6 +21,6 @@ cache_message(
 
   Logical. Whether the cached data should be used.
 
-## Value
+## Valor
 
 A message
