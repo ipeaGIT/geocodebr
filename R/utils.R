@@ -512,3 +512,29 @@ cria_col_logradouro_confusao <- function(con) {
     )
   )
 } # nocov end
+
+
+
+check_clean_colnames <- function(df) {  # nocov start
+
+  # # basic input check
+  # if (!is.data.frame(df)) {
+  #   cli::cli_abort("{.arg df} must be a data.frame.")
+  # }
+
+  cols <- colnames(df)
+
+  # allow only letters, numbers, and underscore
+  bad_cols <- cols[!grepl("^[A-Za-z0-9_]+$", cols)]
+
+  if (length(bad_cols) > 0) {
+    cli::cli_abort(c(
+      "Invalid column names detected.",
+      "x" = "Column names must use only letters, numbers, and underscores ({.val _}).",
+      "i" = "Please rename these columns: {.val {bad_cols}}"
+    ),
+    "call" = rlang::caller_env()
+    )
+  }
+
+} # nocov end

@@ -133,7 +133,13 @@ test_that("test empates", {
 
 
 test_that("errors with incorrect input", {
+
+
   expect_error(tester(unclass(input_df)))
+
+  # df com caracter especial nas colunas
+  input_df2 <- input_df |> mutate("col!test" = 1)
+  expect_error(tester(enderecos = input_df2))
 
   expect_error(tester(campos_endereco = 1))
   expect_error(tester(campos_endereco = c(hehe = "nm_logradouro")))

@@ -203,6 +203,10 @@ geocode_core <- function(
     max.len = 16
   )
 
+  # allow only letters, numbers, and underscore in colnames
+  check_clean_colnames(enderecos)
+
+
   # systime start 66666 ----------------
   # timer$mark("Start")
 
