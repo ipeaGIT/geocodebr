@@ -35,3 +35,24 @@ candidate_states <-
          )
 
 
+
+
+
+# gerate states bbox -----------------------------------------------------------
+
+states <- geobr::read_state(simplified = FALSE)
+
+bbox_states2 <- states |>
+  group_by(abbrev_state) |>
+  mutate(xmin = sf::st_bbox(geom)[1] |> round(7),
+         ymin = sf::st_bbox(geom)[2] |> round(7),
+         xmax = sf::st_bbox(geom)[3] |> round(7),
+         ymax = sf::st_bbox(geom)[4] |> round(7)
+  ) |>
+  sf::st_drop_geometry() |>
+  select(abbrev_state, xmin, ymin, xmax, ymax)
+
+data.table::setDT(bbox_states2)
+bbox_states2$xmin |> nchar()
+
+saveRDS(bbox_states2, './inst/extdata/states_bbox.rds')

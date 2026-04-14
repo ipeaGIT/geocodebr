@@ -53,11 +53,11 @@ pontos <- readRDS(
     system.file("extdata/pontos.rds", package = "geocodebr")
     )
 
-ponto <- pontos[1,]
+pontos <- pontos[1:3,]
 
 # geocode reverso
 df_enderecos <- geocodebr::geocode_reverso(
-  pontos = ponto,
+  pontos = pontos,
   dist_max = 800,
   verboso = TRUE
   )

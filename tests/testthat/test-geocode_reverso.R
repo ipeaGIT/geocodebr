@@ -34,7 +34,7 @@ test_that("expected output", {
 
   # radio de busca de 5 Km
   testthat::succeed(std_output_5K <- tester(dist_max = 5000))
-  testthat::expect_true(nrow(std_output_5K) == 7)
+  testthat::expect_true(nrow(std_output_5K) == 8)
 
   # output in sf format
   testthat::expect_true(is(std_output , 'sf'))

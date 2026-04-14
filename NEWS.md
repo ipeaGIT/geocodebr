@@ -2,14 +2,15 @@
 
 ## Correção de bugs (Bug fixes)
 
-- Bug corrigido para garantir que o pacote utiliza apenas os dados em cache do data release corrente, e ignora eventuais dados de releases antigos que estejam na pasta. [Encerra #90](https://github.com/ipeaGIT/geocodebr/issues/90) 
-- Incluido 'Language: pt' na DESCRIPTION
+- Bug corrigido para garantir que o pacote utiliza apenas os dados em cache do 
+data release corrente, e ignora eventuais dados de releases antigos que estejam 
+na pasta. [Encerra #90](https://github.com/ipeaGIT/geocodebr/issues/90)
 - A função geocode agora retorna erro informativo quando alguma coluna na tabela 
 de input tem nome com algum caractere não alfanumérico, como . , ? ^ - ! ~. Não 
 há problema com o sublinhado _, como em “name_muni”. Fecha [issue #92](https://github.com/ipeaGIT/geocodebr/issues/92)
-
-
-
+- Corrigido erro na função de `geocode_reverso()` que impedia usar valores muito
+altos de `dist_max`. [Encerra #88](https://github.com/ipeaGIT/geocodebr/issues/88)
+- Incluido 'Language: pt' na DESCRIPTION
 
 # geocodebr v0.6.1
 

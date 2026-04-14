@@ -1,7 +1,8 @@
 create_geocodebr_db <- function(
   # nocov start
   db_path = "tempdir",
-  n_cores = parent.frame()$n_cores
+  n_cores = parent.frame()$n_cores,
+  load_spatial = FALSE
 ) {
   # check input
   checkmate::assert_number(n_cores, lower = 1, finite = TRUE, null.ok = TRUE)
@@ -37,6 +38,13 @@ create_geocodebr_db <- function(
 
   # Silence progress bar from duckdb
   DBI::dbExecute(con, "SET enable_progress_bar = false")
+
+  # load spatial extension
+  if (isTRUE(load_spatial)) {
+    duckspatial::ddbs_install(conn = con, upgrade = FALSE, quiet = TRUE)
+    duckspatial::ddbs_load(conn = con, quiet = TRUE)
+  }
+
 
   # Set Memory limit
   # DBI::dbExecute(con, "SET memory_limit = '8GB'")

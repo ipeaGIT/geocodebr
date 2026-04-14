@@ -27,11 +27,11 @@
 #'     system.file("extdata/pontos.rds", package = "geocodebr")
 #'     )
 #'
-#' ponto <- pontos[1,]
+#' pontos <- pontos[1:3,]
 #'
 #' # geocode reverso
 #' df_enderecos <- geocodebr::geocode_reverso(
-#'   pontos = ponto,
+#'   pontos = pontos,
 #'   dist_max = 800,
 #'   verboso = TRUE
 #'   )
@@ -40,11 +40,11 @@
 #'
 #' @export
 geocode_reverso <- function(
-  pontos,
-  dist_max = 1000,
-  verboso = TRUE,
-  cache = TRUE,
-  n_cores = NULL
+    pontos,
+    dist_max = 1000,
+    verboso = TRUE,
+    cache = TRUE,
+    n_cores = NULL
 ) {
   # check input
   checkmate::assert_class(pontos, 'sf')
@@ -66,39 +66,18 @@ geocode_reverso <- function(
     )
   }
 
+  # pontos <- sf::st_transform(pontos, 4674)
+
+
   # prep input -------------------------------------------------------
 
-  # converte para data.frame
-  coords <- sfheaders::sf_to_df(pontos, fill = TRUE)
-  data.table::setDT(coords)
-  coords[, c('sfg_id', 'point_id') := NULL]
-  data.table::setnames(coords, old = c('x', 'y'), new = c('lon', 'lat'))
+  # converte pontos de input para data.frame
+  pontos$tempidgeocodebr <- 1:nrow(pontos)
 
-  # create temp id
-  coords[, tempidgeocodebr := 1:nrow(coords)]
-
-  # convert max_dist to degrees
-  # 1 degree of latitude is always 111320 meters
-  margin_lat <- dist_max / 111320
-
-  # 1 degree of longitude is 111320 * cos(lat)
-  coords[, c("lat_min", "lat_max") := .(lat - margin_lat, lat + margin_lat)]
-
-  coords[,
-    c("lon_min", "lon_max") := .(
-      lon - dist_max / 111320 * cos(lat),
-      lon + dist_max / 111320 * cos(lat)
-    )
-  ]
-
-  # get bounding box around input points
-  # using a range of max dist around input points
-  bbox_lat_min <- min(coords$lat_min)
-  bbox_lat_max <- max(coords$lat_max)
-  bbox_lon_min <- min(coords$lon_min)
-  bbox_lon_max <- max(coords$lon_max)
 
   # check if input falls within Brazil
+  bbox <- sf::st_bbox(pontos)
+
   bbox_brazil <- data.frame(
     xmin = -73.99044997,
     ymin = -33.75208127,
@@ -108,10 +87,10 @@ geocode_reverso <- function(
 
   error_msg <- 'Coordenadas de input localizadas fora do bounding box do Brasil.'
   if (
-    bbox_lon_min < bbox_brazil$xmin |
-      bbox_lon_max > bbox_brazil$xmax |
-      bbox_lat_min < bbox_brazil$ymin |
-      bbox_lat_max > bbox_brazil$ymax
+    bbox[[1]] < bbox_brazil$xmin |
+    bbox[[3]] > bbox_brazil$xmax |
+    bbox[[2]] < bbox_brazil$ymin |
+    bbox[[4]] > bbox_brazil$ymax
   ) {
     cli::cli_abort(error_msg)
   }
@@ -126,37 +105,44 @@ geocode_reverso <- function(
   )
 
   # creating a temporary db and register the input table data
-  con <- create_geocodebr_db(n_cores = n_cores)
+  conn <- create_geocodebr_db(
+    n_cores = n_cores,
+    load_spatial = TRUE
+  )
 
   # limita escopo de busca aos municipios  -------------------------------------------------------
-
   # determine potential municipalities
-  bbox_munis <- readRDS(system.file(
-    "extdata/munis_bbox.rds",
-    package = "geocodebr"
-  ))
+  munis <- system.file("extdata/munis_bbox_2022.parquet", package = "geocodebr") |>
+    arrow::open_dataset() |>
+    sf::st_as_sf()
 
-  get_muni <- function(i) {
-    # i=10
-    temp <- coords[i, ]
-    potential_muni <- dplyr::filter(
-      bbox_munis,
-      xmin <= temp$lon_min &
-        xmax >= temp$lon_max &
-        ymin <= temp$lat_min &
-        ymax >= temp$lat_max
-    )$code_muni
-    return(potential_muni)
-  }
+  # munis_path <- system.file("extdata/munis_2022.parquet", package = "geocodebr")
+  #
+  # query_register_muni <- glue::glue(
+  #   "CREATE OR REPLACE TEMP VIEW munis AS
+  #       SELECT *,
+  #       geometry::GEOMETRY AS geometry
+  #   FROM read_parquet('{munis_path}');"
+  # )
+  #
+  # DBI::dbExecute(conn, query_register_muni)
 
-  potential_munis <- lapply(X = 1:nrow(coords), FUN = get_muni)
-  potential_munis <- unlist(potential_munis) |> unique()
+  potential_munis <- duckspatial::ddbs_join(
+    x = pontos,
+    y = munis,
+    join = "within",
+    quiet = TRUE
+  ) |>
+    dplyr::pull(code_muni) |>
+    unique()
+
   potential_munis <- enderecobr::padronizar_municipios(potential_munis)
 
   # lida com munis com apostrofe no nome tipo Olho d'agua
   potential_munis <- gsub("'", "''", potential_munis, fixed = TRUE)
 
   unique_munis <- paste(glue::glue("'{potential_munis}'"), collapse = ",")
+
 
   # build path to local file
   path_to_parquet <- fs::path(
@@ -172,101 +158,133 @@ geocode_reverso <- function(
     "logradouro",
     "numero",
     "cep",
-    "localidade",
-    "endereco_completo",
-    "lon",
-    "lat"
+    "localidade"
   )
-  cols_to_keep <- paste0(cols_to_keep, collapse = ", ")
 
-  # Load CNEFE data and filter it to include only municipalities
-  # present in the input table, reducing the search scope
-  # Narrow search global scope of cnefe to bounding box
+  cols_to_keep_string <- paste0(cols_to_keep, collapse = ", ")
+
+  # Load CNEFE data and filter it to narrow search global scope of cnefe to the
+  # bounding box of input points
   query_filter_cnefe <- glue::glue(
-    "CREATE TEMP VIEW filtered_cnefe AS
-        SELECT {cols_to_keep}
-        FROM read_parquet('{path_to_parquet}') m
+    "CREATE OR REPLACE TEMP VIEW cnefe_tb AS
+        SELECT {cols_to_keep_string},
+               ST_Point(lon, lat)::GEOMETRY('EPSG:4674') AS geometry
+     FROM read_parquet('{path_to_parquet}') m
           WHERE m.municipio IN ({unique_munis});"
   )
 
-  DBI::dbExecute(con, query_filter_cnefe)
-  # DBI::dbExecute(con, query_filter_cnefe)
-  # b <- DBI::dbReadTable(con, "filtered_cnefe")
+  DBI::dbExecute(conn, query_filter_cnefe)
+  # b <- duckspatial::ddbs_read_table(conn = conn, name = "cnefe_tb")
+  # duckspatial::ddbs_crs(con, "filtered_cnefe")
+  # ST_Point(lon, lat)::GEOMETRY('EPSG:4674') AS geom
 
-  # Convert input data frame to DuckDB table
-  duckdb::dbWriteTable(con, "input_table_db", coords, temporary = TRUE)
 
-  # Haversine macro (kept for speed; consider spatial extension later)
-  DBI::dbExecute(
-    con,
-    "
-    CREATE MACRO IF NOT EXISTS haversine(lat1, lon1, lat2, lon2) AS (
-      6378137 * 2 * ASIN(
-        SQRT(
-          POWER(SIN(RADIANS(lat2 - lat1) / 2), 2) +
-          COS(RADIANS(lat1)) * COS(RADIANS(lat2)) *
-          POWER(SIN(RADIANS(lon2 - lon1) / 2), 2)
-        )
-      )
-    );
-  "
+  cnefe_utm_duck <-  duckspatial::ddbs_transform(
+    x = 'cnefe_tb',
+    y = 'EPSG:31983',conn = conn,
+    quiet = TRUE
   )
 
-  # Find cases nearby -------------------------------------------------------
-  query_filter_cases_nearby <- glue::glue(
-    "WITH dist_data AS (
-        SELECT
-              input_table_db.* EXCLUDE (lon_min, lon_max, lat_min, lat_max),
-              filtered_cnefe.endereco_completo,
-              filtered_cnefe.estado,
-              filtered_cnefe.municipio,
-              filtered_cnefe.logradouro,
-              filtered_cnefe.numero,
-              filtered_cnefe.cep,
-              filtered_cnefe.localidade,
-              haversine(
-                    input_table_db.lat, input_table_db.lon,
-                    filtered_cnefe.lat, filtered_cnefe.lon
-              ) AS distancia_metros
-        FROM
-              input_table_db, filtered_cnefe
-        WHERE
-              input_table_db.lat_min < filtered_cnefe.lat
-          AND input_table_db.lat_max > filtered_cnefe.lat
-          AND input_table_db.lon_min < filtered_cnefe.lon
-          AND input_table_db.lon_max > filtered_cnefe.lon
-    ),
+  # input to UTM
+  input_utm_duck <-  duckspatial::ddbs_transform(
+    x = pontos,
+    y = 'EPSG:31983',
+    quiet = TRUE
+  )
 
-    ranked AS (
-        SELECT
-            *,
-            RANK() OVER (
-                PARTITION BY tempidgeocodebr
-                ORDER BY distancia_metros ASC
-            ) AS ranking
-        FROM dist_data
+  # buffers around input points
+  buff <- duckspatial::ddbs_buffer(
+    x = input_utm_duck,
+    distance = dist_max,
+    quiet = TRUE
+  )
+
+  # Lazy join - computation stays in DuckDB
+  suppressWarnings(
+    result <- duckspatial::ddbs_join(
+      x = cnefe_utm_duck,
+      y = buff,
+      join = "within",
+      quiet = TRUE
     )
-
-    SELECT * EXCLUDE(tempidgeocodebr, ranking)
-    FROM ranked
-    WHERE ranking = 1;"
   )
 
-  output <- DBI::dbGetQuery(con, query_filter_cases_nearby)
-
-  # organize output -------------------------------------------------
-
-  # convert df to simple feature
-  output_sf <- sfheaders::sf_point(
-    obj = output,
-    x = 'lon',
-    y = 'lat',
-    keep = TRUE
+  # write to connection
+  duckspatial::ddbs_write_table(
+    conn = conn,
+    data = input_utm_duck,
+    name = "pontos_utm",
+    overwrite = T,
+    temp_view = T,
+    quiet = TRUE
   )
 
-  sf::st_crs(output_sf) <- 4674
+  duckspatial::ddbs_write_table(
+    conn = conn,
+    data = result,
+    name = "join_result",
+    overwrite = T,
+    temp_view = T,
+    quiet = TRUE
+  )
 
-  duckdb::dbDisconnect(con)
+  # Get column names from both tables
+  cols_a <- DBI::dbGetQuery(conn, "SELECT column_name FROM (DESCRIBE pontos_utm)")$column_name
+  cols_b <- DBI::dbGetQuery(conn, "SELECT column_name FROM (DESCRIBE join_result)")$column_name
 
-  return(output_sf)
+  # Find overlapping columns (plus the ones you want to exclude anyway)
+  exclude_from_b <- unique(c(
+    "tempidgeocodebr", "geometry",
+    intersect(cols_a, cols_b)
+  ))
+
+  exclude_clause <- paste0("EXCLUDE (", paste(exclude_from_b, collapse = ", "), ")")
+
+  query <- glue::glue("
+    CREATE OR REPLACE TEMP TABLE output AS
+    SELECT * EXCLUDE (rn)
+    FROM (
+      SELECT
+        a.*,
+        b.* {exclude_clause},
+        ST_Distance(a.geometry, b.geometry) AS distancia_metros,
+        ROW_NUMBER() OVER (
+          PARTITION BY a.id
+          ORDER BY ST_Distance(a.geometry, b.geometry)
+        ) AS rn
+      FROM pontos_utm AS a
+      JOIN join_result AS b
+        ON a.tempidgeocodebr = b.tempidgeocodebr
+    ) t
+    WHERE rn = 1
+    ORDER BY tempidgeocodebr
+    ")
+
+  DBI::dbExecute(conn, query)
+  # output <- duckspatial::ddbs_read_table(conn, name = "output")
+  # head(output)
+
+  output <- duckspatial::ddbs_transform(
+    x = "output",
+    conn = conn,
+    y = 'EPSG:4674',
+    quiet = TRUE
+  )
+
+  output <- duckspatial::ddbs_collect(output)
+
+
+  # TODO
+  if (nrow(output)==0){
+    stop("Nenhum endereco proximo foi encontrados")
+  }
+
+
+  output <- output |>
+    dplyr::select(-tempidgeocodebr) |>
+    dplyr::relocate(geometry, .after = dplyr::last_col())
+
+  duckdb::dbDisconnect(conn)
+
+  return(output)
 }

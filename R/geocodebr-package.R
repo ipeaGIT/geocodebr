@@ -36,6 +36,8 @@ utils::globalVariables(
 
     # due to reverse geocoding draft
     "cep",
+    "code_muni",
+    "geometry",
     "lat_cnefe",
     "localidade",
     "lon_cnefe",
