@@ -117,6 +117,11 @@ geocode_reverso <- function(
     arrow::open_dataset() |>
     sf::st_as_sf()
 
+  # place holder to use geoarrow becaue:
+  #   Namespace in Imports field not imported from: 'geoarrow'
+  #        All declared Imports should be used.
+  geoarrow::as_geoarrow_vctr("POINT (0 1)")
+
   # munis_path <- system.file("extdata/munis_2022.parquet", package = "geocodebr")
   #
   # query_register_muni <- glue::glue(
