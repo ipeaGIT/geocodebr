@@ -3,19 +3,19 @@
 This function handles some failure modes, including if the Parquet file
 is corrupted.
 
-## Usage
+## Uso
 
 ``` r
 arrow_open_dataset(filename)
 ```
 
-## Arguments
+## Argumentos
 
 - filename:
 
   A local Parquet file
 
-## Value
+## Valor
 
 An
 [`arrow::Dataset`](https://arrow.apache.org/docs/r/reference/Dataset.html)

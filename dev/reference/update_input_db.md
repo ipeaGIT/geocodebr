@@ -2,13 +2,13 @@
 
 Update input_padrao_db to remove observations previously matched
 
-## Usage
+## Uso
 
 ``` r
 update_input_db(con, update_tb = "input_padrao_db", reference_tb)
 ```
 
-## Arguments
+## Argumentos
 
 - con:
 
@@ -22,6 +22,6 @@ update_input_db(con, update_tb = "input_padrao_db", reference_tb)
 
   A table written in con used as reference
 
-## Value
+## Valor
 
 Drops observations from input_padrao_db

@@ -8,7 +8,7 @@ precisão. Consulte abaixo a seção "Detalhes" para mais informações. As
 coordenadas de output utilizam o sistema de coordenadas geográficas
 SIRGAS 2000, EPSG 4674.
 
-## Usage
+## Uso
 
 ``` r
 geocode(
@@ -25,7 +25,7 @@ geocode(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - enderecos:
 
@@ -99,14 +99,14 @@ geocode(
   processamento dos dados. Por padrão, `n_cores = NULL` e o pacote
   utiliza o número máximo de cores físicos disponíveis.
 
-## Value
+## Valor
 
 Retorna o `data.frame` de input `enderecos` adicionado das colunas de
 latitude (`lat`) e longitude (`lon`), bem como as colunas (`precisao` e
 `tipo_resultado`) que indicam o nível de precisão e o tipo de resultado.
 Alternativamente, o resultado pode ser um objeto `sf`.
 
-## Details
+## Detalhes
 
 Precisão dos resultados:
 
@@ -308,7 +308,17 @@ que também haja match determinístico em ao menos um dos campos "cep" e
 "localidade". O geocodebr utiliza uma semelhança mínima de `0.85` nos
 casos de match probabilistico, e de `0.90` nos demais casos.
 
-## Examples
+## Código do setor censitário
+
+Quando o usuário passa o argumento `resultado_completo = TRUE`, a função
+`geocode()` também retorna a coluna `cod_setor` com o código do setor
+censitário do endereço encontrado. Atualmente, a função somente retorna
+o código do setor dos casos em que todos os pontos do CNEFE
+correspondentes estão 100% dentro de um único setor censitário. Quando
+os dados do CNEFE correspondentes ao endereço buscado estão em mais de
+um setor, o resultado da coluna `cod_setor` é `NA`.
+
+## Exemplos
 
 ``` r
 library(geocodebr)
@@ -345,7 +355,7 @@ head(df)
 #> 1  1 Rua Maria Lucia Pacifico     17 26042-730 Santa Rita     Nova Iguacu
 #> 2  2      Rua Leopoldina Tome     46 25030-050 Centenario Duque de Caxias
 #>   code_muni nm_uf       lat       lon precisao tipo_resultado desvio_metros
-#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             9
+#> 1   3303500    RJ -22.69551 -43.47116   numero           dn01             8
 #> 2   3301702    RJ -22.77917 -43.31132   numero           dn01             6
 #>                                                      endereco_encontrado
 #> 1 RUA MARIA LUCIA PACIFICO, 17 - SANTA RITA, NOVA IGUACU - RJ, 26042-730

@@ -2,17 +2,17 @@
 
 Deleta todos arquivos da pasta do cache.
 
-## Usage
+## Uso
 
 ``` r
 deletar_pasta_cache()
 ```
 
-## Value
+## Valor
 
 Retorna de forma invisível o caminho do diretório de cache.
 
-## Examples
+## Exemplos
 
 ``` r
 if (FALSE) { # identical(TRUE, FALSE)

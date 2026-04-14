@@ -12,7 +12,7 @@ de Endereços para Fins Estatísticos (CNEFE), published by the Instituto
 Brasileiro de Geografia e Estatística (IBGE), Brazil's official
 statistics and geography agency.)
 
-## See also
+## Veja também
 
 Useful links:
 
@@ -22,7 +22,7 @@ Useful links:
 
 - Report bugs at <https://github.com/ipeaGIT/geocodebr/issues>
 
-## Author
+## Autor
 
 **Maintainer**: Rafael H. M. Pereira <rafa.pereira.br@gmail.com>
 ([ORCID](https://orcid.org/0000-0003-2125-7465))

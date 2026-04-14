@@ -1,28 +1,28 @@
-# Authors and Citation
+# Autores e citação
 
-## Authors
+## Autores
 
-- **Rafael H. M. Pereira**. Author, maintainer.
+- **Rafael H. M. Pereira**. Autor, mantenedor.
   [](https://orcid.org/0000-0003-2125-7465)
 
-- **Daniel Herszenhut**. Author.
+- **Daniel Herszenhut**. Autor.
   [](https://orcid.org/0000-0001-8066-1105)
 
-- **Gabriel Garcia de Almeida**. Author.
+- **Gabriel Garcia de Almeida**. Autor.
   [](https://orcid.org/0009-0003-3557-7328)
 
-- **Arthur Bazolli**. Contributor.
+- **Arthur Bazolli**. Contribuinte.
 
-- **Pedro Milreu Cunha**. Contributor.
+- **Pedro Milreu Cunha**. Contribuinte.
 
-- **ITpS - Instituto Todos pela Saúde**. Funder.
+- **ITpS - Instituto Todos pela Saúde**. Financiador.
 
-- **Ipea - Instituto de Pesquisa Econômica Aplicada**. Copyright holder,
-  funder.
+- **Ipea - Instituto de Pesquisa Econômica Aplicada**. Titular dos
+  direitos autorais, financiador.
 
-## Citation
+## Citação
 
-Source:
+Fonte:
 [`inst/CITATION`](https://github.com/ipeaGIT/geocodebr/blob/main/inst/CITATION)
 
 Rafael H. M. Pereira, Daniel Herszenhut (2025). *geocodebr:

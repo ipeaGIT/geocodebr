@@ -1,6 +1,39 @@
 # Changelog
 
-## geocodebr 0.6.0
+## geocodebr v0.6.2
+
+### Correção de bugs (Bug fixes)
+
+- Bug corrigido para garantir que o pacote utiliza apenas os dados em
+  cache do data release corrente, e ignora eventuais dados de releases
+  antigos que estejam na pasta.
+  [Encerra](https://github.com/ipeaGIT/geocodebr/issues/90)
+  [\#90](https://github.com/ipeaGIT/geocodebr/issues/90)
+- A função geocode agora retorna erro informativo quando alguma coluna
+  na tabela de input tem nome com algum caractere não alfanumérico, como
+  . , ? ^ - ! ~. Não há problema com o sublinhado \_, como em
+  “name_muni”. Fecha
+  [issue](https://github.com/ipeaGIT/geocodebr/issues/92)
+  [\#92](https://github.com/ipeaGIT/geocodebr/issues/92)
+- Corrigido erro na função de
+  [`geocode_reverso()`](https://ipeagit.github.io/geocodebr/dev/reference/geocode_reverso.md)
+  que impedia usar valores muito altos de `dist_max`.
+  [Encerra](https://github.com/ipeaGIT/geocodebr/issues/88)
+  [\#88](https://github.com/ipeaGIT/geocodebr/issues/88)
+- Incluido ‘Language: pt’ na DESCRIPTION
+
+## geocodebr v0.6.1
+
+Lançamento CRAN: 2026-01-27
+
+### Correção de bugs (Bug fixes)
+
+- Essa versão corrige um erro que havia nas coordenadas co CNEFE
+  utilizadas na v0.6.0.
+
+## geocodebr v0.6.0
+
+Lançamento CRAN: 2026-01-23
 
 ### Mudanças grandes (Major changes)
 
@@ -16,16 +49,16 @@
   resultado da coluna `cod_setor` é `NA`.
 - Dependência do pacote agora usa enderecobr (\>= 0.5.0), que foi
   reescrito em Rust. Isso traz grandes ganhos de performance para
-  processamento de bases acima de 10 milhõe
+  processamento de bases acima de 10 milhões
 - Nova atualização da da base de referência (CNEFE padronizado v0.4.0)
 
 ### Outras novidades (Other news)
 
 - Novo co-autor do pacote: Gabriel Garcia de Almeida
 
-## geocodebr 0.5.0
+## geocodebr v0.5.0
 
-CRAN release: 2025-12-09
+Lançamento CRAN: 2025-12-09
 
 ### Mudanças grandes (Major changes)
 
@@ -76,9 +109,9 @@ CRAN release: 2025-12-09
   não tem vazamento de memória.
   [\#48](https://github.com/ipeaGIT/geocodebr/issues/48)
 
-## geocodebr 0.4.0
+## geocodebr v0.4.0
 
-CRAN release: 2025-11-18
+Lançamento CRAN: 2025-11-18
 
 ### Mudanças grandes (Major changes)
 
@@ -118,9 +151,9 @@ CRAN release: 2025-11-18
 
 - Pedro Milreu Cunha
 
-## geocodebr 0.3.0
+## geocodebr v0.3.0
 
-CRAN release: 2025-10-08
+Lançamento CRAN: 2025-10-08
 
 ### Mudanças grandes (Major changes)
 
@@ -163,9 +196,9 @@ CRAN release: 2025-10-08
   função
   [`deletar_pasta_cache()`](https://ipeagit.github.io/geocodebr/dev/reference/deletar_pasta_cache.md).
 
-## geocodebr 0.2.1
+## geocodebr v0.2.1
 
-CRAN release: 2025-07-07
+Lançamento CRAN: 2025-07-07
 
 ### Correção de bugs (Bug fixes)
 
@@ -174,9 +207,9 @@ CRAN release: 2025-07-07
   issue](https://github.com/ipeaGIT/geocodebr/issues/56)
   [\#56](https://github.com/ipeaGIT/geocodebr/issues/56).
 
-## geocodebr 0.2.0
+## geocodebr v0.2.0
 
-CRAN release: 2025-05-07
+Lançamento CRAN: 2025-05-07
 
 ### Mudanças grandes (Major changes)
 
@@ -223,17 +256,17 @@ CRAN release: 2025-05-07
 
 - Arthur Bazzolli
 
-## geocodebr 0.1.1
+## geocodebr v0.1.1
 
-CRAN release: 2025-02-17
+Lançamento CRAN: 2025-02-17
 
 ### Correção de bugs
 
 - Corrigido bug na organização de pastas do cache de dados. Fecha o
   [issue 29](https://github.com/ipeaGIT/geocodebr/issues/29).
 
-## geocodebr 0.1.0
+## geocodebr v0.1.0
 
-CRAN release: 2025-02-12
+Lançamento CRAN: 2025-02-12
 
 - Primeira versão.

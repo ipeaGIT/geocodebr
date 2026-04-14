@@ -1,6 +1,6 @@
-# Articles
+# Artigos
 
-### All vignettes
+### Todas as vinhetas
 
 - [Geocode
   reverso](https://ipeagit.github.io/geocodebr/dev/articles/geocode_reverso.md):

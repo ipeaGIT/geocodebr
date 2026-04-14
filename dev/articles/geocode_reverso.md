@@ -37,23 +37,18 @@ df_enderecos <- geocodebr::geocode_reverso(
 )
 
 head(df_enderecos)
-#> Simple feature collection with 3 features and 9 fields
+#> Simple feature collection with 3 features and 8 fields
 #> Geometry type: POINT
 #> Dimension:     XY
 #> Bounding box:  xmin: -51.49634 ymin: -19.29416 xmax: -39.92601 ymax: 0.3649148
 #> Geodetic CRS:  SIRGAS 2000
-#>   id                                                      endereco_completo
-#> 1  1                CORREGO BOA VISTA, 32 - LAJINHA, PANCAS - ES, 29750-000
-#> 2 17        RAMAL MATAO DO PIACACA 1, 14 - PIACACA, SANTANA - AP, 68925-001
-#> 3 11 RODOVIA SAO MATEUS NOVA VENECIA, 6 - KM 13, SAO MATEUS - ES, 29944-025
-#>   estado  municipio                      logradouro numero       cep localidade
-#> 1     ES     PANCAS               CORREGO BOA VISTA     32 29750-000    LAJINHA
-#> 2     AP    SANTANA        RAMAL MATAO DO PIACACA 1     14 68925-001    PIACACA
-#> 3     ES SAO MATEUS RODOVIA SAO MATEUS NOVA VENECIA      6 29944-025      KM 13
-#>   distancia_metros                    geometry
-#> 1         560.6493  POINT (-40.7334 -19.29416)
-#> 2         364.7801 POINT (-51.49634 0.3649148)
-#> 3         373.7088 POINT (-39.92601 -18.69095)
+#> # A tibble: 3 × 9
+#>      id estado municipio  logradouro    numero cep   localidade distancia_metros
+#>   <int> <chr>  <chr>      <chr>          <int> <chr> <chr>                 <dbl>
+#> 1     1 ES     PANCAS     CORREGO BOA …     32 2975… LAJINHA                561.
+#> 2    11 ES     SAO MATEUS RODOVIA SAO …      6 2994… KM 13                  373.
+#> 3    17 AP     SANTANA    RAMAL MATAO …     14 6892… PIACACA                365.
+#> # ℹ 1 more variable: geometry <POINT [°]>
 ```
 
 Por padrão, a função busca pelo endereço mais próximo num raio

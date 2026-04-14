@@ -4,7 +4,7 @@ Cria um vetor de caracteres especificando as colunas que representam
 cada campo do endereço na tabela de endereços. Os campos `estado` e
 `municipio` são obrigatórios.
 
-## Usage
+## Uso
 
 ``` r
 definir_campos(
@@ -17,7 +17,7 @@ definir_campos(
 )
 ```
 
-## Arguments
+## Argumentos
 
 - estado:
 
@@ -61,12 +61,12 @@ definir_campos(
   ao 'bairro' em áreas urbanas) do endereço. Pode ser `NULL` se esse
   campo não estiver presente na tabela de endereços.
 
-## Value
+## Valor
 
 Um vetor de caracteres no qual os nomes são os campos do endereço e os
 valores são as colunas que os representam na tabela de endereços.
 
-## Examples
+## Exemplos
 
 ``` r
 definir_campos(

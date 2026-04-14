@@ -3,13 +3,13 @@
 Define um diretório de cache para os dados do geocodebr. Essa
 configuração é persistente entre sessões do R.
 
-## Usage
+## Uso
 
 ``` r
 definir_pasta_cache(path, verboso = TRUE)
 ```
 
-## Arguments
+## Argumentos
 
 - path:
 
@@ -24,15 +24,15 @@ definir_pasta_cache(path, verboso = TRUE)
   exibidas durante o download dos dados do CNEFE e a geocodificação dos
   endereços. O padrão é `TRUE`.
 
-## Value
+## Valor
 
 Retorna de forma invisível o caminho do diretório de cache.
 
-## Examples
+## Exemplos
 
 ``` r
 definir_pasta_cache(tempdir())
-#> ℹ Definido como pasta de cache /tmp/RtmpJPLhvW.
+#> ℹ Definido como pasta de cache /tmp/RtmpRsdGS8.
 
 # retoma pasta padrão do pacote
 definir_pasta_cache( path = NULL)

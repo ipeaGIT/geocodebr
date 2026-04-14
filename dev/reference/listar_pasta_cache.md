@@ -6,17 +6,17 @@ geocodebr. Útil para inspecionar a pasta configurada com
 em uma sessão anterior do R. Retorna a pasta de cache padrão caso
 nenhuma pasta personalizado tenha sido configurada anteriormente.
 
-## Usage
+## Uso
 
 ``` r
 listar_pasta_cache()
 ```
 
-## Value
+## Valor
 
 O caminho da pasta de cache.
 
-## Examples
+## Exemplos
 
 ``` r
 listar_pasta_cache()

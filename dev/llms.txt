@@ -10,12 +10,13 @@ coverage](https://codecov.io/gh/ipeaGIT/geocodebr/branch/main/graph/badge.svg)](
 [![Lifecycle:
 experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
-O **{geocodebr}** é um pacote computacional para geolicalização de
+O **{geocodebr}** é um pacote computacional para geolocalização de
 endereços Brasileiros. O pacote oferece uma maneira simples e eficiente
-de geolocalizar dados sem limite de número de consultas. O pacote é
-baseado em conjuntos de dados espaciais abertos de endereços
-brasileiros, utilizando como fonte principal o Cadastro Nacional de
-Endereços para Fins Estatísticos (CNEFE). O CNEFE é
+de geolocalizar dados sem limite de número de consultas capaz de
+geolocalizar milhões de endereços em poucos minutos. O pacote é baseado
+em conjuntos de dados espaciais abertos de endereços brasileiros,
+utilizando como fonte principal o Cadastro Nacional de Endereços para
+Fins Estatísticos (CNEFE). O CNEFE é
 [publicado](https://www.ibge.gov.br/estatisticas/sociais/populacao/38734-cadastro-nacional-de-enderecos-para-fins-estatisticos.html)
 pelo Instituto Brasileiro de Geografia e Estatística (IBGE). Atualmente,
 o pacote está disponível apenas em R.
@@ -156,8 +157,9 @@ Além de diversos pesquisadores e empresas que utilizam o {geocodebr}, o
 pacote também tem sido utilizado por algumas instituições públicas no
 planejamento e avaliação de políticas públicas. Entre elas:
 
-- Instituto Brasileiro de Geografia e Estatistica (IBGE)
 - Banco Central do Brasil (BCB)
+- Fundação Oswaldo Cruz (Fiocruz)
+- Instituto Brasileiro de Geografia e Estatistica (IBGE)
 - Ministério do Desenvolvimento Social e Combate à Fome (MDS)
 
 ## Projetos relacionados
@@ -186,7 +188,7 @@ desempenho.
   [{mapsapi}](https://cran.r-project.org/package=mapsapi): interface
   para API do Google Maps
 
-# Package index
+# Índice de pacotes
 
 ## Geolocalização
 
@@ -215,9 +217,9 @@ desempenho.
 - [`download_cnefe()`](https://ipeagit.github.io/geocodebr/dev/reference/download_cnefe.md)
   : Faz download dos dados do CNEFE
 
-# Articles
+# Artigos
 
-### All vignettes
+### Todas as vinhetas
 
 - [Geocode
   reverso](https://ipeagit.github.io/geocodebr/dev/articles/geocode_reverso.md):
